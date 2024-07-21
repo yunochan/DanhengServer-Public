@@ -72,6 +72,10 @@ namespace EggLink.DanhengServer.Database
                     break;
             }
 
+             // 初始化所有表
+            InitializeBlackList();
+            InitializeUserActivity();
+
             var baseType = typeof(BaseDatabaseDataHelper);
             var assembly = typeof(BaseDatabaseDataHelper).Assembly;
             var types = assembly.GetTypes().Where(t => t.IsSubclassOf(baseType));
@@ -113,6 +117,40 @@ namespace EggLink.DanhengServer.Database
                 value.Add(inst);  // add to the map
             }
         }
+
+        public static void InitializeBlackList()
+		{
+			var list = sqlSugarScope?.Queryable<BlackList>().ToList();
+		
+			foreach (var instance in list!)
+			{
+				var id = instance.Id;
+				if (!UidInstanceMap.TryGetValue(id, out List<BaseDatabaseDataHelper>? value))
+				{
+					value = new List<BaseDatabaseDataHelper>();
+					UidInstanceMap[id] = value;
+				}
+		
+				value.Add(new BaseDatabaseDataHelper { Uid = id });
+			}
+		}
+		
+		public static void InitializeUserActivity()
+		{
+			var list = sqlSugarScope?.Queryable<UserActivity>().ToList();
+		
+			foreach (var instance in list!)
+			{
+				var id = instance.Id;
+				if (!UidInstanceMap.TryGetValue(id, out List<BaseDatabaseDataHelper>? value))
+				{
+					value = new List<BaseDatabaseDataHelper>();
+					UidInstanceMap[id] = value;
+				}
+		
+				value.Add(new BaseDatabaseDataHelper { Uid = id });
+			}
+		}
 
         public void UpgradeDatabase()
         {
@@ -191,29 +229,9 @@ namespace EggLink.DanhengServer.Database
         public static void InitializeMysql()
         {
             sqlSugarScope?.DbMaintenance.CreateDatabase();
-            // 设置自增列的初始值
-            SetAutoIncrementStartValue();
             InitializeSqlite();
         }
         
-        // 设置 `Account` 表的自增列初始值为 10001
-        private static void SetAutoIncrementStartValue()
-        {
-            try
-            {
-                
-                var initialValue = 10001;
-                var tableName = "Account";
-                var sql = $"ALTER TABLE {tableName} AUTO_INCREMENT = {initialValue};";
-        
-                sqlSugarScope?.Ado.ExecuteCommand(sql);
-            }
-            catch (Exception e)
-            {
-                logger.Error("An error occurred while setting the auto-increment start value", e);
-            }
-        }
-
         public static void InitializeSqliteTable<T>() where T : class, new()
         {
             try
