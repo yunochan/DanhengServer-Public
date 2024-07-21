@@ -17,15 +17,6 @@ namespace EggLink.DanhengServer.WebServer.Handler
         public static Logger logger = new("Dispatch");
         // 将正则表达式初始化提取到类的静态字段中
         private static readonly Regex UsernameRegex = new Regex("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9_]{8,16}$", RegexOptions.Compiled);
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserActivityHandler _userActivityHandler;
-        
-        // 构造函数注入 IHttpContextAccessor
-         public UsernameLoginHandler(IHttpContextAccessor httpContextAccessor, UserActivityHandler userActivityHandler)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            _userActivityHandler = userActivityHandler;
-        }
         
         public JsonResult Handle(string account, string password, bool isCrypto)
         {
@@ -35,11 +26,14 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 初始化返回对象
             LoginResJson res = new();
 
+             // 获取 UserActivityHandler 的单例实例
+            var userActivityHandler = UserActivityHandler.Instance;
+
             // 检查 IP 是否在黑名单中
-            if (_userActivityHandler.IsUserBlacklisted(clientIp))
+            if (userActivityHandler.IsUserBlacklisted(clientIp))
             {
                 logger.Warn("客户端 {0} 因被系统拉黑而无法登录", clientIp!);
-                return new JsonResult(new LoginResJson { message = "ip在黑名单里", retcode = -200 });
+                return new JsonResult(new LoginResJson { message = "登录过于频繁，被系统拉黑", retcode = -200 });
             }
             // 尝试获取账户数据
             AccountData? accountData = AccountData.GetAccountByUserName(account);
@@ -71,7 +65,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             }
 
             // 检查是否异地登录
-            if (accountData.IP != null && !_userActivityHandler.IsSameIpPrefix(clientIp, accountData.IP))
+            if (accountData.IP != null && !userActivityHandler.IsSameIpPrefix(clientIp, accountData.IP))
             {
                 logger.Warn("账号 {0} UID: {1} 异地登录，IP: {2} -> {3}", accountData.Username!, accountData.Uid!, accountData.IP!, clientIp!);
                 int count = accountData.Count ?? 0;
@@ -84,13 +78,12 @@ namespace EggLink.DanhengServer.WebServer.Handler
             if(accountData.IsBan){
                 logger.Warn("账号 {0} UID: {1} 登录失败，原因: 账号被封禁", accountData.Username!, accountData.Uid!);
                 return new JsonResult(new LoginResJson { message = "您的账号已经封停，有任何问题请联系管理员", retcode = -204 });
-
             }
 
             // 记录用户登录活动
-            _userActivityHandler.RecordUserActivity(clientIp, "login");
+            userActivityHandler.RecordUserActivity(clientIp, "login");
             // 检查并拉黑用户
-            _userActivityHandler.CheckAndBlacklistUser(clientIp, "login");
+            userActivityHandler.CheckAndBlacklistUser(clientIp, "login");
             // 账户存在，返回成功信息
             res.message = "OK";
             res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
@@ -101,9 +94,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
         // 获取客户端 IP 地址
         private string GetClientIpAddress()
         {
-            var context = _httpContextAccessor.HttpContext;
+            var context = HttpContextProvider.HttpContext;
             return context?.Connection?.RemoteIpAddress?.ToString() ?? "Unknown";
         }
-
     }
 }   

@@ -1,10 +1,15 @@
 using EggLink.DanhengServer.Util;
-using EggLink.DanhengServer.WebServer.Handler;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using System.Net;
 using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace EggLink.DanhengServer.WebServer
 {
@@ -25,7 +30,7 @@ namespace EggLink.DanhengServer.WebServer
                 })
                 .UseUrls(address);
 
-            if (ConfigManager.Config.HttpServer.UseSSL)
+            if (ConfigManager.Config.HttpServer.BindUseSSL)
             {
                 b.UseKestrel(options =>
                  {
@@ -43,15 +48,35 @@ namespace EggLink.DanhengServer.WebServer
         }
     }
 
+    public static class HttpContextProvider
+    {
+        private static AsyncLocal<HttpContext> _httpContext = new AsyncLocal<HttpContext>();
+
+        public static HttpContext HttpContext
+        {
+            get => _httpContext.Value;
+            set => _httpContext.Value = value;
+        }
+    }
+
+
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
 
-            services.AddHttpContextAccessor();
-            services.AddTransient<UserActivityHandler>();
-            services.AddTransient<UsernameLoginHandler>();
             services.AddControllers();
+            services.AddHttpContextAccessor();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -63,6 +88,8 @@ namespace EggLink.DanhengServer.WebServer
 
             app.Use(async (context, next) =>
             {
+                HttpContextProvider.HttpContext = context;
+                
                 using var buffer = new MemoryStream();
                 var request = context.Request;
                 var response = context.Response;
@@ -80,6 +107,8 @@ namespace EggLink.DanhengServer.WebServer
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 

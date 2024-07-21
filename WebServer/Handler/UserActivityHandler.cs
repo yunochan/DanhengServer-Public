@@ -4,13 +4,22 @@ using SqlSugar;
 using System;
 using System.Net;
 using System.Net.Sockets;
+
 namespace EggLink.DanhengServer.WebServer.Handler
 {
     public class UserActivityHandler
     {
+        private static readonly Lazy<UserActivityHandler> _instance = new Lazy<UserActivityHandler>(() =>
+        {
+            var sqlSugarClient = CreateSqlSugarClient(); // Create or obtain the ISqlSugarClient instance
+            return new UserActivityHandler(sqlSugarClient);
+        });
+
+        public static UserActivityHandler Instance => _instance.Value;
+
         private readonly ISqlSugarClient _sqlSugarClient;
 
-        public UserActivityHandler(ISqlSugarClient sqlSugarClient)
+        private UserActivityHandler(ISqlSugarClient sqlSugarClient)
         {
             _sqlSugarClient = sqlSugarClient;
         }
@@ -97,5 +106,41 @@ namespace EggLink.DanhengServer.WebServer.Handler
         {
             return GetClientIpPrefix(ip1) == GetClientIpPrefix(ip2);
         }
+
+		private static ISqlSugarClient CreateSqlSugarClient()
+		{
+			// 从配置中读取数据库配置
+			var config = ConfigManager.Config;
+			DbType dbType;
+			string connectionString;
+		
+			// 根据配置的数据库类型设置 DbType 和连接字符串
+			switch (config.Database.DatabaseType.ToLower())
+			{
+				case "sqlite":
+					dbType = DbType.Sqlite;
+					var fileInfo = new FileInfo(Path.Combine(config.Path.DatabasePath, config.Database.DatabaseName));
+					if (!fileInfo.Exists && fileInfo.Directory != null)
+					{
+						fileInfo.Directory.Create();
+					}
+					connectionString = $"Data Source={fileInfo.FullName};";
+					break;
+				case "mysql":
+					dbType = DbType.MySql;
+					connectionString = $"server={config.Database.MySqlHost};Port={config.Database.MySqlPort};Database={config.Database.MySqlDatabase};Uid={config.Database.MySqlUser};Pwd={config.Database.MySqlPassword};";
+					break;
+				default:
+					throw new NotSupportedException($"Database type {config.Database.DatabaseType} is not supported.");
+			}
+		
+			// 创建并返回 SqlSugarClient 实例
+			return new SqlSugarClient(new ConnectionConfig
+			{
+				ConnectionString = connectionString,
+				DbType = dbType,
+				IsAutoCloseConnection = true
+			});
+		}
     }
 }
