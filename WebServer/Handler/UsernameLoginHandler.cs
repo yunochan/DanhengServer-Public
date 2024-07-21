@@ -32,7 +32,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 检查 IP 是否在黑名单中
             if (userActivityHandler.IsUserBlacklisted(clientIp))
             {
-                logger.Warn("客户端 {0} 因被系统拉黑而无法登录", clientIp!);
+                logger.Warn($"客户端 {clientIp} 因被系统拉黑而无法登录");
                 return new JsonResult(new LoginResJson { message = "登录过于频繁，被系统拉黑", retcode = -200 });
             }
             // 尝试获取账户数据
@@ -54,10 +54,10 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 // 再次检查账户数据
                 if (accountData == null)
                 {
-                    logger.Warn("账号 {0} 自动注册失败！", account);
+                    logger.Warn($"账号 {account} 自动注册失败！");
                     return new JsonResult(new LoginResJson { message = "自动注册失败，请联系管理员", retcode = -202 });
                 }
-                    logger.Info("账号 {0} 自动注册成功", account!);
+                    logger.Info($"账号 {account} 自动注册成功");
             }
             else if (accountData == null) // 账户不存在且不允许自动创建用户
             {
@@ -67,7 +67,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 检查是否异地登录
             if (accountData.IP != null && !userActivityHandler.IsSameIpPrefix(clientIp, accountData.IP))
             {
-                logger.Warn("账号 {0} UID: {1} 异地登录，IP: {2} -> {3}", accountData.Username!, accountData.Uid!, accountData.IP!, clientIp!);
+                logger.Warn($"账号 {accountData.Username} UID: {accountData.Uid} 异地登录，IP: {accountData.IP} -> {clientIp}");
                 int count = accountData.Count ?? 0;
                 accountData.SetCount(count + 1);
             }
@@ -76,7 +76,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
 
             //检查账号是否被封禁
             if(accountData.IsBan){
-                logger.Warn("账号 {0} UID: {1} 登录失败，原因: 账号被封禁", accountData.Username!, accountData.Uid!);
+                logger.Warn($"账号 {accountData.Username} UID: {accountData.Uid} 登录失败，原因: 账号被封禁");
                 return new JsonResult(new LoginResJson { message = "您的账号已经封停，有任何问题请联系管理员", retcode = -204 });
             }
 
@@ -87,7 +87,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 账户存在，返回成功信息
             res.message = "OK";
             res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
-            logger.Info("账号 {0} UID: {1} 登录成功，IP来自 {3}", accountData.Username!, accountData.Uid!,accountData.IP!);
+            logger.Info($"账号 {accountData.Username} UID: {accountData.Uid} 登录成功，IP来自 {accountData.IP}");
             return new JsonResult(res);
         }
 
