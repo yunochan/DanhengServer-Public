@@ -72,10 +72,6 @@ namespace EggLink.DanhengServer.Database
                     break;
             }
 
-             // 初始化所有表
-            InitializeBlackList();
-            InitializeUserActivity();
-
             var baseType = typeof(BaseDatabaseDataHelper);
             var assembly = typeof(BaseDatabaseDataHelper).Assembly;
             var types = assembly.GetTypes().Where(t => t.IsSubclassOf(baseType));
@@ -117,55 +113,6 @@ namespace EggLink.DanhengServer.Database
                 value.Add(inst);  // add to the map
             }
         }
-
-		public static void InitializeBlackList()
-		{
-			var list = sqlSugarScope?.Queryable<BlackList>().ToList();
-		
-			foreach (var instance in list!)
-			{
-				var id = instance.Id;
-				if (!UidInstanceMap.TryGetValue(id, out List<BaseDatabaseDataHelper>? value))
-				{
-					value = new List<BaseDatabaseDataHelper>();
-					UidInstanceMap[id] = value;
-				}
-		
-				// 将 BlackList 实例转换成 BlackListDataHelper 实例
-				value.Add(new BlackListDataHelper
-				{
-					Id = id,
-					IP = instance.IP,
-					StartTime = instance.StartTime,
-					EndTime = instance.EndTime,
-					Msg = instance.Msg
-				});
-			}
-		}
-		
-		public static void InitializeUserActivity()
-		{
-			var list = sqlSugarScope?.Queryable<UserActivity>().ToList();
-		
-			foreach (var instance in list!)
-			{
-				var id = instance.Id;
-				if (!UidInstanceMap.TryGetValue(id, out List<BaseDatabaseDataHelper>? value))
-				{
-					value = new List<BaseDatabaseDataHelper>();
-					UidInstanceMap[id] = value;
-				}
-		
-				// 将 UserActivity 实例转换成 UserActivityDataHelper 实例
-				value.Add(new UserActivityDataHelper
-				{
-					Id = id,
-					IP = instance.IP,
-					ActivityTime = instance.ActivityTime,
-					ActivityType = instance.ActivityType
-				});
-			}
-		}
 		
         public void UpgradeDatabase()
         {
