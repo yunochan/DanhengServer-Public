@@ -38,7 +38,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 检查 IP 是否在黑名单中
             if (_userActivityHandler.IsUserBlacklisted(clientIp))
             {
-                logger.Warn("客户端 {0} 因被系统拉黑而无法登录", clientIp);
+                logger.Warn("客户端 {0} 因被系统拉黑而无法登录", clientIp!);
                 return new JsonResult(new LoginResJson { message = "ip在黑名单里", retcode = -200 });
             }
             // 尝试获取账户数据
@@ -75,7 +75,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             {
                 logger.Warn("账号 {0} UID: {1} 异地登录，IP: {2} -> {3}", accountData.Username, accountData.Uid, accountData.IP, clientIp);
                 int count = accountData.Count ?? 0;
-                accountData.setCount(count + 1);
+                accountData.SetCount(count + 1);
             }
                        
             accountData.SetIP(clientIp);//更新IP记录
@@ -94,7 +94,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 账户存在，返回成功信息
             res.message = "OK";
             res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username, accountData.GenerateDispatchToken());
-            logger.Info("账号 {0} UID: {1} 登录成功", accountData.Username, accountData.Uid);
+            logger.Info("账号 {0} UID: {1} 登录成功，IP来自 {3}", accountData.Username!, accountData.Uid,accountData.IP);
             return new JsonResult(res);
         }
 

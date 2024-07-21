@@ -3,8 +3,10 @@ using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Util;
 using EggLink.DanhengServer.WebServer.Handler;
 using EggLink.DanhengServer.WebServer.Objects;
+using EggLink.DanhengServer.Database.UserManagement;
 using Google.Protobuf;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace EggLink.DanhengServer.WebServer.Controllers
@@ -15,7 +17,13 @@ namespace EggLink.DanhengServer.WebServer.Controllers
     {
         public static ConfigContainer config = ConfigManager.Config;
         public static Logger Logger = new("DispatchServer");
-
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserActivityHandler _userActivityHandler;
+        public DispatchRoutes(IHttpContextAccessor httpContextAccessor, UserActivityHandler userActivityHandler)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _userActivityHandler = userActivityHandler;
+        }
         [HttpGet("query_dispatch")]
         public string QueryDispatch()
         {
@@ -36,7 +44,7 @@ namespace EggLink.DanhengServer.WebServer.Controllers
 
         // === AUTHENTICATION ===
         [HttpPost("/hkrpg_global/mdk/shield/api/login")]
-        public JsonResult Login([FromBody] LoginReqJson req) => new UsernameLoginHandler().Handle(req.account!, req.password!, req.is_crypto);
+        public JsonResult Login([FromBody] LoginReqJson req){var usernameLoginHandler = new UsernameLoginHandler(_httpContextAccessor, _userActivityHandler);return usernameLoginHandler.Handle(req.account!, req.password!, req.is_crypto);};
         [HttpPost("/hkrpg_global/account/ma-passport/api/appLoginByPassword")]
         public JsonResult Login([FromBody] NewLoginReqJson req) => new NewUsernameLoginHandler().Handle(req.account!, req.password!);
         [HttpPost("/hkrpg_global/mdk/shield/api/verify")]
