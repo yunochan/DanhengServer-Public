@@ -46,6 +46,8 @@ namespace EggLink.DanhengServer.WebServer
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            // 注册 IHttpContextAccessor 服务
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers();
         }
 

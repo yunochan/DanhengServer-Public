@@ -1,6 +1,7 @@
 ﻿using EggLink.DanhengServer.Database.Inventory;
 using EggLink.DanhengServer.Database.Mission;
 using EggLink.DanhengServer.Database.Scene;
+using EggLink.DanhengServer.Database.UserManagement;
 using EggLink.DanhengServer.Internationalization;
 using EggLink.DanhengServer.Util;
 using SqlSugar;
@@ -79,6 +80,9 @@ namespace EggLink.DanhengServer.Database
                 typeof(DatabaseHelper).GetMethod("InitializeTable")?.MakeGenericMethod(t).Invoke(null, null);  // cache the data
             }
 
+            // Explicitly initialize table
+            InitializeTable<BlackList>();
+            InitializeTable<UserActivity>();
             LastSaveTick = DateTime.UtcNow.Ticks;
 
             SaveThread = new(() =>
@@ -150,6 +154,9 @@ namespace EggLink.DanhengServer.Database
                 typeof(DatabaseHelper).GetMethod("MoveSqliteTable")?.MakeGenericMethod(type).Invoke(null, [sqliteScope]);
             }
 
+            // Explicitly move BlackList table
+            MoveSqliteTable<BlackList>(sqliteScope);
+            MoveSqliteTable<UserActivity>(sqliteScope);
             // exit the program
             Environment.Exit(0);
         }
@@ -184,7 +191,27 @@ namespace EggLink.DanhengServer.Database
         public static void InitializeMysql()
         {
             sqlSugarScope?.DbMaintenance.CreateDatabase();
+            // 设置自增列的初始值
+            SetAutoIncrementStartValue();
             InitializeSqlite();
+        }
+        
+        // 设置 `Account` 表的自增列初始值为 10001
+        private static void SetAutoIncrementStartValue()
+        {
+            try
+            {
+                
+                var initialValue = 10001;
+                var tableName = "Account";
+                var sql = $"ALTER TABLE {tableName} AUTO_INCREMENT = {initialValue};";
+        
+                sqlSugarScope?.Ado.ExecuteCommand(sql);
+            }
+            catch (Exception e)
+            {
+                logger.Error("An error occurred while setting the auto-increment start value", e);
+            }
         }
 
         public static void InitializeSqliteTable<T>() where T : class, new()

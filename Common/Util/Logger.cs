@@ -8,16 +8,33 @@ using System.Threading.Tasks;
 
 namespace EggLink.DanhengServer.Util
 {
-    public class Logger(string moduleName)
+    public class Logger
     {
-        private readonly string ModuleName = moduleName;
+        private readonly string ModuleName;
         private static FileInfo? LogFile;
         private static object _lock = new();
 
-        public void Log(string message, LoggerLevel level)
+        public Logger(string moduleName)
+        {
+            ModuleName = moduleName;
+        }
+
+        public void Log(string message, LoggerLevel level, params object[] args)
         {
             lock (_lock)
             {
+                // 格式化日志消息
+                string formattedMessage;
+                try
+                {
+                    formattedMessage = args.Length > 0 ? string.Format(message, args) : message;
+                }
+                catch (FormatException ex)
+                {
+                    formattedMessage = $"[ERROR] Format exception: {ex.Message}";
+                }
+
+                // 输出到控制台
                 Console.Write("[");
 
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -38,61 +55,37 @@ namespace EggLink.DanhengServer.Util
                 Console.Write(level);
                 Console.ResetColor();
 
-                Console.WriteLine("] " + message);
+                Console.WriteLine("] " + formattedMessage);
 
-                var logMessage = $"[{DateTime.Now:HH:mm:ss}] [{ModuleName}] [{level}] {message}";
+                // 写入到日志文件
+                var logMessage = $"[{DateTime.Now:HH:mm:ss}] [{ModuleName}] [{level}] {formattedMessage}";
                 WriteToFile(logMessage);
             }
         }
 
-        public void Info(string message, Exception? e = null)
+        public void Info(string message, params object[] args)
         {
-            Log(message, LoggerLevel.INFO);
-            if (e != null)
-            {
-                Log(e.Message, LoggerLevel.INFO);
-                Log(e.StackTrace!, LoggerLevel.INFO);
-            }
+            Log(message, LoggerLevel.INFO, args ?? new object[] { });
         }
 
-        public void Warn(string message, Exception? e = null)
+        public void Warn(string message, params object[] args)
         {
-            Log(message, LoggerLevel.WARN);
-            if (e != null)
-            {
-                Log(e.Message, LoggerLevel.WARN);
-                Log(e.StackTrace!, LoggerLevel.WARN);
-            }
+            Log(message, LoggerLevel.WARN, args ?? new object[] { });
         }
 
-        public void Error(string message, Exception? e = null)
+        public void Error(string message, params object[] args)
         {
-            Log(message, LoggerLevel.ERROR);
-            if (e != null)
-            {
-                Log(e.Message, LoggerLevel.ERROR);
-                Log(e.StackTrace!, LoggerLevel.ERROR);
-            }
+            Log(message, LoggerLevel.ERROR, args ?? new object[] { });
         }
 
-        public void Fatal(string message, Exception? e = null)
+        public void Fatal(string message, params object[] args)
         {
-            Log(message, LoggerLevel.FATAL);
-            if (e != null)
-            {
-                Log(e.Message, LoggerLevel.FATAL);
-                Log(e.StackTrace!, LoggerLevel.FATAL);
-            }
+            Log(message, LoggerLevel.FATAL, args ?? new object[] { });
         }
 
-        public void Debug(string message, Exception? e = null)
+        public void Debug(string message, params object[] args)
         {
-            Log(message, LoggerLevel.DEBUG);
-            if (e != null)
-            {
-                Log(e.Message, LoggerLevel.DEBUG);
-                Log(e.StackTrace!, LoggerLevel.DEBUG);
-            }
+            Log(message, LoggerLevel.DEBUG, args ?? new object[] { });
         }
 
         public static void SetLogFile(FileInfo file)
@@ -113,7 +106,7 @@ namespace EggLink.DanhengServer.Util
             }
             catch
             {
-
+                // Handle or log exception as necessary
             }
         }
 
