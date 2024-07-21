@@ -118,7 +118,7 @@ namespace EggLink.DanhengServer.Database
             }
         }
 
-        public static void InitializeBlackList()
+		public static void InitializeBlackList()
 		{
 			var list = sqlSugarScope?.Queryable<BlackList>().ToList();
 		
@@ -131,7 +131,15 @@ namespace EggLink.DanhengServer.Database
 					UidInstanceMap[id] = value;
 				}
 		
-				value.Add(new BaseDatabaseDataHelper { Uid = id });
+				// 将 BlackList 实例转换成 BlackListDataHelper 实例
+				value.Add(new BlackListDataHelper
+				{
+					Id = id,
+					IP = instance.IP,
+					StartTime = instance.StartTime,
+					EndTime = instance.EndTime,
+					Msg = instance.Msg
+				});
 			}
 		}
 		
@@ -148,10 +156,17 @@ namespace EggLink.DanhengServer.Database
 					UidInstanceMap[id] = value;
 				}
 		
-				value.Add(new BaseDatabaseDataHelper { Uid = id });
+				// 将 UserActivity 实例转换成 UserActivityDataHelper 实例
+				value.Add(new UserActivityDataHelper
+				{
+					Id = id,
+					IP = instance.IP,
+					ActivityTime = instance.ActivityTime,
+					ActivityType = instance.ActivityType
+				});
 			}
 		}
-
+		
         public void UpgradeDatabase()
         {
             logger.Info("Upgrading database...");
