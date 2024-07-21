@@ -14,11 +14,12 @@ namespace EggLink.DanhengServer.WebServer.Handler
 {
     public class UsernameLoginHandler
     {
+        public static Logger logger = new("Dispatch");
         // 将正则表达式初始化提取到类的静态字段中
         private static readonly Regex UsernameRegex = new Regex("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z0-9_]{8,16}$", RegexOptions.Compiled);
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UserActivityHandler _userActivityHandler;
-
+        
         // 构造函数注入 IHttpContextAccessor
          public UsernameLoginHandler(IHttpContextAccessor httpContextAccessor, UserActivityHandler userActivityHandler)
         {
