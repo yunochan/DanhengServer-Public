@@ -4,7 +4,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace namespace EggLink.DanhengServer.WebServer.Handler
+namespace EggLink.DanhengServer.WebServer.Handler
 {
     public class UserActivityHandler
     {

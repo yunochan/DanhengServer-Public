@@ -8,10 +8,11 @@ namespace EggLink.DanhengServer.Database.UserManagement
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int Id { get; set; }
         [SugarColumn(IsNullable = false)]
-        public string IP { get; set; }
+        public string IP { get; set; } = "";
         [SugarColumn(IsNullable = false)]
         public DateTime ActivityTime { get; set; }
         [SugarColumn(IsNullable = false)]
-        public string ActivityType { get; set; }
+        public string? ActivityType { get; set; }
     }
+
 }
