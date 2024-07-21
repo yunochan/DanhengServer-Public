@@ -1,7 +1,6 @@
 ﻿using EggLink.DanhengServer.Database.Inventory;
 using EggLink.DanhengServer.Database.Mission;
 using EggLink.DanhengServer.Database.Scene;
-using EggLink.DanhengServer.Database.UserManagement;
 using EggLink.DanhengServer.Internationalization;
 using EggLink.DanhengServer.Util;
 using SqlSugar;
@@ -80,9 +79,6 @@ namespace EggLink.DanhengServer.Database
                 typeof(DatabaseHelper).GetMethod("InitializeTable")?.MakeGenericMethod(t).Invoke(null, null);  // cache the data
             }
 
-            // Explicitly initialize table
-            InitializeTable<BlackList>();
-            InitializeTable<UserActivity>();
             LastSaveTick = DateTime.UtcNow.Ticks;
 
             SaveThread = new(() =>
@@ -113,7 +109,7 @@ namespace EggLink.DanhengServer.Database
                 value.Add(inst);  // add to the map
             }
         }
-		
+
         public void UpgradeDatabase()
         {
             logger.Info("Upgrading database...");
@@ -154,9 +150,6 @@ namespace EggLink.DanhengServer.Database
                 typeof(DatabaseHelper).GetMethod("MoveSqliteTable")?.MakeGenericMethod(type).Invoke(null, [sqliteScope]);
             }
 
-            // Explicitly move BlackList table
-            MoveSqliteTable<BlackList>(sqliteScope);
-            MoveSqliteTable<UserActivity>(sqliteScope);
             // exit the program
             Environment.Exit(0);
         }
@@ -193,7 +186,7 @@ namespace EggLink.DanhengServer.Database
             sqlSugarScope?.DbMaintenance.CreateDatabase();
             InitializeSqlite();
         }
-        
+
         public static void InitializeSqliteTable<T>() where T : class, new()
         {
             try
