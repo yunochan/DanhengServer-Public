@@ -63,7 +63,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
                     logger.Warn("账号 {0} 自动注册失败！", account);
                     return new JsonResult(new LoginResJson { message = "自动注册失败，请联系管理员", retcode = -202 });
                 }
-                    logger.Info("账号 {0} 自动注册成功", account);
+                    logger.Info("账号 {0} 自动注册成功", account!);
             }
             else if (accountData == null) // 账户不存在且不允许自动创建用户
             {
@@ -73,7 +73,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 检查是否异地登录
             if (accountData.IP != null && !_userActivityHandler.IsSameIpPrefix(clientIp, accountData.IP))
             {
-                logger.Warn("账号 {0} UID: {1} 异地登录，IP: {2} -> {3}", accountData.Username, accountData.Uid, accountData.IP, clientIp);
+                logger.Warn("账号 {0} UID: {1} 异地登录，IP: {2} -> {3}", accountData.Username!, accountData.Uid!, accountData.IP!, clientIp!);
                 int count = accountData.Count ?? 0;
                 accountData.SetCount(count + 1);
             }
@@ -82,7 +82,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
 
             //检查账号是否被封禁
             if(accountData.IsBan){
-                logger.Warn("账号 {0} UID: {1} 登录失败，原因: 账号被封禁", accountData.Username, accountData.Uid);
+                logger.Warn("账号 {0} UID: {1} 登录失败，原因: 账号被封禁", accountData.Username!, accountData.Uid!);
                 return new JsonResult(new LoginResJson { message = "您的账号已经封停，有任何问题请联系管理员", retcode = -204 });
 
             }
@@ -93,8 +93,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
             _userActivityHandler.CheckAndBlacklistUser(clientIp, "login");
             // 账户存在，返回成功信息
             res.message = "OK";
-            res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username, accountData.GenerateDispatchToken());
-            logger.Info("账号 {0} UID: {1} 登录成功，IP来自 {3}", accountData.Username!, accountData.Uid,accountData.IP);
+            res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
+            logger.Info("账号 {0} UID: {1} 登录成功，IP来自 {3}", accountData.Username!, accountData.Uid!,accountData.IP!);
             return new JsonResult(res);
         }
 

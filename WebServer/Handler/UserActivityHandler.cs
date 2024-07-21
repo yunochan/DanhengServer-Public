@@ -1,5 +1,5 @@
 using EggLink.DanhengServer.Database.UserManagement;
-using EggLink.DanhengServer.Configuration;
+using EggLink.DanhengServer.Util;
 using SqlSugar;
 using System;
 using System.Net;
