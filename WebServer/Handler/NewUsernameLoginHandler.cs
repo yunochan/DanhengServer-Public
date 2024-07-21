@@ -10,6 +10,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
     {
         public JsonResult Handle(string account, string password)
         {
+             //Debug
+            logger.Info($"NewUsernameLoginHandler类传入的account={account},password={password}")
             NewLoginResJson res = new();
             AccountData? accountData = AccountData.GetAccountByUserName(account);
 
@@ -28,6 +30,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
             if (accountData != null)
             {
                 res.message = "OK";
+            //Debug
+            logger.Info($"NewUsernameLoginHandler类应写入DispatchToken={accountData.GenerateDispatchToken()}")
                 res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
             }
 

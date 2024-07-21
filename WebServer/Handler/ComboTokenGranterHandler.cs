@@ -1,5 +1,6 @@
 ﻿using EggLink.DanhengServer.Database.Account;
 using EggLink.DanhengServer.WebServer.Objects;
+using EggLink.DanhengServer.Util;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -22,10 +23,14 @@ namespace EggLink.DanhengServer.WebServer.Handler
             {
                 res.retcode = -201;
                 res.message = "Game account cache information error";
+                //Debug
+                logger.Info("ComboTokenGranterHandler类发生account=null ")
                 return new JsonResult(res);
             } else
             {
                 res.message = "OK";
+                //Debug
+                logger.Info($"ComboTokenGranterHandler类应写入ComboToken={account.GenerateComboToken()}")
                 res.data = new ComboTokenResJson.LoginData(account.Uid.ToString(), account.GenerateComboToken());
             }
             return new JsonResult(res);
