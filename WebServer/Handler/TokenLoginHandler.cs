@@ -11,7 +11,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
         public JsonResult Handle(string uid, string token)
         {
             //Debug
-            logger.Info($"TokenLoginHandler类传入的uid={uid} token={token}")
+            logger.Info($"TokenLoginHandler类传入的uid={uid} token={token}");
             AccountData? account = AccountData.GetAccountByUid(int.Parse(uid));
             var res = new LoginResJson();
             if (account == null || !account?.DispatchToken?.Equals(token) == true)
@@ -19,7 +19,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 res.retcode = -201;
                 res.message = "Game account cache information error";
                 //Debug
-                logger.Info($"TokenLoginHandler类 {account} ,Token验证失败")
+                logger.Info($"TokenLoginHandler类 {account} ,Token验证失败");
             }
             else
             {
