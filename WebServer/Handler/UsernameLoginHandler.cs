@@ -48,8 +48,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 }
 
                 // 创建新账户
-                AccountHelper.CreateAccount(account, 0);
-                accountData = AccountData.GetAccountByUserName(account);
+                accountData = AccountHelper.CreateAccount(account, 0);
+                //accountData = AccountData.GetAccountByUserName(account);
 
                 // 再次检查账户数据
                 if (accountData == null)
@@ -72,7 +72,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 accountData.SetCount(count + 1);
             }
                        
-            accountData.SetIP(clientIp);//更新IP记录
+            accountData.SetIP(clientIp);//这里写入IP失败
 
             //检查账号是否被封禁
             if(accountData.IsBan){

@@ -27,11 +27,11 @@ namespace EggLink.DanhengServer.Database.Account
         public static AccountData? GetAccountByUserName(string username)
         {
             AccountData? result = null;
-            DatabaseHelper.GetAllInstance<AccountData>()?.ForEach((account) =>
+            DatabaseHelper.GetAllInstance<AccountData>()?.ForEach((accountData) =>
             {
-                if (account.Username == username)
+                if (accountData.Username == username)
                 {
-                    result = account;
+                    result = accountData;
                 }
             });
             return result;
@@ -68,31 +68,16 @@ namespace EggLink.DanhengServer.Database.Account
             DatabaseHelper.Instance?.UpdateInstance(this);
         }
 
-        public string? GetIP()
-        {
-            return IP;
-        }
-
         public void SetIP(string? ip)
         {
             IP = ip;
             DatabaseHelper.Instance?.UpdateInstance(this);
         }
 
-        public int? GetCount()
-        {
-            return Count;
-        }
-
         public void SetCount(int? count)
         {
             Count = count ?? 0;
             DatabaseHelper.Instance?.UpdateInstance(this);
-        }
-
-        public string? GetBanMessage()
-        {
-            return BanMsg;
         }
 
         public void SetBanMessage(string? msg)

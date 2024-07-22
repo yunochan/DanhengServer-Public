@@ -20,8 +20,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
             {
                 if (ConfigManager.Config.ServerOption.AutoCreateUser)
                 {
-                    AccountHelper.CreateAccount(account, 0);
-                    accountData = AccountData.GetAccountByUserName(account);
+                    accountData = AccountHelper.CreateAccount(account, 0);
+                    //accountData = AccountData.GetAccountByUserName(account);
                 }
                 else
                 {

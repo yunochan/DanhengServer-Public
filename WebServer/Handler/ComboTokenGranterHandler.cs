@@ -19,7 +19,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 res.message = "Invalid login data";
                 return new JsonResult(res);
             }
-            AccountData? account = AccountData.GetAccountByUid(int.Parse(tokenData.uid!));
+            AccountData? account = AccountData.GetAccountByUid(int.Parse(tokenData.uid!));//异常，发生null
             if (account == null)
             {
                 res.retcode = -201;

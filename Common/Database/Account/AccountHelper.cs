@@ -4,6 +4,7 @@ namespace EggLink.DanhengServer.Database.Account
 {
     public static class AccountHelper
     {
+        public static Logger logger = new("AccountHelper");
         public static void CreateAccount(string username, int uid)
         {
             if (AccountData.GetAccountByUserName(username) != null)
@@ -14,7 +15,7 @@ namespace EggLink.DanhengServer.Database.Account
             // 创建新账户，Uid会自动分配
             var per = ConfigManager.Config.ServerOption.DefaultPermissions;
             var perStr = string.Join(",", per);
-            var account = new AccountData()
+            var accountData = new AccountData()
             {
                 Username = username,
                 Permissions = perStr
@@ -27,10 +28,13 @@ namespace EggLink.DanhengServer.Database.Account
                 {
                     throw new Exception("Account with specified UID already exists");
                 }
-                account.Uid = uid;
+                accountData.Uid = uid;
             }
 
-            DatabaseHelper.SaveInstance(account);
+            DatabaseHelper.SaveInstance(accountData);
+            //Debug
+            logger.Info($"分配的uid={accountData.Uid}，usrname={accountData.Username}");
+            return accountData;
         }
     }
 }
