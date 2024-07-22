@@ -1,5 +1,5 @@
 ﻿using EggLink.DanhengServer.Util;
-using EggLink.DanhengServer.WebServer.Handler;
+using EggLink.DanhengServer.Handler;
 
 namespace EggLink.DanhengServer.Database.Account
 {
