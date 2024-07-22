@@ -9,6 +9,7 @@ namespace EggLink.DanhengServer.Database.Account
         {
             if (AccountData.GetAccountByUserName(username) != null)
             {
+                logger.Warn($"用户={username} 已经存在");
                 throw new Exception("Account already exists");
             }
 
@@ -26,6 +27,7 @@ namespace EggLink.DanhengServer.Database.Account
             {
                 if (AccountData.GetAccountByUid(uid) != null)
                 {
+                    logger.Warn($"Uid={uid} 已经存在");
                     throw new Exception("Account with specified UID already exists");
                 }
                 accountData.Uid = uid;
