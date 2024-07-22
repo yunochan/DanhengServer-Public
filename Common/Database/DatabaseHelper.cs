@@ -81,7 +81,6 @@ namespace EggLink.DanhengServer.Database
             }
              // Initialize special tables
             InitializeSpecialTable<BlackList>();
-            InitializeSpecialTable<Counter>();
             InitializeSpecialTable<UserActivity>();
             
             LastSaveTick = DateTime.UtcNow.Ticks;
