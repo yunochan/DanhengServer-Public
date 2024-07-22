@@ -1,6 +1,7 @@
 ﻿using EggLink.DanhengServer.Database.Inventory;
 using EggLink.DanhengServer.Database.Mission;
 using EggLink.DanhengServer.Database.Scene;
+using EggLink.DanhengServer.Database.UserManagement;
 using EggLink.DanhengServer.Internationalization;
 using EggLink.DanhengServer.Util;
 using SqlSugar;
@@ -78,7 +79,11 @@ namespace EggLink.DanhengServer.Database
             {
                 typeof(DatabaseHelper).GetMethod("InitializeTable")?.MakeGenericMethod(t).Invoke(null, null);  // cache the data
             }
-
+             // Initialize special tables
+            InitializeSpecialTable<BlackList>();
+            InitializeSpecialTable<Counter>();
+            InitializeSpecialTable<UserActivity>();
+            
             LastSaveTick = DateTime.UtcNow.Ticks;
 
             SaveThread = new(() =>
@@ -109,6 +114,20 @@ namespace EggLink.DanhengServer.Database
                 value.Add(inst);  // add to the map
             }
         }
+
+        public static void InitializeSpecialTable<T>() where T : class, new()
+        {
+            try
+            {
+                sqlSugarScope?.CodeFirst.InitTables<T>();
+                logger.Info($"Table {typeof(T).Name} initialized successfully.");
+            }
+            catch (Exception e)
+            {
+                logger.Error($"An error occurred while initializing the table {typeof(T).Name}", e);
+            }
+        }
+
 
         public void UpgradeDatabase()
         {

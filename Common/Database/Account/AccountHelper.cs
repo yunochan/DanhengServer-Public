@@ -1,42 +1,73 @@
 ﻿using EggLink.DanhengServer.Util;
+using EggLink.DanhengServer.Database.DatabaseHelper;
+using SqlSugar;
+using System;
 
 namespace EggLink.DanhengServer.Database.Account
 {
     public static class AccountHelper
     {
         public static Logger logger = new("AccountHelper");
+
+        private static readonly SqlSugarClient db = DatabaseHelper.GetInstance();
+
         public static AccountData CreateAccount(string username, int uid)
         {
             if (AccountData.GetAccountByUserName(username) != null)
             {
-                logger.Warn($"用户={username} 已经存在");
                 throw new Exception("Account already exists");
             }
 
-            // 创建新账户，Uid会自动分配
+            int newUid = uid;
+            if (uid == 0)
+            {
+                newUid = GetNextUid();
+            }
+
             var per = ConfigManager.Config.ServerOption.DefaultPermissions;
             var perStr = string.Join(",", per);
             var accountData = new AccountData()
             {
+                Uid = newUid, 
                 Username = username,
                 Permissions = perStr
             };
-
-            // 如果指定了 uid，检查是否有重复的 uid 并设置 Uid
-            if (uid != 0)
-            {
-                if (AccountData.GetAccountByUid(uid) != null)
-                {
-                    logger.Warn($"Uid={uid} 已经存在");
-                    throw new Exception("Account with specified UID already exists");
-                }
-                accountData.Uid = uid;
-            }
-
             DatabaseHelper.SaveInstance(accountData);
             //Debug
             logger.Info($"分配的uid={accountData.Uid}，usrname={accountData.Username}");
             return accountData;
+        }
+
+        private static int GetNextUid()
+        {
+            int nextUid;
+            db.Ado.BeginTran(); // 开启事务
+
+            try
+            {
+                // 获取当前的 Counter 记录
+                var counter = db.Queryable<Counter>().Single(it => it.Id == "Player");
+
+                if (counter == null)
+                {
+                    throw new Exception("Counter record not found");
+                }
+
+                nextUid = counter.NextUid;
+
+                // 更新 Counter 表中的 NextUid
+                counter.NextUid++;
+                db.Updateable(counter).ExecuteCommand();
+
+                db.Ado.CommitTran(); // 提交事务
+            }
+            catch (Exception)
+            {
+                db.Ado.RollbackTran(); // 回滚事务
+                throw;
+            }
+
+            return nextUid;
         }
     }
 }
