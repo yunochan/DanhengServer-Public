@@ -5,7 +5,7 @@ namespace EggLink.DanhengServer.Database.Account
     public static class AccountHelper
     {
         public static Logger logger = new("AccountHelper");
-        public static void CreateAccount(string username, int uid)
+        public static AccountData CreateAccount(string username, int uid)
         {
             if (AccountData.GetAccountByUserName(username) != null)
             {
