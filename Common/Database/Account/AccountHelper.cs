@@ -1,6 +1,7 @@
 ﻿using EggLink.DanhengServer.Util;
 using EggLink.DanhengServer.Database.UserManagement;
 using EggLink.DanhengServer.Database;
+using SqlSugar;
 
 namespace EggLink.DanhengServer.Database.Account
 {
