@@ -23,37 +23,6 @@ namespace EggLink.DanhengServer.WebServer.Handler
         {
             _sqlSugarClient = sqlSugarClient;
         }
-
-        public int GetNextUid()
-            {
-                int nextUid;
-                _sqlSugarClient.Ado.BeginTran(); // 开启事务
-
-                try
-                {
-                    // 获取当前的 Counter 记录
-                    var counter = _sqlSugarClient.Queryable<Counter>().Single(it => it.Id == "Player");
-
-                    if (counter == null)
-                    {
-                        throw new Exception("Counter record not found");
-                    }
-                    
-                    nextUid = counter.NextUid;
-
-                    // 更新 Counter 表中的 NextUid
-                    counter.NextUid++;
-                    _sqlSugarClient.Updateable(counter).ExecuteCommand();
-
-                    _sqlSugarClient.Ado.CommitTran(); // 提交事务
-                }
-                catch (Exception)
-                {
-                    _sqlSugarClient.Ado.RollbackTran(); // 回滚事务
-                    throw;
-                }
-                return nextUid;
-            }
             
         public void RecordUserActivity(string ip, string activityType)
         {

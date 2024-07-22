@@ -1,11 +1,13 @@
 ﻿using EggLink.DanhengServer.Util;
-using EggLink.DanhengServer.WebServer.Handler;
+using EggLink.DanhengServer.Database.UserManagement;
+using EggLink.DanhengServer.Database;
 
 namespace EggLink.DanhengServer.Database.Account
 {
     public static class AccountHelper
     {
         public static Logger logger = new("AccountHelper");
+        private static SqlSugarScope db => DatabaseHelper.SqlSugarScope;
 
         public static AccountData CreateAccount(string username, int uid)
         {
@@ -17,7 +19,7 @@ namespace EggLink.DanhengServer.Database.Account
             int newUid = uid;
             if (uid == 0)
             {
-                newUid = UserActivityHandler.Instance.GetNextUid(); // 使用 UserActivityHandler 获取下一个 UID
+                newUid = GetNextUid();
             }
 
             var per = ConfigManager.Config.ServerOption.DefaultPermissions;
@@ -32,6 +34,38 @@ namespace EggLink.DanhengServer.Database.Account
             //Debug
             logger.Info($"分配的uid={accountData.Uid}，usrname={accountData.Username}");
             return accountData;
+        }
+
+         private static int GetNextUid()
+        {
+            int nextUid;
+            db.Ado.BeginTran(); // 开启事务
+
+            try
+            {
+                // 获取当前的 Counter 记录
+                var counter = db.Queryable<Counter>().Single(it => it.Id == "Player");
+
+                if (counter == null)
+                {
+                    throw new Exception("Counter record not found");
+                }
+
+                nextUid = counter.NextUid;
+
+                // 更新 Counter 表中的 NextUid
+                counter.NextUid++;
+                db.Updateable(counter).ExecuteCommand();
+
+                db.Ado.CommitTran(); // 提交事务
+            }
+            catch (Exception)
+            {
+                db.Ado.RollbackTran(); // 回滚事务
+                throw;
+            }
+
+            return nextUid;
         }
     }
 }
