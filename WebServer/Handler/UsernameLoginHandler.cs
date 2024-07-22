@@ -35,23 +35,23 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 logger.Warn($"客户端 {clientIp} 因被系统拉黑而无法登录");
                 return new JsonResult(new LoginResJson { message = "登录过于频繁，被系统拉黑", retcode = -200 });
             }
-            // 尝试获取账户数据
+            // 尝试获取账号数据
             AccountData? accountData = AccountData.GetAccountByUserName(account);
 
-            // 如果账户不存在且允许自动创建用户
+            // 如果账号数据不存在且允许自动创建用户
             if (accountData == null && ConfigManager.Config.ServerOption.AutoCreateUser)
             {
-                // 校验账户格式
+                // 校验账号格式
                 if (!UsernameRegex.IsMatch(account))
                 {
                     return new JsonResult(new LoginResJson { message = "账号只能由英文字母、数字和下划线组成，长度为8-16个字符，并需要包含英文字母和数字", retcode = -201 });
                 }
 
-                // 创建新账户
+                // 创建新账号
                 accountData = AccountHelper.CreateAccount(account, 0);
                 //accountData = AccountData.GetAccountByUserName(account);
 
-                // 再次检查账户数据
+                // 再次检查账号数据
                 if (accountData == null)
                 {
                     logger.Warn($"账号 {account} 自动注册失败！");
@@ -59,7 +59,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 }
                     logger.Info($"账号 {account} 自动注册成功");
             }
-            else if (accountData == null) // 账户不存在且不允许自动创建用户
+            else if (accountData == null) // 账号不存在且不允许自动创建用户
             {
                 return new JsonResult(new LoginResJson { message = "自动注册已关闭，请手动注册", retcode = -203 });
             }

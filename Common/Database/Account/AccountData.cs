@@ -40,6 +40,11 @@ namespace EggLink.DanhengServer.Database.Account
         public static AccountData? GetAccountByUid(int uid)
         {
             AccountData? result = DatabaseHelper.Instance?.GetInstance<AccountData>(uid);
+            if (result == null)
+            {
+                public static Logger logger = new("AccountData");
+                logger.Error($"AccountData 查找失败 for uid={uid}.请检查数据库连接和请求逻辑");
+            }
             return result;
         }
 

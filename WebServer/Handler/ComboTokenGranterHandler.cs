@@ -21,20 +21,20 @@ namespace EggLink.DanhengServer.WebServer.Handler
             }
              //Debug
             logger.Info($"uid={tokenData.uid}");
-            AccountData? account = AccountData.GetAccountByUid(int.Parse(tokenData.uid!));//异常，发生null
-            if (account == null)
+            AccountData? accountData = AccountData.GetAccountByUid(int.Parse(tokenData.uid!));//异常，发生null
+            if (accountData == null)
             {
                 res.retcode = -201;
                 res.message = "Game account cache information error";
                 //Debug
-                logger.Info("发生account=null ");
+                logger.Info("发生accountData=null ");
                 return new JsonResult(res);
             } else
             {
                 res.message = "OK";
                 //Debug
-                logger.Info($"向数据库写入ComboToken={account.GenerateComboToken()}");
-                res.data = new ComboTokenResJson.LoginData(account.Uid.ToString(), account.GenerateComboToken());
+                logger.Info($"向数据库写入ComboToken={accountData.GenerateComboToken()}");
+                res.data = new ComboTokenResJson.LoginData(accountData.Uid.ToString(), accountData.GenerateComboToken());
             }
             return new JsonResult(res);
         }
