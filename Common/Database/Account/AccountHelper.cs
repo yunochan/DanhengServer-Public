@@ -8,7 +8,6 @@ namespace EggLink.DanhengServer.Database.Account
     public static class AccountHelper
     {
         public static Logger logger = new("AccountHelper");
-        private static SqlSugarScope db => DatabaseHelper.SqlSugarScope;
 
         public static AccountData CreateAccount(string username, int uid)
         {
@@ -40,13 +39,12 @@ namespace EggLink.DanhengServer.Database.Account
          private static int GetNextUid()
         {
             int nextUid;
-            db.Ado.BeginTran(); // 开启事务
+            DatabaseHelper.SqlSugarScope?.Ado.BeginTran(); // 开启事务
 
             try
             {
                 // 获取当前的 Counter 记录
-                var counter = db.Queryable<Counter>().Single(it => it.Id == "Player");
-
+                var counter = DatabaseHelper.SqlSugarScope?.Queryable<Counter>().Single(it => it.Id == "Player");
                 if (counter == null)
                 {
                     throw new Exception("Counter record not found");
@@ -56,13 +54,13 @@ namespace EggLink.DanhengServer.Database.Account
 
                 // 更新 Counter 表中的 NextUid
                 counter.NextUid++;
-                db.Updateable(counter).ExecuteCommand();
+                DatabaseHelper.SqlSugarScope?.Updateable(counter).ExecuteCommand();
 
-                db.Ado.CommitTran(); // 提交事务
+                DatabaseHelper.SqlSugarScope?.Ado.CommitTran(); // 提交事务
             }
             catch (Exception)
             {
-                db.Ado.RollbackTran(); // 回滚事务
+                DatabaseHelper.SqlSugarScope?.Ado.RollbackTran(); // 回滚事务
                 throw;
             }
 
