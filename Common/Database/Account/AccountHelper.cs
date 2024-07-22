@@ -19,7 +19,7 @@ namespace EggLink.DanhengServer.Database.Account
             int newUid = uid;
             if (uid == 0)
             {
-                newUid = GetNextUid();
+                newUid = Counter.GetNextUid();
             }
 
             var per = ConfigManager.Config.ServerOption.DefaultPermissions;
@@ -34,37 +34,6 @@ namespace EggLink.DanhengServer.Database.Account
             //Debug
             logger.Info($"分配的uid={accountData.Uid}，usrname={accountData.Username}");
             return accountData;
-        }
-
-         private static int GetNextUid()
-        {
-            int nextUid;
-            DatabaseHelper.SqlSugarScope?.Ado.BeginTran(); // 开启事务
-
-            try
-            {
-                // 获取当前的 Counter 记录
-                var counter = DatabaseHelper.SqlSugarScope?.Queryable<Counter>().Single(it => it.Id == "Player");
-                if (counter == null)
-                {
-                    throw new Exception("Counter record not found");
-                }
-
-                nextUid = counter.NextUid;
-
-                // 更新 Counter 表中的 NextUid
-                counter.NextUid++;
-                DatabaseHelper.SqlSugarScope?.Updateable(counter).ExecuteCommand();
-
-                DatabaseHelper.SqlSugarScope?.Ado.CommitTran(); // 提交事务
-            }
-            catch (Exception)
-            {
-                DatabaseHelper.SqlSugarScope?.Ado.RollbackTran(); // 回滚事务
-                throw;
-            }
-
-            return nextUid;
         }
     }
 }
