@@ -10,7 +10,7 @@ namespace EggLink.DanhengServer.Database.Account
     {
         public static Logger logger = new("AccountHelper");
 
-        private static readonly SqlSugarClient db = DatabaseHelper.GetInstance();
+        private static readonly SqlSugarClient db = DatabaseHelper.GetInstance<SqlSugarClient>(0);
 
         public static AccountData CreateAccount(string username, int uid)
         {
