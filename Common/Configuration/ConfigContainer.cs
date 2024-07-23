@@ -113,8 +113,8 @@ namespace EggLink.DanhengServer.Configuration
         public List<ItemData> Attachment { get; set; } = new List<ItemData>
         {
             new ItemData { ItemId = 2, Count = 1000000 },
-            new ItemData { ItemID = 1310, Count = 1 },
-            new ItemData { ItemID = 23025, Count = 1 }
+            new ItemData { ItemId = 1310, Count = 1 },
+            new ItemData { ItemId = 23025, Count = 1 }
             // Add more items as needed
         };
     }
