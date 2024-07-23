@@ -29,7 +29,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             var userActivity = new UserActivity
             {
                 IP = ip,
-                ActivityTime = DateTime.UtcNow,
+                ActivityTime =DateTime.Now,
                 ActivityType = activityType
             };
 
@@ -39,7 +39,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
         public bool IsUserBlacklisted(string ip)
         {
             var blacklisted = _sqlSugarClient.Queryable<BlackList>()
-                                             .Where(b => b.IP == ip && b.EndTime > DateTime.UtcNow)
+                                             .Where(b => b.IP == ip && b.EndTime >DateTime.Now)
                                              .Any();
             return blacklisted;
         }
@@ -50,7 +50,7 @@ namespace EggLink.DanhengServer.WebServer.Handler
             int thresholdCount = ConfigManager.Config.ServerOption.ThresholdCount;
             TimeSpan thresholdTimeSpan = TimeSpan.FromMinutes(1);
 
-            DateTime currentTime = DateTime.UtcNow;
+            DateTime currentTime =DateTime.Now;
             DateTime startTime = currentTime - thresholdTimeSpan;
 
             // 获取用户活动次数

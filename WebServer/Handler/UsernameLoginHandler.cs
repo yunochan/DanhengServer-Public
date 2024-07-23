@@ -49,7 +49,6 @@ namespace EggLink.DanhengServer.WebServer.Handler
 
                 // 创建新账号
                 accountData = AccountHelper.CreateAccount(account, 0);
-                //accountData = AccountData.GetAccountByUserName(account);
 
                 // 再次检查账号数据
                 if (accountData == null)
@@ -67,12 +66,12 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 检查是否异地登录
             if (accountData.IP != null && !userActivityHandler.IsSameIpPrefix(clientIp, accountData.IP))
             {
-                logger.Warn($"账号 {accountData.Username} UID: {accountData.Uid} 异地登录，客户端IP: {accountData.IP} -> {clientIp}");
+                logger.Warn($"账号: {accountData.Username} UID: {accountData.Uid} 异地登录，客户端IP: {accountData.IP} -> {clientIp}");
                 int count = accountData.Count ?? 0;
                 accountData.SetCount(count + 1);
             }
                        
-            accountData.SetIP(clientIp);//这里写入IP失败
+            
 
             //检查账号是否被封禁
             if(accountData.IsBan){
@@ -87,7 +86,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
             // 账户存在，返回成功信息
             res.message = "OK";
             res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
-            logger.Info($"客户端{accountData.IP}登录成功，账号 {accountData.Username} UID: {accountData.Uid}");
+            logger.Info($"客户端{accountData.IP}登录成功，账号: {accountData.Username} UID: {accountData.Uid}");
+            accountData.SetIP(clientIp);
             return new JsonResult(res);
         }
 

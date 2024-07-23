@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EggLink.DanhengServer.Database.Account;
-using EggLink.DanhengServer.Util;
 using static EggLink.DanhengServer.WebServer.Objects.NewLoginResJson;
 using EggLink.DanhengServer.WebServer.Objects;
 
@@ -8,11 +7,8 @@ namespace EggLink.DanhengServer.WebServer.Handler
 {
     public class NewUsernameLoginHandler
     {
-        public static Logger logger = new("NewUsernameLoginHandler");
         public JsonResult Handle(string account, string password)
         {
-             //Debug
-            logger.Info($"传入的参数account={account},password={password}");
             NewLoginResJson res = new();
             AccountData? accountData = AccountData.GetAccountByUserName(account);
 
@@ -21,7 +17,6 @@ namespace EggLink.DanhengServer.WebServer.Handler
                 if (ConfigManager.Config.ServerOption.AutoCreateUser)
                 {
                     accountData = AccountHelper.CreateAccount(account, 0);
-                    //accountData = AccountData.GetAccountByUserName(account);
                 }
                 else
                 {
@@ -31,8 +26,6 @@ namespace EggLink.DanhengServer.WebServer.Handler
             if (accountData != null)
             {
                 res.message = "OK";
-                //Debug
-                logger.Info($"向数据库写入DispatchToken={accountData.GenerateDispatchToken()}");
                 res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
             }
 

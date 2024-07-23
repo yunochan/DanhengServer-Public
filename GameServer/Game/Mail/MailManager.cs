@@ -6,6 +6,7 @@ using EggLink.DanhengServer.Game.Player;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Util;
+using EggLink.DanhengServer.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,30 @@ namespace EggLink.DanhengServer.GameServer.Game.Mail
                 Attachment = new()
                 {
                     Items = attachments
+                }
+            };
+
+            MailData.MailList.Add(mail);
+
+            Player.SendPacket(new PacketNewMailScNotify(mail.MailID));
+        }
+        
+        //Send Welcome mail to newly login player
+        public void sendWelcomeMail()
+        {
+            var welcomeMail = ConfigManager.Config.ServerOption.WelcomeMail;
+            var mail = new MailInfo()
+            {
+                MailID = MailData.NextMailId++,
+                SenderName = welcomeMail.SenderName,
+                Content = welcomeMail.Content,
+                Title = welcomeMail.Title,
+                TemplateID = 1,
+                SendTime = DateTime.Now.ToUnixSec(),
+                ExpireTime = DateTime.Now.AddDays(welcomeMail.ExpiredDay).ToUnixSec(),
+                Attachment = new()
+                {
+                    Items = welcomeMail.Attachment
                 }
             };
 

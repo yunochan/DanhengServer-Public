@@ -5,6 +5,7 @@ using EggLink.DanhengServer.Game.Player;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Server.Packet.Send.Player;
 using EggLink.DanhengServer.Util;
+using EggLink.DanhengServer.Configuration;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -212,6 +213,65 @@ namespace EggLink.DanhengServer.Game.Message
             }
         }
 
+    /********************
+     * Sending messages
+     ********************/
+     public void sendPrivateMessageFromServer(uint toUid, uint fromUid, string msg){
+        // Sanity checks.
+        if (string.IsNullOrEmpty(msg))
+        {
+            return;
+        }
+
+        if (Player == null) {
+            return;
+        }
+
+        // Create chat packet and put in history.
+        var notify = new PacketRevcMsgScNotify(toUid, fromUid, msg);
+       
+        // Send
+        Player.SendPacket(notify);
+    }
+
+     public void sendPrivateMessageFromServer(uint toUid, uint fromUid, uint extraId){
+        // Sanity checks.
+        if (Player == null) {
+            return;
+        }
+        // Create chat packet and put in history.
+        var notify = new PacketRevcMsgScNotify(toUid, fromUid, extraId);
+       
+        // Send
+        Player.SendPacket(notify);
+    }
+
+    /********************
+     * Welcome messages
+     ********************/
+    public void sendServerWelcomeMessages(PlayerInstance player) {
+        if (player == null)
+        {
+            return;
+        }
+        var welcomeMessage = ConfigManager.Config.ServerOption.WelcomeMessage;
+        if (welcomeMessage.Emotes != null && welcomeMessage.Emotes.Length > 0) {
+            var randomEmote = new RandomList<int>(welcomeMessage.Emotes).GetRandom();
+            if (randomEmote.HasValue) {
+                this.sendPrivateMessageFromServer(
+                    (uint)player.Uid,
+                    (uint)ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                    (uint)randomEmote.Value);
+            }
+        }
+
+        if (!string.IsNullOrEmpty(welcomeMessage.Message)) {
+            this.sendPrivateMessageFromServer(
+                (uint)player.Uid,
+                (uint)ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                welcomeMessage.Message);
+        }
+    }
         #endregion
     }
 }

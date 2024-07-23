@@ -7,7 +7,6 @@ namespace EggLink.DanhengServer.Database.Account
 {
     public static class AccountHelper
     {
-        public static Logger logger = new("AccountHelper");
 
         public static AccountData CreateAccount(string username, int uid)
         {
@@ -34,8 +33,6 @@ namespace EggLink.DanhengServer.Database.Account
                 Permissions = perStr
             };
             DatabaseHelper.SaveInstance(accountData);
-            //Debug
-            logger.Info($"分配的uid={accountData.Uid}，usrname={accountData.Username}");
             return accountData;
         }
     }

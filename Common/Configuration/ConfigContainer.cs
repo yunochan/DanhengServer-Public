@@ -84,9 +84,11 @@ namespace EggLink.DanhengServer.Configuration
         public bool AutoLightSection { get; set; } = true;
         public string Language { get; set; } = "EN";
         public List<string> DefaultPermissions { get; set; } = ["*"];
-        public int ThresholdCount { get; set; } = 5;
-        public int MaxPlayers { get; set; } = -1;
+        public int ThresholdCount { get; set; } = 5; // Limit logins
+        public int MaxPlayers { get; set; } = -1; // Limit Oline Players
         public ServerAnnounce ServerAnnounce { get; set; } = new ServerAnnounce();
+        public WelcomeMessage WelcomeMessage { get; set; } = new WelcomeMessage();
+        public WelcomeMail WelcomeMail { get; set; } = new WelcomeMail();
         public ServerProfile ServerProfile { get; set; } = new ServerProfile();
         public bool AutoCreateUser { get; set; } = true;
         public bool SavePersonalDebugFile { get; set; } = false;
@@ -98,15 +100,34 @@ namespace EggLink.DanhengServer.Configuration
         public string AnnounceContent { get; set; } = "Welcome to danhengserver!";
     }
 
+    public class WelcomeMessage {
+        public int[] Emotes { get; set; } = {121005, 121006, 121007, 121008};// Sparkle Emotes
+        public string Message { get; set; } = "Welcome to a DanHengServer";
+    }
+
+    public class WelcomeMail {
+        public string Title { get; set; } = "Welcome to a DanHengServer";
+        public string SenderName { get; set; } = "Server";
+        public string Content { get; set; } = "Welcome to DanHengServer! Please take these items as a starter gift. For a list of commands, type /help in the server chat window. Check out our <a type=OpenURL1 href=https://discord.com/invite/xRtZsmHBVj>Discord</a> and <a type=OpenURL1 href=https://github.com/EggLinks/DanhengServer-Public>Github</a> for more information about the server.";
+        public int ExpiredDay { get; set; } = 365;
+        public List<ItemData> Attachment { get; set; } = new List<ItemData>
+        {
+            new ItemData { ItemId = 2, Count = 1000000 },
+            new ItemData { ItemID = 1310, Count = 1 },
+            new ItemData { ItemID = 23025, Count = 1 }
+            // Add more items as needed
+        };
+    }
+
     public class ServerProfile
     {
         public string Name { get; set; } = "Server";
         public int Uid { get; set; } = 80;
         public string Signature { get; set; } = "Type /help for a list of commands";
         public int Level { get; set; } = 1;
-        public int HeadIcon { get; set; } = 200105;
+        public int HeadIcon { get; set; } = 201306;
         public int ChatBubbleId { get; set; } = 220001;
-        public int DisplayAvatarId { get; set; } = 1001;
+        public int DisplayAvatarId { get; set; } = 1306;
         public int DisplayAvatarLevel { get; set; } = 1;
     }
 
