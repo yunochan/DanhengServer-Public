@@ -226,10 +226,10 @@ namespace EggLink.DanhengServer.Game.Player
             if (!Initialized)
             {
                 InitialPlayerManager();
-                this.sendWelcomeMail();// Send welcome mail after we load managers from the database
+                this.MailManager?.SendWelcomeMail();// Send welcome mail after we load managers from the database
             }
              
-            this.sendServerWelcomeMessages(this);// Send welcomeMessage
+            this.MessageManager?.SendServerWelcomeMessages(); // Send welcomeMessage
             SendPacket(new PacketStaminaInfoScNotify(this));
             InvokeOnPlayerLogin(this);
         }

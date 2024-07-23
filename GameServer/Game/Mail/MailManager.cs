@@ -71,7 +71,7 @@ namespace EggLink.DanhengServer.GameServer.Game.Mail
         }
         
         //Send Welcome mail to newly login player
-        public void sendWelcomeMail()
+        public void SendWelcomeMail()
         {
             var welcomeMail = ConfigManager.Config.ServerOption.WelcomeMail;
             var mail = new MailInfo()

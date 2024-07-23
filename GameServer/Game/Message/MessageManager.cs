@@ -4,6 +4,7 @@ using EggLink.DanhengServer.Database.Message;
 using EggLink.DanhengServer.Game.Player;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Server.Packet.Send.Player;
+using EggLink.DanhengServer.Server.Packet.Send.Friend;
 using EggLink.DanhengServer.Util;
 using EggLink.DanhengServer.Configuration;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -17,6 +18,7 @@ namespace EggLink.DanhengServer.Game.Message
 {
     public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
     {
+        private static Random _random = new Random();
         public MessageData Data { get; private set; } = DatabaseHelper.Instance!.GetInstanceOrCreateNew<MessageData>(player.Uid);
         public List<MessageSectionData> PendingMessagePerformSectionList { get; private set; } = [];
 
@@ -216,7 +218,7 @@ namespace EggLink.DanhengServer.Game.Message
     /********************
      * Sending messages
      ********************/
-     public void sendPrivateMessageFromServer(uint toUid, uint fromUid, string msg){
+     public void SendPrivateMessageFromServer(uint toUid, uint fromUid, string msg){
         // Sanity checks.
         if (string.IsNullOrEmpty(msg))
         {
@@ -234,7 +236,7 @@ namespace EggLink.DanhengServer.Game.Message
         Player.SendPacket(notify);
     }
 
-     public void sendPrivateMessageFromServer(uint toUid, uint fromUid, uint extraId){
+     public void SendPrivateMessageFromServer(uint toUid, uint fromUid, uint extraId){
         // Sanity checks.
         if (Player == null) {
             return;
@@ -249,29 +251,39 @@ namespace EggLink.DanhengServer.Game.Message
     /********************
      * Welcome messages
      ********************/
-    public void sendServerWelcomeMessages(PlayerInstance player) {
-        if (player == null)
+    public void SendServerWelcomeMessages() {
+        if (Player == null)
         {
             return;
         }
         var welcomeMessage = ConfigManager.Config.ServerOption.WelcomeMessage;
         if (welcomeMessage.Emotes != null && welcomeMessage.Emotes.Length > 0) {
-            var randomEmote = new RandomList<int>(welcomeMessage.Emotes).GetRandom();
-            if (randomEmote.HasValue) {
-                this.sendPrivateMessageFromServer(
-                    (uint)player.Uid,
-                    (uint)ConfigManager.Config.ServerOption.ServerProfile.Uid,
-                    (uint)randomEmote.Value);
+            int randomEmote = GetRandomEmote(welcomeMessage.Emotes);
+            SendPrivateMessageFromServer(
+                (uint)Player.Uid,
+                (uint)ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                (uint)randomEmote);
             }
-        }
 
         if (!string.IsNullOrEmpty(welcomeMessage.Message)) {
-            this.sendPrivateMessageFromServer(
-                (uint)player.Uid,
+            SendPrivateMessageFromServer(
+                (uint)Player.Uid,
                 (uint)ConfigManager.Config.ServerOption.ServerProfile.Uid,
                 welcomeMessage.Message);
         }
     }
+
+    public static int GetRandomEmote(int[] emotes)
+    {
+        if (emotes == null || emotes.Length == 0)
+        {
+            throw new ArgumentException("Emotes array cannot be null or empty.");
+        }
+
+        int randomIndex = _random.Next(emotes.Length);
+        return emotes[randomIndex];
+    }
+
         #endregion
     }
 }
