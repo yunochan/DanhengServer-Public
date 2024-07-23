@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using EggLink.DanhengServer.Database.Inventory;
 namespace EggLink.DanhengServer.Configuration
 {
     public class ConfigContainer
