@@ -12,9 +12,8 @@ namespace EggLink.DanhengServer.Database.Avatar
     [SugarTable("Avatar")]
     public class AvatarData : BaseDatabaseDataHelper
     {
-        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+        [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(65535)")]
         public List<AvatarInfo> Avatars { get; set; } = [];
-
         [SugarColumn(IsJson = true)]
         public List<int> AssistAvatars { get; set; } = [];
         [SugarColumn(IsJson = true)]

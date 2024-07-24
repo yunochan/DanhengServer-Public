@@ -10,11 +10,11 @@ namespace EggLink.DanhengServer.Database.Inventory
     [SugarTable("InventoryData")]
     public class InventoryData : BaseDatabaseDataHelper
     {
-        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+        [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(65535)")]
         public List<ItemData> MaterialItems { get; set; } = [];
-        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+        [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(65535)")]
         public List<ItemData> EquipmentItems { get; set; } = [];
-        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+        [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(65535)")]
         public List<ItemData> RelicItems { get; set; } = [];
 
         public int NextUniqueId { get; set; } = 100;
