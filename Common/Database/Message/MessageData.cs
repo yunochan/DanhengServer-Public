@@ -11,7 +11,7 @@ namespace EggLink.DanhengServer.Database.Message
     [SugarTable("Message")]
     public class MessageData : BaseDatabaseDataHelper
     {
-        [SugarColumn(IsJson = true)]
+        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
         public Dictionary<int, MessageGroupData> Groups { get; set; } = [];
     }
 
