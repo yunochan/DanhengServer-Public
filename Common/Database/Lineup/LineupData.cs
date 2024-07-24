@@ -3,6 +3,7 @@ using EggLink.DanhengServer.Database.Avatar;
 using EggLink.DanhengServer.Database.Mission;
 using EggLink.DanhengServer.Database.Player;
 using EggLink.DanhengServer.Proto;
+using EggLink.DanhengServer.Util;
 using Newtonsoft.Json;
 using SqlSugar;
 using System;
@@ -16,6 +17,7 @@ namespace EggLink.DanhengServer.Database.Lineup
     [SugarTable("Lineup")]
     public class LineupData : BaseDatabaseDataHelper
     {
+        public static Logger logger = new("DataBase");
         public int CurLineup { get; set; }  // index of current lineup
         public int CurExtraLineup { get; set; } = -1;  // index of current extra lineup
         [SugarColumn(IsJson = true)]
@@ -138,6 +140,10 @@ namespace EggLink.DanhengServer.Database.Lineup
 						{
 							info.AvatarList.Add(assistAvatarInfo);
 						}
+                         else
+                        {
+                            logger.Error($"Assist avatar info is null for AssistUid: {avatar.AssistUid},   BaseAvatarId: {avatar.BaseAvatarId}");
+                        }
 					} 
 					else if (avatar.SpecialAvatarId != 0)  // special avatar
 					{
@@ -147,6 +153,10 @@ namespace EggLink.DanhengServer.Database.Lineup
 						{
 							info.AvatarList.Add(specialAvatarInfo);
 						}
+                         else
+                        {
+                         logger.Error($"Special avatar info is null for SpecialAvatarId: {avatar.SpecialAvatarId}");
+                        }
 					} 
 					else  // normal avatar
 					{
@@ -155,6 +165,10 @@ namespace EggLink.DanhengServer.Database.Lineup
 						{
 							info.AvatarList.Add(normalAvatarInfo);
 						}
+                         else
+                        {
+                        logger.Error($"Normal avatar info is null for BaseAvatarId: {avatar.BaseAvatarId}");
+                        }
 					}
 				}
 			}
