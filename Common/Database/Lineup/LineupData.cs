@@ -17,8 +17,6 @@ namespace EggLink.DanhengServer.Database.Lineup
     [SugarTable("Lineup")]
     public class LineupData : BaseDatabaseDataHelper
     {
-        // 静态日志记录器
-    public static Logger logger = new Logger("DataBase");
         public int CurLineup { get; set; }  // index of current lineup
         public int CurExtraLineup { get; set; } = -1;  // index of current extra lineup
         [SugarColumn(IsJson = true)]
@@ -31,7 +29,9 @@ namespace EggLink.DanhengServer.Database.Lineup
     }
 
     public class LineupInfo
-    {   
+    {
+        // 静态日志记录器
+        public static Logger logger = new Logger("DataBase");   
         public string? Name { get; set; }
         public int LineupType { get; set; }
         public int LeaderAvatarId { get; set; }
