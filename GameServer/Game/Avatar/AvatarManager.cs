@@ -61,7 +61,7 @@ namespace EggLink.DanhengServer.Game.Avatar
             }
             
             // Save AvatarData after adding the avatar
-            DatabaseHelper.Instance?.SaveInstance(AvatarData);
+            DatabaseHelper.SaveInstance(AvatarData);
 
             return avatarExcel;
         }
