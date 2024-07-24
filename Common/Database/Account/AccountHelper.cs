@@ -18,7 +18,7 @@ namespace EggLink.DanhengServer.Database.Account
             int newUid = uid;
             if (uid == 0)
             {
-                newUid = 100000001;  // start from 100000001
+                newUid = 1;  // start from 1
                 while (AccountData.GetAccountByUid(newUid) != null)
                 {
                     newUid++;
