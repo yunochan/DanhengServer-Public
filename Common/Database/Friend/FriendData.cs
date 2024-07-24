@@ -22,7 +22,7 @@ namespace EggLink.DanhengServer.Database.Friend
         [SugarColumn(IsJson = true)]
         public List<int> ReceiveApplyList { get; set; } = [];
 
-        [SugarColumn(IsJson = true)]
+        [SugarColumn(IsJson = true, ColumnDataType = "MEDIUMTEXT")]
         public Dictionary<int, FriendChatHistory> ChatHistory { get; set; } = [];  // key: friend uid
     }
 

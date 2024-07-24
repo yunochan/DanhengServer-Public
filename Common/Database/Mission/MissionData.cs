@@ -12,9 +12,9 @@ namespace EggLink.DanhengServer.Database.Mission
         [SugarColumn(IsJson = true)]
         public Dictionary<int, MissionPhaseEnum> MainMissionInfo { get; set; } = [];  // Dictionary<MissionId, MissionPhaseEnum>
 
-        [SugarColumn(IsJson = true, ColumnDataType = "text")]
+        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
         public List<int> FinishedSubMissionIds { get; set; } = [];
-        [SugarColumn(IsJson = true, ColumnDataType = "text")]
+        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
         public List<int> RunningSubMissionIds { get; set; } = [];
 
         [SugarColumn(IsJson = true)]
@@ -22,7 +22,7 @@ namespace EggLink.DanhengServer.Database.Mission
         [SugarColumn(IsJson = true)]
         public List<int> RunningMainMissionIds { get; set; } = [];
 
-        [SugarColumn(IsJson = true)]
+        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
         public Dictionary<int, int> SubMissionProgressDict { get; set; } = [];
 
         public int TrackingMainMissionId { get; set; }

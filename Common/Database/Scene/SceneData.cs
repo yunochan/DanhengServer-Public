@@ -6,7 +6,7 @@ namespace EggLink.DanhengServer.Database.Scene
     [SugarTable("Scene")]
     public class SceneData : BaseDatabaseDataHelper
     {
-        [SugarColumn(IsJson = true)]
+        [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
         public Dictionary<int, Dictionary<int, List<ScenePropData>>> ScenePropData { get; set; } = [];  // Dictionary<FloorId, Dictionary<GroupId, ScenePropData>>
         
         [SugarColumn(IsJson = true)]

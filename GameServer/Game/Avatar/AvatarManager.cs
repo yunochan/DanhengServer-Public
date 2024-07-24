@@ -59,6 +59,9 @@ namespace EggLink.DanhengServer.Game.Avatar
             {
                 Player.SendPacket(new PacketAddAvatarScNotify(avatar.GetBaseAvatarId(), isGacha));
             }
+            
+            // Save AvatarData after adding the avatar
+            DatabaseHelper.Instance?.SaveInstance(AvatarData);
 
             return avatarExcel;
         }

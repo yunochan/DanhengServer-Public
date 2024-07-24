@@ -284,13 +284,13 @@ namespace EggLink.DanhengServer.Database
             //}
         }
 
-        public void CalcSaveDatabase()  // per 5 min
+        public void CalcSaveDatabase()  // per 30s
         {
-            if (LastSaveTick + TimeSpan.TicksPerMinute * 5 > DateTime.UtcNow.Ticks) return;
+            if (LastSaveTick + TimeSpan.TicksPerSecond * 30 > DateTime.UtcNow.Ticks) return;
             SaveDatabase();
         }
 
-        public void SaveDatabase()  // per 5 min
+        public void SaveDatabase()  // per 30s
         {
             try
             {

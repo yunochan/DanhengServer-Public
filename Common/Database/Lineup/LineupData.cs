@@ -3,7 +3,6 @@ using EggLink.DanhengServer.Database.Avatar;
 using EggLink.DanhengServer.Database.Mission;
 using EggLink.DanhengServer.Database.Player;
 using EggLink.DanhengServer.Proto;
-using EggLink.DanhengServer.Util;
 using Newtonsoft.Json;
 using SqlSugar;
 using System;
@@ -30,8 +29,6 @@ namespace EggLink.DanhengServer.Database.Lineup
 
     public class LineupInfo
     {
-        // 静态日志记录器
-        public static Logger logger = new Logger("DataBase");   
         public string? Name { get; set; }
         public int LineupType { get; set; }
         public int LeaderAvatarId { get; set; }
@@ -104,91 +101,70 @@ namespace EggLink.DanhengServer.Database.Lineup
             return LineupType != 0;
         }
 
-		public Proto.LineupInfo ToProto()
-		{
-			Proto.LineupInfo info = new()
-			{
-				Name = Name,
-				MaxMp = 5,
-				Mp = (uint)Mp,
-				ExtraLineupType = (ExtraLineupType)(LineupType == (int)ExtraLineupType.LineupHeliobus ? (int)ExtraLineupType.LineupNone : LineupType),
-				Index = (uint)(LineupData?.Lineups?.Values.ToList().IndexOf(this) ?? 0),
-			};
-		
-			if (LineupType != (int)ExtraLineupType.LineupNone)
-			{
-				info.Index = (uint)(LineupType + 10);
-			}
-		
-			if (BaseAvatars?.Find(item => item.BaseAvatarId == LeaderAvatarId) != null)  // find leader,if not exist,set to 0
-			{
-				info.LeaderSlot = (uint)BaseAvatars.IndexOf(BaseAvatars.Find(item => item.BaseAvatarId == LeaderAvatarId)!);
-			} 
-			else
-			{
-				info.LeaderSlot = 0;
-			}
-		
-			if (BaseAvatars != null)
-			{
-				foreach (var avatar in BaseAvatars)
-				{
-					if (avatar.AssistUid != 0)  // assist avatar
-					{
-						var assistPlayer = DatabaseHelper.Instance?.GetInstance<AvatarData>(avatar.AssistUid);
-						var assistAvatarInfo = assistPlayer?.Avatars?.Find(item => item.GetAvatarId() == avatar.BaseAvatarId)?.ToLineupInfo(BaseAvatars.IndexOf(avatar), this, AvatarType.AvatarAssistType);
-						if (assistAvatarInfo != null)
-						{
-							info.AvatarList.Add(assistAvatarInfo);
-						}
-                         else
+        public Proto.LineupInfo ToProto()
+        {
+            Proto.LineupInfo info = new()
+            {
+                Name = Name,
+                MaxMp = 5,
+                Mp = (uint)Mp,
+                ExtraLineupType = (ExtraLineupType)(LineupType == (int)ExtraLineupType.LineupHeliobus ? (int)ExtraLineupType.LineupNone : LineupType),
+                Index = (uint)(LineupData?.Lineups?.Values.ToList().IndexOf(this) ?? 0),
+            };
+
+            if (LineupType != (int)ExtraLineupType.LineupNone)
+            {
+                info.Index = (uint)(LineupType + 10);
+            }
+
+            if (BaseAvatars?.Find(item => item.BaseAvatarId == LeaderAvatarId) != null)  // find leader,if not exist,set to 0
+            {
+                info.LeaderSlot = (uint)BaseAvatars.IndexOf(BaseAvatars.Find(item => item.BaseAvatarId == LeaderAvatarId)!);
+            } else
+            {
+                info.LeaderSlot = 0;
+            }
+
+            if (BaseAvatars != null)
+            {
+                foreach (var avatar in BaseAvatars)
+                {
+                    if (avatar.AssistUid != 0)  // assist avatar
+                    {
+                        var assistPlayer = DatabaseHelper.Instance?.GetInstance<AvatarData>(avatar.AssistUid);
+                        if (assistPlayer != null)
                         {
-                            logger.Error($"Assist avatar info is null for AssistUid: {avatar.AssistUid},   BaseAvatarId: {avatar.BaseAvatarId}");
+                            info.AvatarList.Add(assistPlayer?.Avatars?.Find(item => item.GetAvatarId() == avatar.BaseAvatarId)?.ToLineupInfo(BaseAvatars.IndexOf(avatar), this, AvatarType.AvatarAssistType));  // assist avatar may not work
                         }
-					} 
-					else if (avatar.SpecialAvatarId != 0)  // special avatar
-					{
-						var specialAvatar = GameData.SpecialAvatarData[avatar.SpecialAvatarId];
-						var specialAvatarInfo = specialAvatar?.ToAvatarData(LineupData!.Uid).ToLineupInfo(BaseAvatars.IndexOf(avatar), this, AvatarType.AvatarTrialType);
-						if (specialAvatarInfo != null)
-						{
-							info.AvatarList.Add(specialAvatarInfo);
-						}
-                         else
+                    } else if (avatar.SpecialAvatarId != 0)  // special avatar
+                    {
+                        var specialAvatar = GameData.SpecialAvatarData[avatar.SpecialAvatarId];
+                        if (specialAvatar != null)
                         {
-                         logger.Error($"Special avatar info is null for SpecialAvatarId: {avatar.SpecialAvatarId}");
+                            info.AvatarList.Add(specialAvatar.ToAvatarData(LineupData!.Uid).ToLineupInfo(BaseAvatars.IndexOf(avatar), this, AvatarType.AvatarTrialType));
                         }
-					} 
-					else  // normal avatar
-					{
-						var normalAvatarInfo = AvatarData?.Avatars?.Find(item => item.AvatarId == avatar.BaseAvatarId)?.ToLineupInfo(BaseAvatars.IndexOf(avatar), this);
-						if (normalAvatarInfo != null)
-						{
-							info.AvatarList.Add(normalAvatarInfo);
-						}
-                         else
-                        {
-                        logger.Error($"Normal avatar info is null for BaseAvatarId: {avatar.BaseAvatarId}");
-                        }
-					}
-				}
-			}
-		
-			var storyId = DatabaseHelper.Instance!.GetInstance<StoryLineData>(AvatarData!.Uid)?.CurStoryLineId;
-			if (storyId != null && storyId != 0)
-			{
-				info.GameStoryLineId = (uint)storyId;
-				BaseAvatars?.ForEach(item =>
-				{
-					if (item.SpecialAvatarId != 0)
-					{
-						info.StoryLineBaseAvatarIdList.Add((uint)item.BaseAvatarId);
-					}
-				});
-			}
-		
-			return info;
-		}
+                    } else  // normal avatar
+                    {
+                        info.AvatarList.Add(AvatarData?.Avatars?.Find(item => item.AvatarId == avatar.BaseAvatarId)?.ToLineupInfo(BaseAvatars.IndexOf(avatar), this));
+                    }
+                }
+            }
+
+            var storyId = DatabaseHelper.Instance!.GetInstance<StoryLineData>(AvatarData!.Uid)?.CurStoryLineId;
+            if (storyId != null && storyId != 0)
+            {
+                info.GameStoryLineId = (uint)storyId;
+                BaseAvatars?.ForEach(item =>
+                {
+                    if (item.SpecialAvatarId != 0)
+                    {
+                        info.StoryLineBaseAvatarIdList.Add((uint)item.BaseAvatarId);
+                    }
+                });
+            }
+
+            return info;
+        }
     }
 
     public class LineupAvatarInfo
