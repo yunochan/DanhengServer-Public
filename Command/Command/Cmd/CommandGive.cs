@@ -97,7 +97,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             }
 
             GameData.RelicConfigData.TryGetValue(int.Parse(arg.BasicArgs[0]), out var itemConfig);
-            GameData.ItemConfigData.TryGetValue(int.Parse(arg.BasicArgs[0]), out vsar itemConfigExcel);
+            GameData.ItemConfigData.TryGetValue(int.Parse(arg.BasicArgs[0]), out var itemConfigExcel);
             if (itemConfig == null || itemConfigExcel == null)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicNotFound"));
