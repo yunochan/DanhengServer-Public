@@ -23,6 +23,14 @@ namespace EggLink.DanhengServer.GameServer.Command
 
         public bool HasPermission(string permission)
         {
+            // Default permissions
+            var defaultPermissions = ConfigManager.Config.ServerOption.DefaultPermissions;
+
+            if (defaultPermissions.Contains("*") || defaultPermissions.Contains(permission)) 
+            {
+                return true;
+            }
+
             var account = DatabaseHelper.Instance!.GetInstance<AccountData>(Player.Uid)!;
             return account.Permissions!.Contains(permission);
         }

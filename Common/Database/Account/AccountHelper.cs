@@ -18,19 +18,19 @@ namespace EggLink.DanhengServer.Database.Account
             int newUid = uid;
             if (uid == 0)
             {
-                newUid = 1;  // start from 1
+                newUid = 100000001;  // start from 100000001
                 while (AccountData.GetAccountByUid(newUid) != null)
                 {
                     newUid++;
                 }
             }
-            var per = ConfigManager.Config.ServerOption.DefaultPermissions;
-            var perStr = string.Join(",", per);
+            //var per = ConfigManager.Config.ServerOption.DefaultPermissions;
+            //var perStr = string.Join(",", per);
             var accountData = new AccountData()
             {
                 Uid = newUid, 
                 Username = username,
-                Permissions = perStr
+                //Permissions = perStr
             };
             DatabaseHelper.SaveInstance(accountData);
             return accountData;
