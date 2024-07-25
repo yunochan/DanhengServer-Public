@@ -32,7 +32,7 @@ namespace EggLink.DanhengServer.GameServer.Command
             }
 
             var account = DatabaseHelper.Instance!.GetInstance<AccountData>(Player.Uid)!;
-            return account.Permissions!.Contains(permission);
+            return account.Permissions != null && account.Permissions.Contains(permission);
         }
 
         public int GetSender()
