@@ -88,9 +88,11 @@ namespace EggLink.DanhengServer.Command.Cmd
 
             arg.CharacterArgs.TryGetValue("x", out var str);
             arg.CharacterArgs.TryGetValue("lv", out var levelStr);
+            arg.CharacterArgs.TryGetValue("s", out var mainAffixStr);
             str ??= "1";
             levelStr ??= "1";
-            if (!int.TryParse(str, out var amount) || !int.TryParse(levelStr, out var level))
+            mainAffixStr ??= "1";
+            if (!int.TryParse(str, out var amount) || !int.TryParse(levelStr, out var level) || !int.TryParse(mainAffixStr, out var mainAffixId))
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
@@ -112,27 +114,17 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            int startIndex = 1;
-            int mainAffixId;
-            if (arg.BasicArgs[1].Contains(':'))
+            // 解析主属性
+            if (GameData.RelicMainAffixData.Values.SelectMany(x => x.Keys).All(id => id != mainAffixId))
             {
-                // 随机主词条
-                mainAffixId = mainAffixConfig.Keys.ToList().RandomElement();
+                arg.SendMsg(I18nManager.Translate("Game.Command.Relic.InvalidMainAffixId"));
+                return;
             }
-            else
-            {
-                mainAffixId = int.Parse(arg.BasicArgs[1]);
-                if (!mainAffixConfig.ContainsKey(mainAffixId))
-                {
-                    arg.SendMsg(I18nManager.Translate("Game.Command.Relic.InvalidMainAffixId"));
-                    return;
-                }
-                startIndex++;
-            }
-
+            
+            // 解析副属性
             var remainLevel = 5;
             var subAffixes = new List<(int, int)>();
-            for (var i = startIndex; i < arg.BasicArgs.Count; i++)
+            for (var i = 3; i < arg.BasicArgs.Count; i++)
             {
                 var subAffix = arg.BasicArgs[i].Split(':');
                 if (subAffix.Length != 2 || !int.TryParse(subAffix[0], out var subId) || !int.TryParse(subAffix[1], out var subLevel))
@@ -201,6 +193,5 @@ namespace EggLink.DanhengServer.Command.Cmd
 
             arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicGiven", player.Uid.ToString(), amount.ToString(), itemConfigExcel.Name ?? itemData.ItemId.ToString(), itemData.MainAffix.ToString()));
         }
-
     }
 }
