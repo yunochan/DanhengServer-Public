@@ -14,7 +14,7 @@ namespace EggLink.DanhengServer.Command.Cmd
     [CommandInfo("giveall", "Game.Command.GiveAll.Desc", "Game.Command.GiveAll.Usage")]
     public class CommandGiveall : ICommand
     {
-        [CommandMethod("0 avatar")]
+        [CommandMethod("0 avatars")]
         public void GiveAllAvatar(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -23,8 +23,8 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            arg.CharacterArgs.TryGetValue("r", out var rankStr);
-            arg.CharacterArgs.TryGetValue("l", out var levelStr);
+            arg.CharacterArgs.TryGetValue("e", out var rankStr);
+            arg.CharacterArgs.TryGetValue("lv", out var levelStr);
             rankStr ??= "1";
             levelStr ??= "1";
             if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level))
@@ -55,7 +55,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             arg.SendMsg(I18nManager.Translate("Game.Command.GiveAll.GiveAllItems", I18nManager.Translate("Word.Avatar"), "1"));
         }
 
-        [CommandMethod("0 equipment")]
+        [CommandMethod("0 lightcones")]
         public void GiveAllLightcone(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -66,7 +66,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             }
 
             arg.CharacterArgs.TryGetValue("r", out var rankStr);
-            arg.CharacterArgs.TryGetValue("l", out var levelStr);
+            arg.CharacterArgs.TryGetValue("lv", out var levelStr);
             arg.CharacterArgs.TryGetValue("x", out var amountStr);
             rankStr ??= "1";
             levelStr ??= "1";
@@ -96,7 +96,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             arg.SendMsg(I18nManager.Translate("Game.Command.GiveAll.GiveAllItems", I18nManager.Translate("Word.Equipment"), amount.ToString()));
         }
 
-        [CommandMethod("0 material")]
+        [CommandMethod("0 materials")]
         public void GiveAllMaterial(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -107,7 +107,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             }
 
             arg.CharacterArgs.TryGetValue("x", out var amountStr);
-            amountStr ??= "1";
+            amountStr ??= "9999";
             if (!int.TryParse(amountStr, out var amount))
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
@@ -132,7 +132,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             arg.SendMsg(I18nManager.Translate("Game.Command.GiveAll.GiveAllItems", I18nManager.Translate("Word.Material"), amount.ToString()));
         }
 
-        [CommandMethod("0 relic")]
+        [CommandMethod("0 relics")]
         public void GiveAllRelic(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -142,7 +142,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            arg.CharacterArgs.TryGetValue("l", out var levelStr);
+            arg.CharacterArgs.TryGetValue("lv", out var levelStr);
             levelStr ??= "1";
             if (!int.TryParse(levelStr, out var level))
             {
@@ -177,7 +177,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             arg.SendMsg(I18nManager.Translate("Game.Command.GiveAll.GiveAllItems", I18nManager.Translate("Word.Relic"), amount.ToString()));
         }
 
-        [CommandMethod("0 unlock")]
+        [CommandMethod("0 usables")]
         public void GiveAllUnlock(CommandArg arg)
         {
             var player = arg.Target?.Player;
