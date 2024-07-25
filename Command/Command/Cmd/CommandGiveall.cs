@@ -71,11 +71,16 @@ namespace EggLink.DanhengServer.Command.Cmd
             rankStr ??= "1";
             levelStr ??= "1";
             amountStr ??= "1";
+            // Debug
+            arg.SendMsg($"Received parameters: rank={rankStr}, level={levelStr}, amount={amountStr}");
+
             if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level) || !int.TryParse(amountStr, out var amount))
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
+             // Debug
+            arg.SendMsg($"Parsed parameters: rank={rank}, level={level}, amount={amount}");
 
             var lightconeList = GameData.EquipmentConfigData.Values;
             var items = new List<ItemData>();

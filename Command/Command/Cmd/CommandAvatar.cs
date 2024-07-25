@@ -28,12 +28,17 @@ namespace EggLink.DanhengServer.Command.Cmd
             rankStr ??= "1";
             levelStr ??= "1";
             talentLevelStr ??= "1";
+            // Debug
+            arg.SendMsg($"Received parameters: rank={rankStr}, level={levelStr}, talentLevel={talentLevelStr}");
+
             //此处执行逻辑，修改玩家已拥有的角色命座、角色等级、天赋等级
             if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level)||!int.TryParse(talentLevelStr, out var talentLevel))
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
+            // Debug
+            arg.SendMsg($"Parsed parameters: rank={rank}, level={level}, talent={talentLevel}");
             var player = arg.Target.Player!;
             player.AvatarManager!.AvatarData.Avatars.ForEach(avatar =>
             {
