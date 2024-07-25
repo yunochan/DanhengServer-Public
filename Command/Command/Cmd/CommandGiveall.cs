@@ -23,7 +23,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            arg.CharacterArgs.TryGetValue("e", out var rankStr);
+            arg.CharacterArgs.TryGetValue("r", out var rankStr);
             arg.CharacterArgs.TryGetValue("lv", out var levelStr);
             rankStr ??= "1";
             levelStr ??= "1";
