@@ -28,24 +28,23 @@ namespace EggLink.DanhengServer.Command
                 {
                     continue;
                 }
-                var character = arg[0];
-                if (!int.TryParse(character.ToString(), out var _) && character != '-')
+                // 处理长度大于1的参数，支持两个字符的键
+                if (arg.Length > 1 && !int.TryParse(arg[0].ToString(), out var _) && arg[0] != '-')
                 {
-                    try
+                    if (arg.Length > 2)
                     {
-                        CharacterArgs.Add(arg[..1], arg[1..]);
-                        Args.Add(arg);
-                    } catch
-                    {
-                        BasicArgs.Add(arg);
-                        Args.Add(arg);
+                        var key = arg.Substring(0, 2); // 取前两个字符作为键
+                        var value = arg.Substring(2); // 剩下的部分作为值
+                        if (!CharacterArgs.ContainsKey(key))
+                        {
+                            CharacterArgs[key] = value;
+                            Args.Add(arg);
+                            continue;
+                        }
                     }
                 }
-                else
-                {
-                    BasicArgs.Add(arg);
-                    Args.Add(arg);
-                }
+                BasicArgs.Add(arg);
+                Args.Add(arg);
             }
             if (con != null)
             {
