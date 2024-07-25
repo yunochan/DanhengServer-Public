@@ -10,11 +10,13 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
+using EggLink.DanhengServer.Util;
 namespace EggLink.DanhengServer.Command.Cmd
 {
     [CommandInfo("avatar", "Game.Command.Avatar.Desc", "Game.Command.Avatar.Usage")]
     public class CommandAvatar : ICommand
     {
+        public static Logger logger = new("Command");
         [CommandMethod("all")]
         public void SetAll(CommandArg arg){
             if (arg.Target == null)
@@ -29,7 +31,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             levelStr ??= "1";
             talentLevelStr ??= "1";
             // Debug
-            arg.SendMsg($"Received parameters: rank={rankStr}, level={levelStr}, talentLevel={talentLevelStr}");
+            logger.Info($"Received parameters: rank={rankStr}, level={levelStr}, talentLevel={talentLevelStr}");
 
             //此处执行逻辑，修改玩家已拥有的角色命座、角色等级、天赋等级
             if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level)||!int.TryParse(talentLevelStr, out var talentLevel))
@@ -38,7 +40,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
             // Debug
-            arg.SendMsg($"Parsed parameters: rank={rank}, level={level}, talent={talentLevel}");
+            logger.Info($"Parsed parameters: rank={rank}, level={level}, talent={talentLevel}");
             var player = arg.Target.Player!;
             player.AvatarManager!.AvatarData.Avatars.ForEach(avatar =>
             {
