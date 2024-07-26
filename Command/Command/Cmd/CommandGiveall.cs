@@ -9,13 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EggLink.DanhengServer.Util;
 namespace EggLink.DanhengServer.Command.Cmd
 {
     [CommandInfo("giveall", "Game.Command.GiveAll.Desc", "Game.Command.GiveAll.Usage")]
     public class CommandGiveall : ICommand
     {
-        public static Logger logger = new("Command");
         [CommandMethod("0 avatars")]
         public void GiveAllAvatar(CommandArg arg)
         {
@@ -73,16 +71,12 @@ namespace EggLink.DanhengServer.Command.Cmd
             rankStr ??= "1";
             levelStr ??= "1";
             amountStr ??= "1";
-            // Debug
-            logger.Info($"Received parameters: rank={rankStr}, level={levelStr}, amount={amountStr}");
 
             if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level) || !int.TryParse(amountStr, out var amount))
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
-             // Debug
-            logger.Info($"Parsed parameters: rank={rank}, level={level}, amount={amount}");
 
             var lightconeList = GameData.EquipmentConfigData.Values;
             var items = new List<ItemData>();

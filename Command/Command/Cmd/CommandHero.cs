@@ -23,13 +23,13 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            if (arg.BasicArgs.Count < 1)
+            if (arg.BasicArgs.Count < 2)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
 
-            var gender = (Gender)arg.GetInt(0);
+            var gender = (Gender)arg.GetInt(1);
             if (gender == Gender.None)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Hero.GenderNotSpecified"));
@@ -53,13 +53,13 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            if (arg.BasicArgs.Count < 1)
+            if (arg.BasicArgs.Count < 2)
             {
                 arg.SendMsg("");
                 return;
             }
 
-            var gender = (HeroBasicTypeEnum)arg.GetInt(0);
+            var gender = (HeroBasicTypeEnum)arg.GetInt(1);
             if (gender == 0)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Hero.HeroTypeNotSpecified"));

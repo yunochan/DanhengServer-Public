@@ -78,6 +78,8 @@ namespace EggLink.DanhengServer.Command.Cmd
             // change basic type
             var avatarId = arg.GetInt(0);
             var level = arg.GetInt(1);
+            logger.Info($"Parsed avatarId: {arg.GetInt(0)}, Level: {arg.GetInt(1)}");
+
             if (level < 0 || level > 10)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.InvalidLevel", I18nManager.Translate("Word.Talent")));
@@ -170,6 +172,8 @@ namespace EggLink.DanhengServer.Command.Cmd
 
             var id = arg.GetInt(0);
             var rank = arg.GetInt(1);
+            logger.Info($"Parsed avatarId: {arg.GetInt(0)}, rank: {arg.GetInt(1)}");
+
             if (rank < 0 || rank > 6)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.InvalidLevel", I18nManager.Translate("Word.Rank")));
@@ -220,6 +224,7 @@ namespace EggLink.DanhengServer.Command.Cmd
 
             var id = arg.GetInt(0);
             var level = arg.GetInt(1);
+            logger.Info($"Parsed avatarId: {arg.GetInt(0)}, Level: {arg.GetInt(1)}");
             if (level < 1 || level > 80)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.InvalidLevel", I18nManager.Translate("Word.Avatar")));

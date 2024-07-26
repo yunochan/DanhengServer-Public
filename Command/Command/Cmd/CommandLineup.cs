@@ -19,7 +19,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            var count = arg.GetInt(0);
+            var count = arg.GetInt(1);
             arg.Target.Player!.LineupManager!.GainMp(count == 0 ? 2: count);
             arg.SendMsg(I18nManager.Translate("Game.Command.Lineup.PlayerGainedMp", Math.Min(count, 2).ToString()));
         }
