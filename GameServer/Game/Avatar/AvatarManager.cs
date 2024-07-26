@@ -36,7 +36,7 @@ namespace EggLink.DanhengServer.Game.Avatar
 
             var avatar = new AvatarInfo(avatarExcel)
             {
-                AvatarId = avatarId >= 8001 ? 8001 : avatarId,
+                AvatarId = avatarId >= 7000 ? 8001 : avatarId,
                 Level = 1,
                 Timestamp = Extensions.GetUnixSec(),
                 CurrentHp = 10000,
@@ -68,7 +68,7 @@ namespace EggLink.DanhengServer.Game.Avatar
 
         public AvatarInfo? GetAvatar(int baseAvatarId)
         {
-            if (baseAvatarId > 8000) baseAvatarId = 8001;
+            if (baseAvatarId > 7000 ) baseAvatarId = 8001;
             return AvatarData.Avatars.Find(avatar => avatar.AvatarId == baseAvatarId);
         }
 
