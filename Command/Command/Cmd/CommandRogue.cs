@@ -21,7 +21,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            var count = arg.GetInt(0);
+            var count = arg.GetInt(1);
             arg.Target.Player!.RogueManager!.GetRogueInstance()?.GainMoney(count);
             arg.SendMsg(I18nManager.Translate("Game.Command.Rogue.PlayerGainedMoney", count.ToString()));
         }
@@ -34,7 +34,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            var id = arg.GetInt(0);
+            var id = arg.GetInt(1);
 
             if (id == -1)
             {
@@ -70,7 +70,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            var id = arg.GetInt(0);
+            var id = arg.GetInt(1);
 
             GameData.RogueMiracleData.TryGetValue(id, out var miracle);
             if (miracle == null)
@@ -90,7 +90,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            var id = arg.GetInt(0);
+            var id = arg.GetInt(1);
             if (id == -1)
             {
                 foreach (var enhance in GameData.RogueBuffData.Values)

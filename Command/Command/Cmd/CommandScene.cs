@@ -42,9 +42,9 @@ namespace EggLink.DanhengServer.Command.Cmd
             }
             var scene = arg.Target!.Player!.SceneInstance!;
             EntityProp? prop = null;
-            foreach (var entity in scene.GetEntitiesInGroup<EntityProp>(arg.GetInt(0)))
+            foreach (var entity in scene.GetEntitiesInGroup<EntityProp>(arg.GetInt(1)))
             {
-                if (entity.PropInfo.ID == arg.GetInt(1))
+                if (entity.PropInfo.ID == arg.GetInt(2))
                 {
                     prop = entity;
                     break;
@@ -55,7 +55,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Scene.PropNotFound"));
                 return;
             }
-            prop.SetState((PropStateEnum)arg.GetInt(2));
+            prop.SetState((PropStateEnum)arg.GetInt(3));
             arg.SendMsg(I18nManager.Translate("Game.Command.Scene.PropStateChanged", prop.PropInfo.ID.ToString(), prop.State.ToString()));
         }
 
@@ -68,7 +68,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
             var scene = arg.Target!.Player!.SceneInstance!;
-            scene.Entities.TryGetValue(arg.GetInt(0), out var entity);
+            scene.Entities.TryGetValue(arg.GetInt(1), out var entity);
             if (entity == null)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Scene.EntityNotFound"));
@@ -106,15 +106,15 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            if (arg.GetInt(0) == 0)
+            if (arg.GetInt(1) == 0)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
 
             var player = arg.Target!.Player!;
-            player.EnterScene(arg.GetInt(0), 0, true);
-            arg.SendMsg(I18nManager.Translate("Game.Command.Scene.SceneChanged", arg.GetInt(0).ToString()));
+            player.EnterScene(arg.GetInt(1), 0, true);
+            arg.SendMsg(I18nManager.Translate("Game.Command.Scene.SceneChanged", arg.GetInt(1).ToString()));
         }
 
         [CommandMethod("0 reload")]
@@ -140,7 +140,7 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            var floorId = arg.GetInt(0);
+            var floorId = arg.GetInt(1);
             if (floorId == 0)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));

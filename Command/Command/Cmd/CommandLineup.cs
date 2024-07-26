@@ -21,7 +21,7 @@ namespace EggLink.DanhengServer.Command.Cmd
             }
             var count = arg.GetInt(1);
             arg.Target.Player!.LineupManager!.GainMp(count == 0 ? 2: count);
-            arg.SendMsg(I18nManager.Translate("Game.Command.Lineup.PlayerGainedMp", Math.Min(count, 2).ToString()));
+            arg.SendMsg(I18nManager.Translate("Game.Command.Lineup.PlayerGainedMp", Math.Max(count, 2).ToString()));
         }
 
         [CommandMethod("0 heal")]

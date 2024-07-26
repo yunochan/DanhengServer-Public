@@ -10,13 +10,11 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-using EggLink.DanhengServer.Util;
 namespace EggLink.DanhengServer.Command.Cmd
 {
     [CommandInfo("avatar", "Game.Command.Avatar.Desc", "Game.Command.Avatar.Usage")]
     public class CommandAvatar : ICommand
     {
-        public static Logger logger = new("Command");
         [CommandMethod("all")]
         public void SetAll(CommandArg arg){
             if (arg.Target == null)
@@ -30,8 +28,6 @@ namespace EggLink.DanhengServer.Command.Cmd
             rankStr ??= "1";
             levelStr ??= "1";
             talentLevelStr ??= "1";
-            // Debug
-            logger.Info($"Received parameters: rank={rankStr}, level={levelStr}, talentLevel={talentLevelStr}");
 
             //此处执行逻辑，修改玩家已拥有的角色命座、角色等级、天赋等级
             if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level)||!int.TryParse(talentLevelStr, out var talentLevel))
@@ -39,8 +35,6 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
-            // Debug
-            logger.Info($"Parsed parameters: rank={rank}, level={level}, talent={talentLevel}");
             var player = arg.Target.Player!;
             player.AvatarManager!.AvatarData.Avatars.ForEach(avatar =>
             {
@@ -69,16 +63,15 @@ namespace EggLink.DanhengServer.Command.Cmd
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
                 return;
             }
-            if (arg.BasicArgs.Count < 2)
+            if (arg.BasicArgs.Count < 3)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
             var Player = arg.Target.Player!;
             // change basic type
-            var avatarId = arg.GetInt(0);
-            var level = arg.GetInt(1);
-            logger.Info($"Parsed avatarId: {arg.GetInt(0)}, Level: {arg.GetInt(1)}");
+            var avatarId = arg.GetInt(1);
+            var level = arg.GetInt(2);
 
             if (level < 0 || level > 10)
             {
@@ -140,12 +133,12 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            if (arg.BasicArgs.Count < 1)
+            if (arg.BasicArgs.Count < 2)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
             }
 
-            var id = arg.GetInt(0);
+            var id = arg.GetInt(1);
             var excel = arg.Target.Player!.AvatarManager!.AddAvatar(id);
 
             if (excel == null)
@@ -165,15 +158,13 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            if (arg.BasicArgs.Count < 2)
+            if (arg.BasicArgs.Count < 3)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
             }
 
-            var id = arg.GetInt(0);
-            var rank = arg.GetInt(1);
-            logger.Info($"Parsed avatarId: {arg.GetInt(0)}, rank: {arg.GetInt(1)}");
-
+            var id = arg.GetInt(1);
+            var rank = arg.GetInt(2);
             if (rank < 0 || rank > 6)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.InvalidLevel", I18nManager.Translate("Word.Rank")));
@@ -216,15 +207,14 @@ namespace EggLink.DanhengServer.Command.Cmd
                 return;
             }
 
-            if (arg.BasicArgs.Count < 2)
+            if (arg.BasicArgs.Count < 3)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
                 return;
             }
 
-            var id = arg.GetInt(0);
-            var level = arg.GetInt(1);
-            logger.Info($"Parsed avatarId: {arg.GetInt(0)}, Level: {arg.GetInt(1)}");
+            var id = arg.GetInt(1);
+            var level = arg.GetInt(2);
             if (level < 1 || level > 80)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.InvalidLevel", I18nManager.Translate("Word.Avatar")));
