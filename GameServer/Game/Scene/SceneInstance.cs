@@ -122,7 +122,9 @@ namespace EggLink.DanhengServer.Game.Scene
                         avatar.AvatarInfo.EntityId = ++LastEntityId;
                     }
                     AddAvatar.Add(avatar);
-                    AvatarInfo.Add(avatar.AvatarInfo.EntityId, avatar);
+                    // Update the value if the key already exists
+                    //AvatarInfo.Add(avatar.AvatarInfo.EntityId, avatar);
+                    AvatarInfo[avatar.AvatarInfo.EntityId] = avatar;
                     sendPacket = true;
                 } else
                 {
