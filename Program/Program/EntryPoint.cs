@@ -237,7 +237,7 @@ namespace EggLink.DanhengServer.Program
         {
             PluginManager.UnloadPlugins();
             Listener.Connections.Values.ToList().ForEach(x => x.Stop());
-
+            logger.Debug("Stop方法在EntryPoint被执行，Connection was closed");
             DatabaseHelper.SaveThread?.Interrupt();
             DatabaseHelper.SaveDatabase();
         }

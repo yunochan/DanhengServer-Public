@@ -13,6 +13,7 @@ namespace EggLink.DanhengServer.Server.Packet.Recv.Player
     [Opcode(CmdIds.PlayerGetTokenCsReq)]
     public class HandlerPlayerGetTokenCsReq : Handler
     {
+        private static readonly Logger Logger = new("GameServer");
         public override void OnHandle(Connection connection, byte[] header, byte[] data)
         {
             var req = PlayerGetTokenCsReq.Parser.ParseFrom(data);
@@ -30,6 +31,7 @@ namespace EggLink.DanhengServer.Server.Packet.Recv.Player
             {
                 prev.SendPacket(new PacketPlayerKickOutScNotify());
                 prev.Stop();
+                Logger.Debug("Stop方法在HandlerPlayerGetTokenCsReq被执行，Connection was closed");
             }
 
             connection.State = SessionStateEnum.WAITING_FOR_LOGIN;
