@@ -31,7 +31,6 @@ namespace EggLink.DanhengServer.Server.Packet.Recv.Player
             {
                 prev.SendPacket(new PacketPlayerKickOutScNotify());
                 prev.Stop();
-                Logger.Debug("Stop方法在HandlerPlayerGetTokenCsReq被执行，Connection was closed");
             }
 
             connection.State = SessionStateEnum.WAITING_FOR_LOGIN;

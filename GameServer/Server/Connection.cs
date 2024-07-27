@@ -157,7 +157,6 @@ public partial class Connection
             }
         }
         Stop();
-        Logger.Debug("Stop方法在Connection被执行，Connection was closed");
     }
 
     // DO THE PROCESSING OF THE GAME PACKET
