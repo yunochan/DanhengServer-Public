@@ -30,7 +30,7 @@ namespace EggLink.DanhengServer.Server
             SendWindow = 256,
             NoDelay = true,
             UpdateInterval = ConfigManager.Config.GameServer.UpdateInterval,
-            KeepAliveOptions = new KcpKeepAliveOptions(ConfigManager.Config.GameServer.KcpInterval * 25, ConfigManager.Config.GameServer.KcpTimeout * 1000)
+            KeepAliveOptions = new KcpKeepAliveOptions(ConfigManager.Config.GameServer.KcpInterval, ConfigManager.Config.GameServer.KcpTimeout * 1000)
         };
         private static uint PORT => ConfigManager.Config.GameServer.BindPort;
         public static void StartListener()

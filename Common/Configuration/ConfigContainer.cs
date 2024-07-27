@@ -50,7 +50,7 @@ namespace EggLink.DanhengServer.Configuration
         public string GameServerDescription { get; set; } = "A re-implementation of StarRail server";
         public int UpdateInterval { get; set; } = 40;
         public int KcpInterval { get; set; } = 40;
-        public int KcpTimeout { get; set; } = 60;
+        public int KcpTimeout { get; set; } = 30;
         public string GetDisplayAddress()
         {
             return PublicAddress + ":" + PublicPort;
