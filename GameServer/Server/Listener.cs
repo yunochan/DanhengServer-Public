@@ -89,7 +89,7 @@ namespace EggLink.DanhengServer.Server
             try
             {
                 Connection? con = GetConnectionByEndPoint(rcv.RemoteEndPoint);
-                if (con != null && con.State != SessionStateEnum.CLOSED)
+                if (con != null && con.State != SessionStateEnum.INACTIVE)
                 {
                     Logger.Warn($"Existing active connection found for {rcv.RemoteEndPoint}, closing old connection.");
                     UnregisterConnection(con);
