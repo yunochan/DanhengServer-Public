@@ -58,6 +58,24 @@ public partial class Connection
         catch { }
         IsOnline = false;
     }
+    
+	public void Close()
+	{
+		try
+		{
+			CancelToken.Cancel();
+		}
+		catch (Exception ex)
+		{
+			Logger.Error("Failed to cancel token", ex);
+		}
+		finally
+		{
+			CancelToken.Dispose();
+		}
+		IsOnline = false;
+		Conversation.Dispose();
+	}
 
     public void LogPacket(string sendOrRecv, ushort opcode, byte[] payload)
     {
