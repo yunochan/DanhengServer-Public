@@ -48,35 +48,16 @@ namespace EggLink.DanhengServer.Server
             if (!con.ConversationID.HasValue) return;
             Connections[con.ConversationID.Value] = con;
         }
-		
 		public static void UnregisterConnection(Connection con)
 		{
-			if (con == null || !con.ConversationID.HasValue)
-			{
-				Logger.Warn("Attempted to unregister a null or invalid connection.");
-				return;
-			}
-		
+            if (!con.ConversationID.HasValue) return;
 			long convId = con.ConversationID.Value;
-		
-			// Log the state of the connection before unregistering
-			Logger.Info($"Unregistering connection {convId} for {con.RemoteEndPoint}, current state: {con.State}");
-		
-			// Close and clean up connection resources
-			con.Close();
-		
-			// Remove connection and unregister from the multiplexer
 			if (Connections.Remove(convId))
 			{
 				Multiplex?.UnregisterConversation(convId);
-				Logger.Info($"Connection with {con.RemoteEndPoint} has been closed and unregistered.");
-			}
-			else
-			{
-				Logger.Warn($"Attempted to unregister a non-existent connection with ID {convId}.");
+                Logger.Info($"Connection with {con.RemoteEndPoint} has been closed");
 			}
 		}
-
 
         public static Connection? GetActiveConnection(int uid)
         {
@@ -89,11 +70,6 @@ namespace EggLink.DanhengServer.Server
             try
             {
                 Connection? con = GetConnectionByEndPoint(rcv.RemoteEndPoint);
-                if (con != null && con.State != SessionStateEnum.INACTIVE)
-                {
-                    Logger.Warn($"Existing active connection found for {rcv.RemoteEndPoint}, closing old connection.");
-                    UnregisterConnection(con);
-                }
                 await using MemoryStream? ms = new(rcv.Buffer);
                 using BinaryReader? br = new(ms);
                 int code = br.ReadInt32BE();
@@ -135,13 +111,6 @@ namespace EggLink.DanhengServer.Server
             long convId = Connections.GetNextAvailableIndex();
             KcpConversation? convo = Multiplex?.CreateConversation(convId, rcv.RemoteEndPoint, ConvOpt);
             if (convo == null) return;
-            // If the same player ID is found, disconnect the old session
-            var existingConnection = Connections.Values.FirstOrDefault(c => c.Player?.Uid == enet);
-            if (existingConnection != null)
-            {
-            Logger.Info($"Duplicate login detected for player {enet}, disconnecting old session.");
-            UnregisterConnection(existingConnection);
-            }
             Connection? con = new(convo, rcv.RemoteEndPoint);
             RegisterConnection(con);
             await SendHandshakeResponse(con, enet);
