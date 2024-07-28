@@ -208,7 +208,8 @@ namespace EggLink.DanhengServer.Game.Player
 
 
             LoadScene(Data.PlaneId, Data.FloorId, Data.EntryId, Data.Pos!, Data.Rot!, false);
-            if (SceneInstance == null)
+            // Unstuck check, dont load player into raid scenes
+            if (SceneInstance == null || !this.IsNewPlayer)
             {
                 EnterScene(2000101, 0, false);
             }
