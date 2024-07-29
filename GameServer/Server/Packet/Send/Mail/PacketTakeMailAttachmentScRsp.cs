@@ -1,4 +1,4 @@
-﻿using EggLink.DanhengServer.GameServer.Game.Mail;
+﻿using EggLink.DanhengServer.Database.Mail;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Server.Packet;
 using System;
