@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-using EggLink.DanhengServer.Util;
 namespace EggLink.DanhengServer.Command.Cmd
 {
     [CommandInfo("mission", "Game.Command.Mission.Desc", "Game.Command.Mission.Usage")]
     public class CommandMission : ICommand
     {
-        public static Logger logger = new("Command");
         [CommandMethod("0 pass")]
         public void PassRunningMission(CommandArg arg)
         {
@@ -26,7 +24,6 @@ namespace EggLink.DanhengServer.Command.Cmd
         [CommandMethod("0 finish")]
         public void FinishRunningMission(CommandArg arg)
         {
-            logger.Info($"Debug: Received command with arguments: {string.Join(", ", arg.BasicArgs)}");
             if (arg.Target == null)
             {
                 arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
@@ -41,7 +38,6 @@ namespace EggLink.DanhengServer.Command.Cmd
 
             if (!int.TryParse(arg.BasicArgs[1], out var missionId))
             {
-                logger.Info($"Debug: Mission ID parsed successfully: {missionId}");
                 arg.SendMsg(I18nManager.Translate("Game.Command.Mission.InvalidMissionId"));
                 return;
             }
