@@ -117,7 +117,7 @@ namespace EggLink.DanhengServer.GameServer.Game.Mail
 
                 foreach (var item in mail.Attachment.Items)
                 {
-                    Player.InventoryManager!.AddItem(item.ItemId, item.Count, item.Rank, item.Level);
+                    Player.InventoryManager!.AddItem(item.ItemId, item.Count, false, item.Rank, item.Level, sync:false);
                 }
 
                 mail.IsRead = true;

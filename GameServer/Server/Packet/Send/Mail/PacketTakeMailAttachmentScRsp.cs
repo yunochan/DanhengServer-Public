@@ -14,7 +14,7 @@ namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail
         public PacketTakeMailAttachmentScRsp(List<MailInfo> attachments) : base(CmdIds.TakeMailAttachmentScRsp)
         {
             var proto = new TakeMailAttachmentScRsp();
-            proto.SuccMailIdList.AddRange(attachments.Select(mail => mail.MailID));
+            proto.SuccMailIdList.AddRange(attachments.Select(mail => (uint)mail.MailID));
 
             SetData(proto);
         }
