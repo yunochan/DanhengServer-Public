@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Protobuf.Collections;
 
 namespace EggLink.DanhengServer.GameServer.Game.Mail
 {
