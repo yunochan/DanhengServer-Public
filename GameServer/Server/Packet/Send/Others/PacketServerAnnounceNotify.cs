@@ -10,21 +10,35 @@ namespace EggLink.DanhengServer.Server.Packet.Send.Others
 {
     public class PacketServerAnnounceNotify : BasePacket
     {
+        private static readonly Logger Logger = new("PacketServerAnnounceNotify");
         public PacketServerAnnounceNotify() : base(CmdIds.ServerAnnounceNotify)
         {
             var proto = new ServerAnnounceNotify();
 
+            var beginTime = Extensions.GetUnixSec();
+            var endTime = beginTime + 3600;
+            var configId = 1;
+            var announceContent = ConfigManager.Config.ServerOption.ServerAnnounce.AnnounceContent;
             proto.AnnounceDataList.Add(new AnnounceData()
             {
-                BeginTime = Extensions.GetUnixSec(),
-                EndTime = Extensions.GetUnixSec() + 3600,
-                ConfigId = 1,
-                CHJPFPLHJBJ = ConfigManager.Config.ServerOption.ServerAnnounce.AnnounceContent,
+                BeginTime = beginTime,
+                EndTime = endTime,
+                ConfigId = configId,
+                CHJPFPLHJBJ = announceContent,
             });
+                Logger.Debug("Announcement is enabled");
+                Logger.Debug($"BeginTime={BeginTime}");
+                Logger.Debug($"EndTime={EndTime}");
+                Logger.Debug($"ConfigId={ConfigId}");
+                Logger.Debug($"CHJPFPLHJBJ={announceContent}");
 
             if (ConfigManager.Config.ServerOption.ServerAnnounce.EnableAnnounce)
             {
                 SetData(proto);
+            }
+            else 
+            {
+                logger.Debug("Announcement is diabled")
             }
         }
     }
