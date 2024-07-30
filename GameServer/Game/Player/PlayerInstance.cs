@@ -148,9 +148,7 @@ namespace EggLink.DanhengServer.Game.Player
             HeartDialData = InitializeDatabase<HeartDialData>();
             TutorialData = InitializeDatabase<TutorialData>();
             TutorialGuideData = InitializeDatabase<TutorialGuideData>();
-            //if(this.IsNewPlayer){
-               //this.MailManager?.SendWelcomeMail();// Send welcome mail after we load managers from the database
-            //}
+
             Data.LastActiveTime = Extensions.GetUnixSec();
             DatabaseHelper.Instance?.UpdateInstance(Data);
 

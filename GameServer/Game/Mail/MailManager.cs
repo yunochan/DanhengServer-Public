@@ -19,7 +19,6 @@ namespace EggLink.DanhengServer.GameServer.Game.Mail
 {
     public class MailManager(PlayerInstance player) : BasePlayerManager(player)
     {
-        private readonly static Logger logger = new("Mail");
         public MailData MailData { get; private set; } = DatabaseHelper.Instance!.GetInstanceOrCreateNew<MailData>(player.Uid);
 
         public List<MailInfo> GetMailList()
@@ -91,18 +90,7 @@ namespace EggLink.DanhengServer.GameServer.Game.Mail
                 }
             };
 
-            // Debug
-            logger.Debug($"发送邮件 ID: {mail.MailID}");
-            
-            foreach (var item in mail.Attachment.Items)
-            {
-                logger.Debug($"物品 ID: {item.ItemId}, 数量: {item.Count}");
-            }
-
             MailData.MailList.Add(mail);
-
-            // 打印邮件列表数量以调试
-            logger.Debug($"邮件列表总数: {MailData.MailList.Count}");
 
             Player.SendPacket(new PacketNewMailScNotify(mail.MailID));
         }

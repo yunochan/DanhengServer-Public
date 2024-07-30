@@ -112,13 +112,7 @@ namespace EggLink.DanhengServer.Configuration
         public string SenderName { get; set; } = "Server";
         public string Content { get; set; } = "Welcome to DanHengServer! Please take these items as a starter gift. For a list of commands, type /help in the server chat window. Check out our <a type=OpenURL1 href=https://discord.com/invite/xRtZsmHBVj>Discord</a> and <a type=OpenURL1 href=https://github.com/EggLinks/DanhengServer-Public>Github</a> for more information about the server.";
         public int ExpiredDay { get; set; } = 365;
-        public List<ItemData> Attachment { get; set; } = new List<ItemData>
-        {
-            new ItemData { ItemId = 2, Count = 1000000 },
-            new ItemData { ItemId = 101, Count = 100 },
-            new ItemData { ItemId = 102, Count = 100 }
-            // Add more items as needed
-        };
+        public List<ItemData> Attachment { get; set; } = new List<ItemData>();
     }
 
     public class ServerProfile
