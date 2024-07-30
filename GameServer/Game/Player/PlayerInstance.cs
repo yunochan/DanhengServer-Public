@@ -99,7 +99,12 @@ namespace EggLink.DanhengServer.Game.Player
             DatabaseHelper.SaveInstance(Data);
 
             InitialPlayerManager();
-
+            //Send welcome mail after we load managers from the database
+            if (IsNewPlayer)
+            {
+                MailManager?.SendWelcomeMail();
+            }
+            
             AddAvatar(8001);
             AddAvatar(1001);
             
@@ -143,9 +148,9 @@ namespace EggLink.DanhengServer.Game.Player
             HeartDialData = InitializeDatabase<HeartDialData>();
             TutorialData = InitializeDatabase<TutorialData>();
             TutorialGuideData = InitializeDatabase<TutorialGuideData>();
-            if(this.IsNewPlayer){
-               this.MailManager?.SendWelcomeMail();// Send welcome mail after we load managers from the database
-            }
+            //if(this.IsNewPlayer){
+               //this.MailManager?.SendWelcomeMail();// Send welcome mail after we load managers from the database
+            //}
             Data.LastActiveTime = Extensions.GetUnixSec();
             DatabaseHelper.Instance?.UpdateInstance(Data);
 
