@@ -16,20 +16,23 @@ namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail
         {
             var proto = new TakeMailAttachmentScRsp();
             
-            foreach (var mail in mailList)
-            {
-                proto.SuccMailIdList.Add((uint)mail.MailID);
-                
-                if (mail.Attachment?.Items != null)
-                {
-                    foreach (var item in mail.Attachment.Items)
-                    {
-                        proto.Attachment.ItemList_.Add(item.ToProto());
-                    }
-                }
-            }
-            
-            SetData(proto);
-        }
-    }
+		    foreach (var mail in mailList)
+			{
+				proto.SuccMailIdList.Add((uint)mail.MailID);
+		
+				if (mail.Attachment != null && mail.Attachment.Items != null)
+				{
+					foreach (var item in mail.Attachment.Items)
+					{
+						if (item != null)
+						{
+							proto.Attachment.ItemList_.Add(item.ToProto());
+						}
+					}
+				}
+			}
+
+			SetData(proto);
+		}
+	}
 }
