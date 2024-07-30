@@ -22,7 +22,7 @@ namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail
                 
                 if (mail.Attachment?.Items != null && mail.Attachment.Items.Count > 0)
                 {
-                    proto.Attachment.Add(mail.Attachment.ToProto());
+                     proto.Attachment.AddRange(mail.Attachment.Items.Select(item => item.ToProto()));
                 }
             }
             SetData(proto);
