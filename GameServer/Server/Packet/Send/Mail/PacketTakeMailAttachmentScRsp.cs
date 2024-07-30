@@ -12,7 +12,7 @@ namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail
 {
     public class PacketTakeMailAttachmentScRsp : BasePacket
     {
-        public PacketTakeMailAttachmentScRsp(IEnumerable<MailInfo> mailList) : base(CmdIds.TakeMailAttachmentScRsp)
+        public PacketTakeMailAttachmentScRsp(List<MailInfo> mailList) : base(CmdIds.TakeMailAttachmentScRsp)
         {
             var proto = new TakeMailAttachmentScRsp();
             
