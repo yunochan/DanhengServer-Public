@@ -23,7 +23,7 @@ namespace EggLink.DanhengServer.Server.Packet.Send.Others
             {
                 BeginTime = beginTime,
                 EndTime = endTime,
-                ConfigId = configId,
+                ConfigId = (uint)configId,
                 CHJPFPLHJBJ = announceContent,
             });
                 Logger.Debug("Announcement is enabled");
@@ -38,7 +38,7 @@ namespace EggLink.DanhengServer.Server.Packet.Send.Others
             }
             else 
             {
-                logger.Debug("Announcement is diabled");
+                Logger.Debug("Announcement is diabled");
             }
         }
     }
