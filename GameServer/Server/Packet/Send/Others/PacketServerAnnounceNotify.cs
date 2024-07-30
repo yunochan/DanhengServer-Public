@@ -27,9 +27,9 @@ namespace EggLink.DanhengServer.Server.Packet.Send.Others
                 CHJPFPLHJBJ = announceContent,
             });
                 Logger.Debug("Announcement is enabled");
-                Logger.Debug($"BeginTime={BeginTime}");
-                Logger.Debug($"EndTime={EndTime}");
-                Logger.Debug($"ConfigId={ConfigId}");
+                Logger.Debug($"BeginTime={beginTime}");
+                Logger.Debug($"EndTime={endTime}");
+                Logger.Debug($"ConfigId={configId}");
                 Logger.Debug($"CHJPFPLHJBJ={announceContent}");
 
             if (ConfigManager.Config.ServerOption.ServerAnnounce.EnableAnnounce)
