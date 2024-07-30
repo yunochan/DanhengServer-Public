@@ -38,7 +38,7 @@ namespace EggLink.DanhengServer.Server.Packet.Send.Others
             }
             else 
             {
-                logger.Debug("Announcement is diabled")
+                logger.Debug("Announcement is diabled");
             }
         }
     }
