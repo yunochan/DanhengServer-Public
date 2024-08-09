@@ -1,8 +1,7 @@
 ﻿using EggLink.DanhengServer.Database.Mail;
 using EggLink.DanhengServer.Kcp;
 using EggLink.DanhengServer.Proto;
-using EggLink.DanhengServer.Game.Inventory;
-
+using EggLink.DanhengServer.GameServer.Game.Inventory;
 
 namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail;
 public class PacketTakeMailAttachmentScRsp : BasePacket

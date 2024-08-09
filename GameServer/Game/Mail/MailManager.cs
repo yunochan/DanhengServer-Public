@@ -5,6 +5,7 @@ using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Util;
+using Google.Protobuf.Collections;
 
 namespace EggLink.DanhengServer.GameServer.Game.Mail;
 
