@@ -24,12 +24,9 @@ public class HandlerSetClientPausedCsReq : Handler
         {
             var fileBytes = await File.ReadAllBytesAsync(filePath);
             
-            var proto = new ClientDownloadDataScNotify 
-            {
-                 Data = Google.Protobuf.ByteString.CopyFrom(fileBytes)
-            };
-
-             await connection.SendPacket(proto);
+            await connection.SendPacket(new ClientDownloadDataScNotify{
+                Data = Google.Protobuf.ByteString.CopyFrom(fileBytes)
+            });
         }
     }
 }
