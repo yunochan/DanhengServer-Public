@@ -210,13 +210,15 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
             SendTime = Extensions.GetUnixSec()
         };
 
-        if (!Player.FriendManager.FriendData.ChatHistory.TryGetValue(recvUid, out var value))
+        if (Player.FriendManager?.FriendData?.ChatHistory != null)
         {
-            Player.FriendManager.FriendData.ChatHistory[recvUid] = new FriendChatHistory();
-            value = Player.FriendManager.FriendData.ChatHistory[recvUid];
+            if (!Player.FriendManager.FriendData.ChatHistory.TryGetValue(recvUid, out var value))
+            {
+                Player.FriendManager.FriendData.ChatHistory[recvUid] = new FriendChatHistory();
+                value = Player.FriendManager.FriendData.ChatHistory[recvUid];
+            }
+            value.MessageList.Add(data);
         }
-
-        value.MessageList.Add(data);
 
         PacketRevcMsgScNotify notify;
         if (message != null)

@@ -105,7 +105,7 @@ public class PlayerInstance(PlayerData data)
             //Send welcome mail after we load managers from the database
             if (IsNewPlayer)
             {
-               await MailManager?.SendWelcomeMail();
+               await MailManager.SendWelcomeMail();
             }
 
             await AddAvatar(8001);
@@ -244,7 +244,7 @@ public class PlayerInstance(PlayerData data)
         if (RaidManager != null)
             await RaidManager.OnLogin();
 
-        await this.MessageManager?.SendServerWelcomeMessages(); // Send welcomeMessage
+        await this.MessageManager.SendServerWelcomeMessages(); // Send welcomeMessage
         InvokeOnPlayerLogin(this);
     }
 

@@ -39,7 +39,7 @@ public class WebProgram
 
         public static HttpContext HttpContext
         {
-            get => _httpContext.Value;
+            get => _httpContext.Value ?? throw new InvalidOperationException("HttpContext is not set.");
             set => _httpContext.Value = value;
         }
     }
