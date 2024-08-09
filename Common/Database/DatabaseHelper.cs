@@ -109,6 +109,19 @@ public class DatabaseHelper
         }
     }
 
+    public static void InitializeSpecialTable<T>() where T : class, new()
+    {
+        try
+        {
+            sqlSugarScope?.CodeFirst.InitTables<T>();
+            logger.Info($"Table {typeof(T).Name} initialized successfully.");
+        }
+        catch (Exception e)
+        {
+            logger.Error($"An error occurred while initializing the table {typeof(T).Name}", e);
+        }
+    }
+
     public void UpgradeDatabase()
     {
         logger.Info("Upgrading database...");
