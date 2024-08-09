@@ -16,8 +16,6 @@ public class HandlerSetClientPausedCsReq : Handler
         await connection.SendPacket(new PacketSetClientPausedScRsp(paused));
         if (ConfigManager.Config.ServerOption.EnableWindy)
             await SendClientDowanloadData(connection);
-        if (ConfigManager.Config.ServerOption.ServerAnnounce.EnableAnnounce)
-            await connection.SendPacket(new PacketServerAnnounceNotify());
     }
     private async Task SendClientDowanloadData(Connection connection)
     {
@@ -30,7 +28,7 @@ public class HandlerSetClientPausedCsReq : Handler
             {
                  Data = Google.Protobuf.ByteString.CopyFrom(fileBytes)
             };
-            
+
              await connection.SendPacket(proto);
         }
     }
