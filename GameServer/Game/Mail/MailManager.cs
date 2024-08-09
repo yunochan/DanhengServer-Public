@@ -94,7 +94,7 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
         await Player.SendPacket(new PacketNewMailScNotify(mail.MailID));
     }
 
-     public async valueTask<List<MailInfo>> TakeMailAttachments(RepeatedField<uint> mailIdList)
+    public async ValueTask<List<MailInfo>> TakeMailAttachments(RepeatedField<uint> mailIdList)
     {
         List<MailInfo> attachments = new List<MailInfo>();
 
