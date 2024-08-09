@@ -4,32 +4,32 @@ using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Game.Inventory;
 
 
-namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail
-    public class PacketTakeMailAttachmentScRsp : BasePacket
+namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail;
+public class PacketTakeMailAttachmentScRsp : BasePacket
+{
+    public PacketTakeMailAttachmentScRsp(List<MailInfo> mailList) : base(CmdIds.TakeMailAttachmentScRsp)
     {
-        public PacketTakeMailAttachmentScRsp(List<MailInfo> mailList) : base(CmdIds.TakeMailAttachmentScRsp)
+        var proto = new TakeMailAttachmentScRsp()
         {
-            var proto = new TakeMailAttachmentScRsp()
-            {
-                Attachment = new ItemList()
-            };
+            Attachment = new ItemList()
+        };
             
-		    foreach (var mail in mailList)
-			{
-				proto.SuccMailIdList.Add((uint)mail.MailID);
+		foreach (var mail in mailList)
+		{
+			proto.SuccMailIdList.Add((uint)mail.MailID);
 		
-				if (mail.Attachment != null && mail.Attachment.Items != null)
+			if (mail.Attachment != null && mail.Attachment.Items != null)
+			{
+				foreach (var item in mail.Attachment.Items)
 				{
-					foreach (var item in mail.Attachment.Items)
+					if (item != null)
 					{
-						if (item != null)
-						{
-							proto.Attachment.ItemList_.Add(item.ToProto());
-						}
+						proto.Attachment.ItemList_.Add(item.ToProto());
 					}
 				}
 			}
-
-			SetData(proto);
 		}
+
+		SetData(proto);
 	}
+}

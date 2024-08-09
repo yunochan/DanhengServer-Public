@@ -127,35 +127,6 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
         return attachments;
     }
 
-	public List<int> DeleteMail(RepeatedField<uint> mailIdList)
-	{
-		List<int> deleteList = new List<int>();
-	
-		List<int> idList = mailIdList.Select(id => (int)id).ToList();
-	
-		if (idList.Count == 0)
-		{
-			idList = MailData.MailList.Select(mail => mail.MailID).ToList();
-		}
-	
-		foreach (int id in idList)
-		{
-			var mail = MailData.MailList.FirstOrDefault(x => x.MailID == id);
-			if (mail == null || !mail.IsRead)
-			{
-				continue;
-			}
-	
-			MailData.MailList.Remove(mail);
-			deleteList.Add(mail.MailID);
-		}
-	
-		DatabaseHelper.Instance?.UpdateInstance(MailData);
-	
-		return deleteList;
-	}
-
-
     public List<ClientMail> ToMailProto()
     {
         var list = new List<ClientMail>();

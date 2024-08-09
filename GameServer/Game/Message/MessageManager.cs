@@ -191,7 +191,7 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
     /********************
      * Sending messages
      ********************/
-     public async ValueTask SendPrivateMessageFromServer(int recvUid, int sendUid, , string? message = null, int? extraId = null){
+     public async ValueTask SendPrivateMessageFromServer(int recvUid, int sendUid, string? message = null, int? extraId = null){
 
         // Sanity checks.
         if (Player == null) {
