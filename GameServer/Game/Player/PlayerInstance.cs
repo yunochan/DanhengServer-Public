@@ -102,6 +102,11 @@ public class PlayerInstance(PlayerData data)
         var t = System.Threading.Tasks.Task.Run(async () =>
         {
             await InitialPlayerManager();
+            //Send welcome mail after we load managers from the database
+            if (IsNewPlayer)
+            {
+               await MailManager?.SendWelcomeMail();
+            }
 
             await AddAvatar(8001);
             await AddAvatar(1001);
@@ -206,7 +211,7 @@ public class PlayerInstance(PlayerData data)
         }
 
         await LoadScene(Data.PlaneId, Data.FloorId, Data.EntryId, Data.Pos!, Data.Rot!, false);
-        if (SceneInstance == null) await EnterScene(2000101, 0, false);
+        if (SceneInstance == null || Data.Level > 10) await EnterScene(2000101, 0, false);
 
         if (ConfigManager.Config.ServerOption.EnableMission) await MissionManager!.AcceptMainMissionByCondition();
 
@@ -239,6 +244,7 @@ public class PlayerInstance(PlayerData data)
         if (RaidManager != null)
             await RaidManager.OnLogin();
 
+        this.MessageManager?.SendServerWelcomeMessages(); // Send welcomeMessage
         InvokeOnPlayerLogin(this);
     }
 

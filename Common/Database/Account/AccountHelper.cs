@@ -29,6 +29,6 @@ public static class AccountHelper
             //Permissions = perStr
         };
         DatabaseHelper.SaveInstance(account);
-        return accountData;
+        return account;
     }
 }
