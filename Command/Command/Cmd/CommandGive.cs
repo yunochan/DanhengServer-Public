@@ -89,16 +89,16 @@ public class CommandGive : ICommand
          mainAffixStr ??= "1";
          if (!int.TryParse(str, out var amount) || !int.TryParse(levelStr, out var level) || !int.TryParse(mainAffixStr, out var mainAffixId))
          {
-             await rg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
-             return;
+            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+            return;
          }
 
          GameData.RelicConfigData.TryGetValue(int.Parse(arg.BasicArgs[0]), out var itemConfig);
          GameData.ItemConfigData.TryGetValue(int.Parse(arg.BasicArgs[0]), out var itemConfigExcel);
          if (itemConfig == null || itemConfigExcel == null)
          {
-             await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicNotFound"));
-             return;
+            await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicNotFound"));
+            return;
          }
 
          GameData.RelicSubAffixData.TryGetValue(itemConfig.SubAffixGroup, out var subAffixConfig);

@@ -27,13 +27,14 @@ public class CommandAvatar : ICommand
         //此处执行逻辑，修改玩家已拥有的角色命座、角色等级、天赋等级
         if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level)||!int.TryParse(talentLevelStr, out var talentLevel))
         {
-            arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
+
         var player = arg.Target.Player!;
         player.AvatarManager!.AvatarData.Avatars.ForEach(avatar =>
         {
-            avatar.Rank = Math.Max(Math.Min(rank, 6), 0);
+            foreach (var path in avatar.PathInfoes.Values) path.Rank = Math.Min(rank, 6);
             avatar.Level = Math.Max(Math.Min(level, 80), 0);
             avatar.Promotion = GameData.GetMinPromotionForLevel(avatar.Level);
             avatar.Excel?.SkillTree.ForEach(talent =>
