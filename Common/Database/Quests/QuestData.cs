@@ -3,10 +3,11 @@ using SqlSugar;
 
 namespace EggLink.DanhengServer.Database.Quests;
 
-[SugarTable("quest_data")]
+[SugarTable("QuestData")]
 public class QuestData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public Dictionary<int, QuestInfo> Quests { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+    public Dictionary<int, QuestInfo> Quests { get; set; } = [];
 }
 
 public class QuestInfo

@@ -6,7 +6,8 @@ namespace EggLink.DanhengServer.Database.ChessRogue;
 [SugarTable("ChessRogueNous")]
 public class ChessRogueNousData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public Dictionary<int, ChessRogueNousDiceData> RogueDiceData { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+    public Dictionary<int, ChessRogueNousDiceData> RogueDiceData { get; set; } = [];
 }
 
 public class ChessRogueNousDiceData

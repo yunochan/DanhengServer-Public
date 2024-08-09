@@ -17,8 +17,8 @@ public class NewUsernameLoginHandler
         {
             if (ConfigManager.Config.ServerOption.AutoCreateUser)
             {
-                AccountHelper.CreateAccount(account, 0);
-                accountData = AccountData.GetAccountByUserName(account);
+                
+                accountData =AccountHelper.CreateAccount(account, 0);
             }
             else
             {
@@ -29,8 +29,7 @@ public class NewUsernameLoginHandler
         if (accountData != null)
         {
             res.message = "OK";
-            res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username + "@egglink.me",
-                accountData.GenerateDispatchToken());
+            res.data = new VerifyData(accountData.Uid.ToString(), accountData.Username!, accountData.GenerateDispatchToken());
         }
 
         return new JsonResult(res);

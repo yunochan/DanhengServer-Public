@@ -1,5 +1,6 @@
 ﻿using EggLink.DanhengServer.Database.Inventory;
 using EggLink.DanhengServer.Database.Quests;
+using EggLink.DanhengServer.Database.UserManagement;
 using EggLink.DanhengServer.Internationalization;
 using EggLink.DanhengServer.Util;
 using SqlSugar;
@@ -74,6 +75,11 @@ public class DatabaseHelper
         foreach (var t in types)
             typeof(DatabaseHelper).GetMethod("InitializeTable")?.MakeGenericMethod(t)
                 .Invoke(null, null); // cache the data
+
+        // Initialize special tables
+        InitializeSpecialTable<BlackList>();
+        InitializeSpecialTable<UserActivity>();
+
 
         LastSaveTick = DateTime.UtcNow.Ticks;
 
@@ -244,13 +250,13 @@ public class DatabaseHelper
         //}
     }
 
-    public void CalcSaveDatabase() // per 5 min
+    public void CalcSaveDatabase() // per 30 s
     {
-        if (LastSaveTick + TimeSpan.TicksPerMinute * 5 > DateTime.UtcNow.Ticks) return;
+        if (LastSaveTick + TimeSpan.TicksPerSecond * 30 > DateTime.UtcNow.Ticks) return;
         SaveDatabase();
     }
 
-    public void SaveDatabase() // per 5 min
+    public void SaveDatabase() // per 30 s
     {
         try
         {

@@ -1,4 +1,6 @@
-﻿namespace EggLink.DanhengServer.Configuration;
+﻿using EggLink.DanhengServer.Database.Inventory;
+
+namespace EggLink.DanhengServer.Configuration;
 
 public class ConfigContainer
 {
@@ -37,8 +39,9 @@ public class GameServerConfig
     public string GameServerId { get; set; } = "dan_heng";
     public string GameServerName { get; set; } = "DanhengServer";
     public string GameServerDescription { get; set; } = "A re-implementation of StarRail server";
+    public int UpdateInterval { get; set; } = 40;
     public int KcpInterval { get; set; } = 40;
-
+    public int KcpTimeout { get; set; } = 30;
     public string GetDisplayAddress()
     {
         return PublicAddress + ":" + PublicPort;
@@ -73,7 +76,11 @@ public class ServerOption
     public bool AutoLightSection { get; set; } = true;
     public string Language { get; set; } = "EN";
     public List<string> DefaultPermissions { get; set; } = ["*"];
+    public int ThresholdCount { get; set; } = 5; // Limit logins
+    public int MaxPlayers { get; set; } = -1; // Limit Oline Players
     public ServerAnnounce ServerAnnounce { get; set; } = new();
+    public WelcomeMessage WelcomeMessage { get; set; } = new();
+    public WelcomeMail WelcomeMail { get; set; } = new();
     public ServerProfile ServerProfile { get; set; } = new();
     public bool AutoCreateUser { get; set; } = true;
     public bool SavePersonalDebugFile { get; set; } = false;
@@ -85,15 +92,28 @@ public class ServerAnnounce
     public string AnnounceContent { get; set; } = "Welcome to danhengserver!";
 }
 
+public class WelcomeMessage {
+    public int[] Emotes { get; set; } = {121005, 121006, 121007, 121008};// Sparkle Emotes
+    public string Message { get; set; } = "Welcome to a DanHengServer";
+}
+
+public class WelcomeMail {
+    public string Title { get; set; } = "Welcome to a DanHengServer";
+    public string SenderName { get; set; } = "Server";
+    public string Content { get; set; } = "Welcome to DanHengServer! Please take these items as a starter gift. For a list of commands, type /help in the server chat window. Check out our <a type=OpenURL1 href=https://discord.com/invite/xRtZsmHBVj>Discord</a> and <a type=OpenURL1 href=https://github.com/EggLinks/DanhengServer-Public>Github</a> for more information about the server.";
+    public int ExpiredDay { get; set; } = 365;
+    public List<ItemData> Attachment { get; set; } = new List<ItemData>();
+}
+
 public class ServerProfile
 {
     public string Name { get; set; } = "Server";
     public int Uid { get; set; } = 80;
     public string Signature { get; set; } = "Type /help for a list of commands";
     public int Level { get; set; } = 1;
-    public int HeadIcon { get; set; } = 200105;
+    public int HeadIcon { get; set; } = 201306;
     public int ChatBubbleId { get; set; } = 220001;
-    public int DisplayAvatarId { get; set; } = 1001;
+    public int DisplayAvatarId { get; set; } = 1306;
     public int DisplayAvatarLevel { get; set; } = 1;
 }
 

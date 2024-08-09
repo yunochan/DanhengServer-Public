@@ -187,6 +187,81 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
             await Player.SendPacket(notify);
         }
     }
+    
+    /********************
+     * Sending messages
+     ********************/
+     public async ValueTask SendPrivateMessageFromServer(int recvUid, int sendUid, , string? message = null, int? extraId = null){
+
+        // Sanity checks.
+        if (Player == null) {
+            return;
+        }
+
+        var data = new FriendChatData
+        {
+            SendUid = sendUid,
+            ReceiveUid = recvUid,
+            Message = message ?? "",
+            ExtraId = extraId ?? 0,
+            SendTime = Extensions.GetUnixSec()
+        };
+
+        value.MessageList.Add(data);
+
+        PacketRevcMsgScNotify notify;
+        if (message != null)
+        {
+            notify = new PacketRevcMsgScNotify((uint)recvUid, (uint)sendUid, message);
+        }
+        else
+        {
+            notify = new PacketRevcMsgScNotify((uint)recvUid, (uint)sendUid, (uint)(extraId ?? 0));
+        }
+
+        await Player.SendPacket(notify);
+    }
+
+    /********************
+     * Welcome messages
+     ********************/
+    public async ValueTask SendServerWelcomeMessages() {
+        if (Player == null)
+        {
+            return;
+        }
+        var welcomeMessage = ConfigManager.Config.ServerOption.WelcomeMessage;
+        if (welcomeMessage.Emotes != null && welcomeMessage.Emotes.Length > 0) {
+            int randomEmote = GetRandomEmote(welcomeMessage.Emotes);
+            await SendPrivateMessageFromServer(
+                Player.Uid,
+                ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                null,
+                randomEmote
+            );
+            }
+
+        if (!string.IsNullOrEmpty(welcomeMessage.Message)) {
+            await SendPrivateMessageFromServer(
+                Player.Uid,
+                ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                welcomeMessage.Message,
+                null
+            );
+        }
+    }
+
+    public static int GetRandomEmote(int[] emotes)
+    {
+        if (emotes == null || emotes.Length == 0)
+        {
+            throw new ArgumentException("Emotes array cannot be null or empty.");
+        }
+
+        int randomIndex = _random.Next(emotes.Length);
+        return emotes[randomIndex];
+    }
+
 
     #endregion
 }

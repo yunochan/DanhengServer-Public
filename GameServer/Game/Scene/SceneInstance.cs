@@ -251,7 +251,9 @@ public class SceneInstance
             {
                 if (avatar.AvatarInfo.EntityId == 0) avatar.AvatarInfo.EntityId = ++LastEntityId;
                 addAvatar.Add(avatar);
-                AvatarInfo.Add(avatar.AvatarInfo.EntityId, avatar);
+                // Update the value if the key already exists
+                //AvatarInfo.Add(avatar.AvatarInfo.EntityId, avatar);
+                AvatarInfo[avatar.AvatarInfo.EntityId] = avatar;
                 sendPacket = true;
             }
             else

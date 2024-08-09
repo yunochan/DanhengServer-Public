@@ -31,13 +31,13 @@ public class CommandMission : ICommand
             return;
         }
 
-        if (arg.BasicArgs.Count < 1)
+        if (arg.BasicArgs.Count < 2)
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
-        if (!int.TryParse(arg.BasicArgs[0], out var missionId))
+        if (!int.TryParse(arg.BasicArgs[1], out var missionId))
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Mission.InvalidMissionId"));
             return;
@@ -137,13 +137,13 @@ public class CommandMission : ICommand
             return;
         }
 
-        if (arg.BasicArgs.Count < 1)
+        if (arg.BasicArgs.Count < 2)
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
-        if (!int.TryParse(arg.BasicArgs[0], out var missionId))
+        if (!int.TryParse(arg.BasicArgs[1], out var missionId))
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Mission.InvalidMissionId"));
             return;
@@ -163,13 +163,13 @@ public class CommandMission : ICommand
             return;
         }
 
-        if (arg.BasicArgs.Count < 1)
+        if (arg.BasicArgs.Count < 2)
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
-        if (!int.TryParse(arg.BasicArgs[0], out var missionId))
+        if (!int.TryParse(arg.BasicArgs[1], out var missionId))
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Mission.InvalidMissionId"));
             return;

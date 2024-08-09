@@ -69,6 +69,93 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
         await Player.SendPacket(new PacketNewMailScNotify(mail.MailID));
     }
 
+    //Send Welcome mail to newly login player
+    public async ValueTask SendWelcomeMail()
+    {
+        var welcomeMail = ConfigManager.Config.ServerOption.WelcomeMail;
+        var mail = new MailInfo()
+        {
+            MailID = MailData.NextMailId++,
+            SenderName = welcomeMail.SenderName,
+            Content = welcomeMail.Content,
+            Title = welcomeMail.Title,
+            TemplateID = 1,
+            SendTime = DateTime.Now.ToUnixSec(),
+            ExpireTime = DateTime.Now.AddDays(welcomeMail.ExpiredDay).ToUnixSec(),
+            Attachment = new()
+            {
+                Items = welcomeMail.Attachment
+            }
+        };
+
+        MailData.MailList.Add(mail);
+
+        await Player.SendPacket(new PacketNewMailScNotify(mail.MailID));
+    }
+
+     public List<MailInfo> TakeMailAttachments(RepeatedField<uint> mailIdList)
+    {
+        List<MailInfo> attachments = new List<MailInfo>();
+
+        List<int> idList = mailIdList.Select(id => (int)id).ToList();
+
+        if (idList == null || idList.Count == 0)
+        {
+            idList = MailData.MailList.Select(mail => mail.MailID).ToList();
+        }
+
+        foreach (int id in idList)
+        {
+            var mail = MailData.MailList.FirstOrDefault(x => x.MailID == id);
+
+            if (mail == null || mail.IsRead || mail.Attachment == null || mail.Attachment.Items.Count == 0)
+            {
+                continue;
+            }
+
+            foreach (var item in mail.Attachment.Items)
+            {
+                Player.InventoryManager!.AddItem(item.ItemId, item.Count, true, item.Rank, item.Level, sync:true);
+            }
+
+            mail.IsRead = true;
+            attachments.Add(mail);
+        }
+
+        DatabaseHelper.Instance?.UpdateInstance(MailData);
+
+        return attachments;
+    }
+
+	public List<int> DeleteMail(RepeatedField<uint> mailIdList)
+	{
+		List<int> deleteList = new List<int>();
+	
+		List<int> idList = mailIdList.Select(id => (int)id).ToList();
+	
+		if (idList.Count == 0)
+		{
+			idList = MailData.MailList.Select(mail => mail.MailID).ToList();
+		}
+	
+		foreach (int id in idList)
+		{
+			var mail = MailData.MailList.FirstOrDefault(x => x.MailID == id);
+			if (mail == null || !mail.IsRead)
+			{
+				continue;
+			}
+	
+			MailData.MailList.Remove(mail);
+			deleteList.Add(mail.MailID);
+		}
+	
+		DatabaseHelper.Instance?.UpdateInstance(MailData);
+	
+		return deleteList;
+	}
+
+
     public List<ClientMail> ToMailProto()
     {
         var list = new List<ClientMail>();

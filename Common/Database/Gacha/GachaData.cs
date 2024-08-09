@@ -5,7 +5,8 @@ namespace EggLink.DanhengServer.Database.Gacha;
 [SugarTable("Gacha")]
 public class GachaData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public List<GachaInfo> GachaHistory { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "MEDIUMTEXT")]
+    public List<GachaInfo> GachaHistory { get; set; } = [];
 
     public bool LastAvatarGachaFailed { get; set; } = false;
     public bool LastWeaponGachaFailed { get; set; } = false;
