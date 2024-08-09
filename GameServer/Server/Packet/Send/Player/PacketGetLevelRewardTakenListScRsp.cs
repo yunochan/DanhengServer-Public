@@ -8,14 +8,9 @@ public class PacketGetLevelRewardTakenListScRsp : BasePacket
 {
     public PacketGetLevelRewardTakenListScRsp(PlayerInstance player) : base(CmdIds.GetLevelRewardTakenListScRsp)
     {
-        if (player.Data.TakenLevelReward == null)
-        {
-            throw new ArgumentNullException(nameof(player.Data.TakenLevelReward), "TakenLevelReward list cannot be null.");
-        }
-
         var proto = new GetLevelRewardTakenListScRsp
         {
-            LevelRewardTakenList = player.Data.TakenLevelReward.Select(x => (uint)x).ToList()
+             LevelRewardTakenList = { player.Data.TakenLevelReward.Select(x => (uint)x) }
         };
 
         SetData(proto);
