@@ -23,10 +23,7 @@ public class HandlerSetClientPausedCsReq : Handler
         if (File.Exists(filePath))
         {
             var fileBytes = await File.ReadAllBytesAsync(filePath);
-            
-            await connection.SendPacket(new ClientDownloadDataScNotify{
-                Data = Google.Protobuf.ByteString.CopyFrom(fileBytes)
-            });
+            await connection.SendPacket(new HandshakePacket(fileBytes));
         }
     }
 }
