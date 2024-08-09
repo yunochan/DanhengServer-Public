@@ -1,9 +1,11 @@
 ﻿using EggLink.DanhengServer.Data;
 using EggLink.DanhengServer.Database;
 using EggLink.DanhengServer.Database.Message;
+using EggLink.DanhengServer.Database.Friend;
 using EggLink.DanhengServer.Enums.Mission;
 using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.PlayerSync;
+using EggLink.DanhengServer.GameServer.Server.Packet.Send.Chat;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Util;
 
@@ -11,6 +13,7 @@ namespace EggLink.DanhengServer.GameServer.Game.Message;
 
 public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
 {
+    private static Random _random = new Random();
     public MessageData Data { get; } = DatabaseHelper.Instance!.GetInstanceOrCreateNew<MessageData>(player.Uid);
     public List<MessageSectionData> PendingMessagePerformSectionList { get; private set; } = [];
 
@@ -207,6 +210,12 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
             SendTime = Extensions.GetUnixSec()
         };
 
+        if (!FriendData.ChatHistory.TryGetValue(recvUid, out var value))
+        {
+            FriendData.ChatHistory[recvUid] = new FriendChatHistory();
+            value = FriendData.ChatHistory[recvUid];
+        }
+
         value.MessageList.Add(data);
 
         PacketRevcMsgScNotify notify;
@@ -220,6 +229,7 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
         }
 
         await Player.SendPacket(notify);
+        await Player.FriendManager!.ReceiveMessage(sendUid, recvUid, message, extraId);
     }
 
     /********************

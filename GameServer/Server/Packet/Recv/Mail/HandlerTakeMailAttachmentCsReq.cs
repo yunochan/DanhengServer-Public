@@ -12,7 +12,7 @@ public class HandlerTakeMailAttachmentCsReq : Handler
     {
         var req = TakeMailAttachmentCsReq.Parser.ParseFrom(data);
         var player = connection.Player!;
-        List<MailInfo> attachments = player.MailManager!.TakeMailAttachments(req.MailIdList);
+        List<MailInfo> attachments = await player.MailManager!.TakeMailAttachments(req.MailIdList);
 
         await connection.SendPacket(new PacketTakeMailAttachmentScRsp(attachments));
     }

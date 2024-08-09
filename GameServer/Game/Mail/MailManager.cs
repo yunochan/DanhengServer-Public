@@ -94,7 +94,7 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
         await Player.SendPacket(new PacketNewMailScNotify(mail.MailID));
     }
 
-     public List<MailInfo> TakeMailAttachments(RepeatedField<uint> mailIdList)
+     public async valueTask<List<MailInfo>> TakeMailAttachments(RepeatedField<uint> mailIdList)
     {
         List<MailInfo> attachments = new List<MailInfo>();
 
@@ -116,7 +116,7 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
 
             foreach (var item in mail.Attachment.Items)
             {
-                Player.InventoryManager!.AddItem(item.ItemId, item.Count, true, item.Rank, item.Level, sync:true);
+                await Player.InventoryManager!.AddItem(item.ItemId, item.Count, true, item.Rank, item.Level, sync:true);
             }
 
             mail.IsRead = true;
