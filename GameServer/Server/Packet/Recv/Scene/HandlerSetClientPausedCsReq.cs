@@ -14,7 +14,18 @@ public class HandlerSetClientPausedCsReq : Handler
         var req = SetClientPausedCsReq.Parser.ParseFrom(data);
         var paused = req.Paused;
         await connection.SendPacket(new PacketSetClientPausedScRsp(paused));
+        if (ConfigManager.Config.ServerOption.EnableWindy)
+            await SendClientDowanloadData();
         if (ConfigManager.Config.ServerOption.ServerAnnounce.EnableAnnounce)
             await connection.SendPacket(new PacketServerAnnounceNotify());
+    }
+    private async Task SendClientDowanloadData()
+    {
+        var filePath = Path.Combine(Environment.CurrentDirectory, "Lua", "uid.lua");
+        if (File.Exists(filePath))
+        {
+            var fileBytes = await File.ReadAllBytesAsync(filePath);
+            await connection.SendPacket(new HandshakePacket(fileBytes));
+        }
     }
 }

@@ -9,7 +9,9 @@ public class HandlerGetTutorialCsReq : Handler
 {
     public override async Task OnHandle(Connection connection, byte[] header, byte[] data)
     {
-        await SendPlayerData(connection);
+        if (ConfigManager.Config.ServerOption.EnableDialog)
+            await SendPlayerData(connection);
+
         if (ConfigManager.Config.ServerOption.EnableMission) // If missions are enabled
             await connection.SendPacket(new PacketGetTutorialScRsp(connection.Player!));
     }

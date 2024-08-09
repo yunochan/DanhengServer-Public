@@ -40,8 +40,6 @@ public class GameServerConfig
     public string GameServerName { get; set; } = "DanhengServer";
     public string GameServerDescription { get; set; } = "A re-implementation of StarRail server";
     public int UpdateInterval { get; set; } = 40;
-    public int KcpInterval { get; set; } = 40;
-    public int KcpTimeout { get; set; } = 30;
     public string GetDisplayAddress()
     {
         return PublicAddress + ":" + PublicPort;
@@ -70,6 +68,8 @@ public class DatabaseConfig
 
 public class ServerOption
 {
+    public bool EnableDialog { get; set; } = true;
+    public bool EnableWindy { get; set; } = true;
     public int StartTrailblazerLevel { get; set; } = 1;
     public bool AutoUpgradeWorldLevel { get; set; } = true;
     public bool EnableMission { get; set; } = true; // experimental
@@ -90,6 +90,8 @@ public class ServerAnnounce
 {
     public bool EnableAnnounce { get; set; } = true;
     public string AnnounceContent { get; set; } = "Welcome to danhengserver!";
+    public int Duration { get; set; } = 5;
+
 }
 
 public class WelcomeMessage {

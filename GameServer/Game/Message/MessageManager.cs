@@ -243,16 +243,6 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
             return;
         }
         var welcomeMessage = ConfigManager.Config.ServerOption.WelcomeMessage;
-        if (welcomeMessage.Emotes != null && welcomeMessage.Emotes.Length > 0) {
-            int randomEmote = GetRandomEmote(welcomeMessage.Emotes);
-            await SendPrivateMessageFromServer(
-                Player.Uid,
-                ConfigManager.Config.ServerOption.ServerProfile.Uid,
-                null,
-                randomEmote
-            );
-            }
-
         if (!string.IsNullOrEmpty(welcomeMessage.Message)) {
             await SendPrivateMessageFromServer(
                 Player.Uid,
@@ -261,6 +251,16 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
                 null
             );
         }
+        if (welcomeMessage.Emotes != null && welcomeMessage.Emotes.Length > 0) {
+            int randomEmote = GetRandomEmote(welcomeMessage.Emotes);
+            await SendPrivateMessageFromServer(
+                Player.Uid,
+                ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                null,
+                randomEmote
+            );
+        }
+
     }
 
     public static int GetRandomEmote(int[] emotes)
