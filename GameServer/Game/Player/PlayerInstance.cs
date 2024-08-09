@@ -244,7 +244,7 @@ public class PlayerInstance(PlayerData data)
         if (RaidManager != null)
             await RaidManager.OnLogin();
 
-        this.MessageManager?.SendServerWelcomeMessages(); // Send welcomeMessage
+        await this.MessageManager?.SendServerWelcomeMessages(); // Send welcomeMessage
         InvokeOnPlayerLogin(this);
     }
 
