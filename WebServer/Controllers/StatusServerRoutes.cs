@@ -10,8 +10,7 @@ namespace EggLink.DanhengServer.WebServer.Controllers
         [HttpGet("/status/server")]
         public ActionResult<string> StatusServer()
         {
-            var responseJson = new StatusServerHandler().ResponseJson;
-            return Ok(responseJson);
+            return new StatusServerHandler().ResponseJson;
         }
     }
 }

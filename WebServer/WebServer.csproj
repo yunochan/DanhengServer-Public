@@ -25,6 +25,9 @@
     <Reference Include="DanhengProto">
       <HintPath>..\Proto\DanhengProto.dll</HintPath>
     </Reference>
+    <Reference Include="DanhengKcpSharp">
+      <HintPath>..\DanhengKcpSharp\DanhengKcpSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
