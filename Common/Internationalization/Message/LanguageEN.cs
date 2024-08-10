@@ -216,7 +216,7 @@ public class AvatarTextEN
         "Set the properties of the avatars player owned\nWhen set talent level, set to X level means set all talent point to X level, if greater than the point max level, set to max level\nNotice: -1 means all owned avatars";
 
     public string Usage =>
-        "Usage: /avatar talent [Avatar ID/-1] [Talent Level]\n\nUsage: /avatar get [Avatar ID]\n\nUsage: /avatar rank [Avatar ID/-1] [Rank]\n\nUsage: /avatar level [Avatar ID/-1] [Avatar Level]";
+        "Usage: /avatar all lv80 p6 e6 s12\n\nUsage: /avatar talent [Avatar ID/-1] [Talent Level]\n\nUsage: /avatar get [Avatar ID]\n\nUsage: /avatar rank [Avatar ID/-1] [Rank]\n\nUsage: /avatar level [Avatar ID/-1] [Avatar Level]";
 
     public string InvalidLevel => "Invalid {0} level";
     public string AllAvatarsLevelSet => "Set all characters' {0} level to {1}";
@@ -232,7 +232,7 @@ public class AvatarTextEN
 public class GiveTextEN
 {
     public string Desc => "Give player items, item id can be avatar id, but cant set level, talent, rank";
-    public string Usage => "Usage: /give <item ID> l<level> x<amount> r<rank>";
+    public string Usage => "Usage: /give <item ID> lv<level> x<amount> r<rank>";
     public string ItemNotFound => "Item not found!";
     public string GiveItem => "Gave @{0} {1} item(s) {2}";
 }
@@ -246,7 +246,7 @@ public class GiveAllTextEN
         "Give the player all specified types of items\navatar means characters, equipment means light cones, relic means relic(artifact), unlock means chatBubbles, avatar(head icon), wallpaper";
 
     public string Usage =>
-        "Usage: /giveall avatar r<rank> l<level>\n\nUsage: /giveall equipment r<rank> l<level> x<amount>\n\nUsage: /giveall relic l<level> x<amount>\n\nUsage: /giveall unlock";
+        "Usage: /giveall avatars r<rank> lv<level>\n\nUsage: /giveall lightcones r<rank> lv<level> x<amount>\n\nUsage: /giveall materials x<amount>\n\nUsage: /giveall relics lv<level> x<amount>\n\nUsage: /giveall usables";
 
     public string GiveAllItems => "Gave all {0}, each {1} items";
 }

@@ -75,7 +75,7 @@ public class CommandGive : ICommand
              return;
          }
          //debug
-        await arg.SendMsg($"参数合计:{arg.BasicArgs.Count}");
+        //await arg.SendMsg($"参数合计:{arg.BasicArgs.Count}");
          if (arg.BasicArgs.Count < 3)
          {
              await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
@@ -114,7 +114,7 @@ public class CommandGive : ICommand
          var startIndex = 0;
          if (!mainAffixConfig.ContainsKey(mainAffixId))
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.InvalidMainAffixId"));
+            await arg.SendMsg(I18nManager.Translate("ERROR: 非法的主属性，请参考官服遗器"));
             return;
         }
             startIndex++;
@@ -140,7 +140,7 @@ public class CommandGive : ICommand
          }
          if (subAffixes.Count < 4)
          {
-            await arg.SendMsg($"副词条总数{subAffixes.Count}<4，将随机添加副词条");
+            await arg.SendMsg($"WARN: 副词条总数{subAffixes.Count}<4，将随机添加副词条");
              // 随机副词条
              var subAffixGroup = itemConfig.SubAffixGroup;
              var subAffixGroupConfig = GameData.RelicSubAffixData[subAffixGroup];
