@@ -111,7 +111,7 @@ public class CommandGive : ICommand
          }
 
          // 解析主属性
-         var startIndex = 1;
+         var startIndex = 0;
          if (!mainAffixConfig.ContainsKey(mainAffixId))
         {
             await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.InvalidMainAffixId"));
