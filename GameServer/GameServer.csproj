@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\WebServer\WebServer.csproj" />
     <Reference Include="DanhengKcpSharp">
       <HintPath>..\DanhengKcpSharp\DanhengKcpSharp.dll</HintPath>
     </Reference>
