@@ -23,7 +23,7 @@ public class CommandUnstuck : ICommand
             return;
         }
 
-        var playerData = InitializeDatabase<PlayerData>(arg.GetInt(0));
+        var playerData = InitializeDatabase<PlayerData>(arg.GetInt(1));
 
         if (playerData != null)
         {
