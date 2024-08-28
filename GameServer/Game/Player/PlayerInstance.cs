@@ -217,7 +217,12 @@ public class PlayerInstance(PlayerData data)
         }
 
         await LoadScene(Data.PlaneId, Data.FloorId, Data.EntryId, Data.Pos!, Data.Rot!, false);
-        if (SceneInstance == null) await EnterScene(2000101, 0, false);
+        
+        if (SceneInstance == null || Data.Level > 13) 
+        {
+            await RaidManager!.LeaveRaid(false);
+            await EnterScene(2000101, 0, false);
+        }
 
         if (ConfigManager.Config.ServerOption.EnableMission) await MissionManager!.AcceptMainMissionByCondition();
 
