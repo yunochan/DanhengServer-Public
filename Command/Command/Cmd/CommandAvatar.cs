@@ -14,7 +14,7 @@ public class CommandAvatar : ICommand
     public async ValueTask SetAll(CommandArg arg){
         if (arg.Target == null)
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.PlayerNotFound"));
             return;
         }
         arg.CharacterArgs.TryGetValue("p", out var rankStr);
@@ -27,7 +27,7 @@ public class CommandAvatar : ICommand
         //此处执行逻辑，修改玩家已拥有的角色命座、角色等级、天赋等级
         if (!int.TryParse(rankStr, out var rank) || !int.TryParse(levelStr, out var level)||!int.TryParse(talentLevelStr, out var talentLevel))
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
@@ -43,9 +43,9 @@ public class CommandAvatar : ICommand
             });
         });
         // 向玩家发送通知
-        await arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.AllAvatarsLevelSet", I18nManager.Translate("Word.Rank"), rank.ToString()));
-        await arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.AllAvatarsLevelSet", I18nManager.Translate("Word.Avatar"), level.ToString()));
-        await arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.AllAvatarsLevelSet", I18nManager.Translate("Word.Talent"), talentLevel.ToString()));
+        await arg.SendMsg(I18NManager.Translate("Game.Command.Avatar.AllAvatarsLevelSet", I18NManager.Translate("Word.Rank"), rank.ToString()));
+        await arg.SendMsg(I18NManager.Translate("Game.Command.Avatar.AllAvatarsLevelSet", I18NManager.Translate("Word.Avatar"), level.ToString()));
+        await arg.SendMsg(I18NManager.Translate("Game.Command.Avatar.AllAvatarsLevelSet", I18NManager.Translate("Word.Talent"), talentLevel.ToString()));
  
         // sync
         await player.SendPacket(new PacketPlayerSyncScNotify(player.AvatarManager.AvatarData.Avatars));
@@ -295,6 +295,6 @@ public class CommandAvatar : ICommand
         await arg.Target.SendPacket(new PacketAvatarPathChangedNotify((uint)avatarId, (MultiPathAvatarType)pathId));
         await arg.Target.SendPacket(new PacketPlayerSyncScNotify(avatar));
 
-        // arg.SendMsg(I18nManager.Translate("Game.Command.Avatar.AvatarLevelSet", avatar.Excel?.Name?.Replace("{NICKNAME}", arg.Target.Player!.Data.Name) ?? id.ToString(), I18nManager.Translate("Word.Avatar"), level.ToString()));
+        // arg.SendMsg(I18NManager.Translate("Game.Command.Avatar.AvatarLevelSet", avatar.Excel?.Name?.Replace("{NICKNAME}", arg.Target.Player!.Data.Name) ?? id.ToString(), I18NManager.Translate("Word.Avatar"), level.ToString()));
     }
 }
