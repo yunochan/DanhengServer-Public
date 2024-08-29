@@ -81,7 +81,7 @@ public class ServerOption
     public bool EnableMission { get; set; } = true; // experimental
     public bool AutoLightSection { get; set; } = true;
     public string Language { get; set; } = "EN";
-    public List<string> DefaultPermissions { get; set; } = ["*"];
+    public HashSet<string> DefaultPermissions { get; set; } = ["*"];
     public int ThresholdCount { get; set; } = 5; // Limit logins
     public int MaxPlayers { get; set; } = -1; // Limit Oline Players
     public ServerAnnounce ServerAnnounce { get; set; } = new();

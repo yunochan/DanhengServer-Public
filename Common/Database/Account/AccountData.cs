@@ -42,39 +42,33 @@ public class AccountData : BaseDatabaseDataHelper
     public string GenerateDispatchToken()
     {
         DispatchToken = Crypto.CreateSessionKey(Uid.ToString());
-        DatabaseHelper.Instance?.UpdateInstance(this);
         return DispatchToken;
     }
 
     public string GenerateComboToken()
     {
         ComboToken = Crypto.CreateSessionKey(Uid.ToString());
-        DatabaseHelper.Instance?.UpdateInstance(this);
         return ComboToken;
     }
 
     public void SetIsBan(bool isBan)
     {
         IsBan = isBan;
-        DatabaseHelper.Instance?.UpdateInstance(this);
     }
 
     public void SetIP(string? ip)
     {
         IP = ip;
-        DatabaseHelper.Instance?.UpdateInstance(this);
     }
 
     public void SetCount(int? count)
     {
         Count = count ?? 0;
-        DatabaseHelper.Instance?.UpdateInstance(this);
     }
 
     public void SetBanMessage(string? msg)
     {
         BanMsg = msg;
-        DatabaseHelper.Instance?.UpdateInstance(this);
     }
     
 }

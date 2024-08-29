@@ -122,9 +122,7 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
             mail.IsRead = true;
             attachments.Add(mail);
         }
-
-        DatabaseHelper.Instance?.UpdateInstance(MailData);
-
+        
         return attachments;
     }
 

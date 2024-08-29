@@ -5,7 +5,7 @@ using EggLink.DanhengServer.Util;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("give", "Game.Command.Give.Desc", "Game.Command.Give.Usage")]
+[CommandInfo("give", "Game.Command.Give.Desc", "Game.Command.Give.Usage", ["g"])]
 public class CommandGive : ICommand
 {
     [CommandDefault]
@@ -29,20 +29,20 @@ public class CommandGive : ICommand
         var player = arg.Target?.Player;
         if (player == null)
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.PlayerNotFound"));
             return;
         }
 
         if (arg.BasicArgs.Count == 0)
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
         GameData.ItemConfigData.TryGetValue(arg.GetInt(0), out var itemData);
         if (itemData == null)
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Give.ItemNotFound"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Give.ItemNotFound"));
             return;
         }
 
@@ -55,14 +55,14 @@ public class CommandGive : ICommand
         if (!int.TryParse(str, out var amount) || !int.TryParse(levelStr, out var level) ||
             !int.TryParse(rankStr, out var rank))
         {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
         await player.InventoryManager!.AddItem(arg.GetInt(0), amount, rank: Math.Min(rank, 5),
             level: Math.Max(Math.Min(level, 80), 1));
 
-        await arg.SendMsg(I18nManager.Translate("Game.Command.Give.GiveItem", player.Uid.ToString(), amount.ToString(),
+        await arg.SendMsg(I18NManager.Translate("Game.Command.Give.GiveItem", player.Uid.ToString(), amount.ToString(),
             itemData.Name ?? itemData.ID.ToString()));
     }
 
@@ -71,14 +71,14 @@ public class CommandGive : ICommand
          var player = arg.Target?.Player;
          if (player == null)
          {
-             await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.PlayerNotFound"));
+             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.PlayerNotFound"));
              return;
          }
          //debug
         //await arg.SendMsg($"参数合计:{arg.BasicArgs.Count}");
          if (arg.BasicArgs.Count < 3)
          {
-             await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
              return;
          }
 
@@ -90,7 +90,7 @@ public class CommandGive : ICommand
          mainAffixStr ??= "1";
          if (!int.TryParse(str, out var amount) || !int.TryParse(levelStr, out var level) || !int.TryParse(mainAffixStr, out var mainAffixId))
          {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
          }
 
@@ -98,7 +98,7 @@ public class CommandGive : ICommand
          GameData.ItemConfigData.TryGetValue(int.Parse(arg.BasicArgs[0]), out var itemConfigExcel);
          if (itemConfig == null || itemConfigExcel == null)
          {
-            await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicNotFound"));
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Relic.RelicNotFound"));
             return;
          }
 
@@ -106,7 +106,7 @@ public class CommandGive : ICommand
          GameData.RelicMainAffixData.TryGetValue(itemConfig.MainAffixGroup, out var mainAffixConfig);
          if (subAffixConfig == null || mainAffixConfig == null)
          {
-             await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicNotFound"));
+             await arg.SendMsg(I18NManager.Translate("Game.Command.Relic.RelicNotFound"));
              return;
          }
 
@@ -114,7 +114,7 @@ public class CommandGive : ICommand
          var startIndex = 0;
          if (!mainAffixConfig.ContainsKey(mainAffixId))
         {
-            await arg.SendMsg(I18nManager.Translate("ERROR: 非法的主属性，请参考官服遗器"));
+            await arg.SendMsg(I18NManager.Translate("ERROR: 非法的主属性，请参考官服遗器"));
             return;
         }
             startIndex++;
@@ -127,12 +127,12 @@ public class CommandGive : ICommand
              var subAffix = arg.BasicArgs[i].Split(':');
              if (subAffix.Length != 2 || !int.TryParse(subAffix[0], out var subId) || !int.TryParse(subAffix[1], out var subLevel))
              {
-                 await arg.SendMsg(I18nManager.Translate("Game.Command.Notice.InvalidArguments"));
+                 await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
                  return;
              }
              if (!subAffixConfig.ContainsKey(subId))
              {
-                 await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.InvalidSubAffixId"));
+                 await arg.SendMsg(I18NManager.Translate("Game.Command.Relic.InvalidSubAffixId"));
                  return;
              }
              subAffixes.Add((subId, subLevel));
@@ -181,6 +181,6 @@ public class CommandGive : ICommand
 
          for (var i = 0; i < amount; i++) await player.InventoryManager!.AddItem(itemData, false);
 
-         await arg.SendMsg(I18nManager.Translate("Game.Command.Relic.RelicGiven", player.Uid.ToString(), amount.ToString(), itemConfigExcel.Name ?? itemData.ItemId.ToString(), itemData.MainAffix.ToString()));
+         await arg.SendMsg(I18NManager.Translate("Game.Command.Relic.RelicGiven", player.Uid.ToString(), amount.ToString(), itemConfigExcel.Name ?? itemData.ItemId.ToString(), itemData.MainAffix.ToString()));
      }
 }
