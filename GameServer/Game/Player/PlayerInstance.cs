@@ -387,6 +387,9 @@ public class PlayerInstance(PlayerData data)
         if (MissionManager != null)
             await MissionManager.HandleAllFinishType();
 
+        if (SceneInstance != null)
+            await SceneInstance.OnHeartBeat();
+
         DatabaseHelper.ToSaveUidList.SafeAdd(Uid);
     }
 
