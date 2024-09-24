@@ -13,7 +13,7 @@ public class PacketServerAnnounceNotify : BasePacket
         proto.AnnounceDataList.Add(new AnnounceData
         {
             BeginTime = Extensions.GetUnixSec(),
-            EndTime = Extensions.GetUnixSec() + 3600,
+            EndTime = Extensions.GetUnixSec() + 60 * ConfigManager.Config.ServerOption.ServerAnnounce.Duration ,
             ConfigId = 1,
             APHJCAKPKLI = ConfigManager.Config.ServerOption.ServerAnnounce.AnnounceContent
         });

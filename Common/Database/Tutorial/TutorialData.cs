@@ -6,5 +6,6 @@ namespace EggLink.DanhengServer.Database.Tutorial;
 [SugarTable("Tutorial")]
 public class TutorialData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public Dictionary<int, TutorialStatus> Tutorials { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+    public Dictionary<int, TutorialStatus> Tutorials { get; set; } = [];
 }

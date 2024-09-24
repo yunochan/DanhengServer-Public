@@ -24,8 +24,9 @@ public class CommandManager
     {
         Instance = this;
         foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-            if (typeof(ICommand).IsAssignableFrom(type) && !type.IsAbstract)
-                RegisterCommand(type);
+        {
+            if (typeof(ICommand).IsAssignableFrom(type) && !type.IsAbstract) RegisterCommand(type);
+        }
 
         Logger.Info(I18NManager.Translate("Server.ServerInfo.RegisterItem", Commands.Count.ToString(),
             I18NManager.Translate("Word.Command")));

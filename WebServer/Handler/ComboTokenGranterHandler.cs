@@ -14,7 +14,7 @@ public class ComboTokenGranterHandler
         if (tokenData == null)
         {
             res.retcode = -202;
-            res.message = "Invalid login data";
+            res.message = "ComboToken验证失败";
             return new JsonResult(res);
         }
 
@@ -22,7 +22,7 @@ public class ComboTokenGranterHandler
         if (account == null)
         {
             res.retcode = -201;
-            res.message = "Game account cache information error";
+            res.message = "账号缓存错误";
             return new JsonResult(res);
         }
 

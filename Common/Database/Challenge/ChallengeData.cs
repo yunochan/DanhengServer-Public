@@ -7,11 +7,14 @@ namespace EggLink.DanhengServer.Database.Challenge;
 [SugarTable("Challenge")]
 public class ChallengeData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public Dictionary<int, ChallengeHistoryData> History { get; set; } = new();
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(10200)")]
+    public Dictionary<int, ChallengeHistoryData> History { get; set; } = new();
 
-    [SugarColumn(IsJson = true)] public ChallengeInstanceData Instance { get; set; } = new();
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(8000)")]
+    public ChallengeInstanceData Instance { get; set; } = new();
 
-    [SugarColumn(IsJson = true)] public Dictionary<int, ChallengeGroupReward> TakenRewards { get; set; } = new();
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(2040)")]
+    public Dictionary<int, ChallengeGroupReward> TakenRewards { get; set; } = new();
 
     public void delete(int ChallengeId)
     {

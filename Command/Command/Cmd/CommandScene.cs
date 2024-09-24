@@ -35,8 +35,8 @@ public class CommandScene : ICommand
 
         var scene = arg.Target!.Player!.SceneInstance!;
         EntityProp? prop = null;
-        foreach (var entity in scene.GetEntitiesInGroup<EntityProp>(arg.GetInt(0)))
-            if (entity.PropInfo.ID == arg.GetInt(1))
+        foreach (var entity in scene.GetEntitiesInGroup<EntityProp>(arg.GetInt(1)))
+            if (entity.PropInfo.ID == arg.GetInt(2))
             {
                 prop = entity;
                 break;
@@ -63,7 +63,7 @@ public class CommandScene : ICommand
         }
 
         var scene = arg.Target!.Player!.SceneInstance!;
-        scene.Entities.TryGetValue(arg.GetInt(0), out var entity);
+        scene.Entities.TryGetValue(arg.GetInt(1), out var entity);
         if (entity == null)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Scene.EntityNotFound"));
@@ -100,15 +100,15 @@ public class CommandScene : ICommand
             return;
         }
 
-        if (arg.GetInt(0) == 0)
+        if (arg.GetInt(1) == 0)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
         var player = arg.Target!.Player!;
-        await player.EnterScene(arg.GetInt(0), 0, true);
-        await arg.SendMsg(I18NManager.Translate("Game.Command.Scene.SceneChanged", arg.GetInt(0).ToString()));
+        await player.EnterScene(arg.GetInt(1), 0, true);
+        await arg.SendMsg(I18NManager.Translate("Game.Command.Scene.SceneChanged", arg.GetInt(1).ToString()));
     }
 
     [CommandMethod("0 reload")]
@@ -134,7 +134,7 @@ public class CommandScene : ICommand
             return;
         }
 
-        var floorId = arg.GetInt(0);
+        var floorId = arg.GetInt(1);
         if (floorId == 0)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));

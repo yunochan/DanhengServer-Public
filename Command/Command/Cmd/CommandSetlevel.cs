@@ -23,7 +23,7 @@ public class CommandSetlevel : ICommand
         }
 
         var player = arg.Target.Player!;
-        var level = Math.Max(Math.Min(arg.GetInt(0), 70), 1);
+        var level = Math.Max(Math.Min(arg.GetInt(1), 70), 1);
         player.Data.Level = level;
         player.OnLevelChange();
         player.Data.Exp = GameData.GetPlayerExpRequired(level);

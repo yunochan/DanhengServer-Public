@@ -13,27 +13,57 @@ public class CommandArg
         var args = raw.Split(' ');
         foreach (var arg in args)
         {
-            if (string.IsNullOrEmpty(arg)) continue;
-            var character = arg[0];
-            if (!int.TryParse(character.ToString(), out var _) && character != '-')
+            if (string.IsNullOrEmpty(arg))
             {
-                try
-                {
-                    CharacterArgs.Add(arg[..1], arg[1..]);
-                    Args.Add(arg);
-                }
-                catch
-                {
-                    BasicArgs.Add(arg);
-                    Args.Add(arg);
-                }
+               continue;
+            }
+      
+            if (arg.Length > 1)
+            {
+               // 查找第一个数字的位置
+               int index = arg.IndexOfAny("0123456789".ToCharArray());
+               
+               if (index > 0 && index < arg.Length)
+               {
+                  var key = arg.Substring(0, index); // 字符部分
+                  var value = arg.Substring(index); // 数字部分
+      
+                  if (!CharacterArgs.ContainsKey(key))
+                  {
+                     CharacterArgs[key] = value;
+                     Args.Add(arg);
+                  }
+               }
+               else
+               {
+                  // 如果没有数字部分，处理为单字符键
+                  if (arg.Length == 1 && !int.TryParse(arg[0].ToString(), out _))
+                  {
+                     CharacterArgs[arg] = ""; 
+                     Args.Add(arg);
+                  }
+                  else
+                  {
+                     BasicArgs.Add(arg);
+                     Args.Add(arg);
+                  }
+               }
             }
             else
             {
-                BasicArgs.Add(arg);
-                Args.Add(arg);
+               // 处理单个字符的参数
+               if (arg.Length == 1 && !int.TryParse(arg[0].ToString(), out _))
+               {
+                  CharacterArgs[arg] = "";
+                  Args.Add(arg);
+               }
+               else
+               {
+                  BasicArgs.Add(arg);
+                  Args.Add(arg);
+               }
             }
-        }
+         }
 
         if (con != null) Target = con;
 

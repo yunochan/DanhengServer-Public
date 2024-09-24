@@ -1,9 +1,11 @@
 ﻿using EggLink.DanhengServer.Data;
 using EggLink.DanhengServer.Database;
 using EggLink.DanhengServer.Database.Message;
+using EggLink.DanhengServer.Database.Friend;
 using EggLink.DanhengServer.Enums.Mission;
 using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.PlayerSync;
+using EggLink.DanhengServer.GameServer.Server.Packet.Send.Chat;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Util;
 
@@ -11,6 +13,7 @@ namespace EggLink.DanhengServer.GameServer.Game.Message;
 
 public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
 {
+    private static Random _random = new Random();
     public MessageData Data { get; } = DatabaseHelper.Instance!.GetInstanceOrCreateNew<MessageData>(player.Uid);
     public List<MessageSectionData> PendingMessagePerformSectionList { get; private set; } = [];
 
@@ -79,10 +82,11 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
         GameData.MessageSectionConfigData.TryGetValue(sectionId, out var sectionConfig);
         if (sectionConfig == null) return;
 
-        if (Data.Groups.TryGetValue(sectionConfig.GroupID, out var group) &&
-            group.Sections.Find(x => x.SectionId == sectionId) != null)
+        if (Data.Groups.TryGetValue(sectionConfig.GroupID, out var group) && group.Sections.Find(x => x.SectionId == sectionId) != null)
+        {
             // already exist
             return;
+        }
 
         foreach (var item in sectionConfig.StartMessageItemIDList) await AddMessageItem(item);
     }
@@ -193,6 +197,90 @@ public class MessageManager(PlayerInstance player) : BasePlayerManager(player)
             await Player.SendPacket(notify);
         }
     }
+    
+    /********************
+     * Sending messages
+     ********************/
+     public async ValueTask SendPrivateMessageFromServer(int recvUid, int sendUid, string? message = null, int? extraId = null){
+
+        // Sanity checks.
+        if (Player == null) {
+            return;
+        }
+
+        var data = new FriendChatData
+        {
+            SendUid = sendUid,
+            ReceiveUid = recvUid,
+            Message = message ?? "",
+            ExtraId = extraId ?? 0,
+            SendTime = Extensions.GetUnixSec()
+        };
+
+        if (Player.FriendManager?.FriendData?.ChatHistory != null)
+        {
+            if (!Player.FriendManager.FriendData.ChatHistory.TryGetValue(recvUid, out var value))
+            {
+                Player.FriendManager.FriendData.ChatHistory[recvUid] = new FriendChatHistory();
+                value = Player.FriendManager.FriendData.ChatHistory[recvUid];
+            }
+            value.MessageList.Add(data);
+        }
+
+        PacketRevcMsgScNotify notify;
+        if (message != null)
+        {
+            notify = new PacketRevcMsgScNotify((uint)recvUid, (uint)sendUid, message);
+        }
+        else
+        {
+            notify = new PacketRevcMsgScNotify((uint)recvUid, (uint)sendUid, (uint)(extraId ?? 0));
+        }
+
+        await Player.SendPacket(notify);
+        await Player.FriendManager!.ReceiveMessage(sendUid, recvUid, message, extraId);
+    }
+
+    /********************
+     * Welcome messages
+     ********************/
+    public async ValueTask SendServerWelcomeMessages() {
+        if (Player == null)
+        {
+            return;
+        }
+        var welcomeMessage = ConfigManager.Config.ServerOption.WelcomeMessage;
+        if (!string.IsNullOrEmpty(welcomeMessage.Message)) {
+            await SendPrivateMessageFromServer(
+                Player.Uid,
+                ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                welcomeMessage.Message,
+                null
+            );
+        }
+        if (welcomeMessage.Emotes != null && welcomeMessage.Emotes.Length > 0) {
+            int randomEmote = GetRandomEmote(welcomeMessage.Emotes);
+            await SendPrivateMessageFromServer(
+                Player.Uid,
+                ConfigManager.Config.ServerOption.ServerProfile.Uid,
+                null,
+                randomEmote
+            );
+        }
+
+    }
+
+    public static int GetRandomEmote(int[] emotes)
+    {
+        if (emotes == null || emotes.Length == 0)
+        {
+            throw new ArgumentException("Emotes array cannot be null or empty.");
+        }
+
+        int randomIndex = _random.Next(emotes.Length);
+        return emotes[randomIndex];
+    }
+
 
     #endregion
 }

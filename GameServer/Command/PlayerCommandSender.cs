@@ -19,8 +19,16 @@ public class PlayerCommandSender(PlayerInstance player) : ICommandSender
 
     public bool HasPermission(string permission)
     {
-        var account = DatabaseHelper.Instance!.GetInstance<AccountData>(Player.Uid)!;
-        return account.Permissions!.Contains(permission);
+            // Default permissions
+            var defaultPermissions = ConfigManager.Config.ServerOption.DefaultPermissions;
+
+            if (defaultPermissions.Contains("*") || defaultPermissions.Contains(permission)) 
+            {
+                return true;
+            }
+
+            var account = DatabaseHelper.Instance!.GetInstance<AccountData>(Player.Uid)!;
+            return account.Permissions != null && account.Permissions.Contains(permission);
     }
 
     public int GetSender()
