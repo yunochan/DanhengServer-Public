@@ -1,6 +1,6 @@
 ﻿namespace EggLink.DanhengServer.Proto
 {
-    public class CmdIds
+    public class CmdId
     {
         // None
         public const int None = 0;
