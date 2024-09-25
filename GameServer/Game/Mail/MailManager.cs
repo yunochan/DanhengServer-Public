@@ -80,6 +80,7 @@ public class MailManager(PlayerInstance player) : BasePlayerManager(player)
             SenderName = welcomeMail.SenderName,
             Content = welcomeMail.Content,
             Title = welcomeMail.Title,
+            IsStar = true,
             TemplateID = 1,
             SendTime = DateTime.Now.ToUnixSec(),
             ExpireTime = DateTime.Now.AddDays(welcomeMail.ExpiredDay).ToUnixSec(),
