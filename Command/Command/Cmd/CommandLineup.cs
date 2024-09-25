@@ -15,7 +15,7 @@ public class CommandLineup : ICommand
             return;
         }
 
-        var count = arg.GetInt(0);
+        var count = arg.GetInt(1);
         await arg.Target.Player!.LineupManager!.GainMp(count == 0 ? 2 : count);
         await arg.SendMsg(I18NManager.Translate("Game.Command.Lineup.PlayerGainedMp", count.ToString()));
     }

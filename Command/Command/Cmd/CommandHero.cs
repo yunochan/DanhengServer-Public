@@ -17,13 +17,13 @@ public class CommandHero : ICommand
             return;
         }
 
-        if (arg.BasicArgs.Count < 1)
+        if (arg.BasicArgs.Count < 2)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
-        var gender = (Gender)arg.GetInt(0);
+        var gender = (Gender)arg.GetInt(1);
         if (gender == Gender.None)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Hero.GenderNotSpecified"));
@@ -47,13 +47,13 @@ public class CommandHero : ICommand
             return;
         }
 
-        if (arg.BasicArgs.Count < 1)
+        if (arg.BasicArgs.Count < 2)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));
             return;
         }
 
-        var gender = (MultiPathAvatarTypeEnum)arg.GetInt(0);
+        var gender = (MultiPathAvatarTypeEnum)arg.GetInt(1);
         if (gender == 0)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Hero.HeroTypeNotSpecified"));

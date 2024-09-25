@@ -16,7 +16,7 @@ public class CommandRogue : ICommand
             return;
         }
 
-        var count = arg.GetInt(0);
+        var count = arg.GetInt(1);
         var instance = arg.Target.Player!.RogueManager?.GetRogueInstance();
         if (instance == null)
         {
@@ -44,7 +44,7 @@ public class CommandRogue : ICommand
             return;
         }
 
-        var id = arg.GetInt(0);
+        var id = arg.GetInt(1);
 
         if (id == -1)
         {
@@ -89,7 +89,7 @@ public class CommandRogue : ICommand
             return;
         }
 
-        var id = arg.GetInt(0);
+        var id = arg.GetInt(1);
 
         GameData.RogueMiracleData.TryGetValue(id, out var miracle);
         if (miracle == null)
@@ -120,7 +120,7 @@ public class CommandRogue : ICommand
             return;
         }
 
-        var id = arg.GetInt(0);
+        var id = arg.GetInt(1);
         if (id == -1)
         {
             foreach (var enhance in GameData.RogueBuffData.Values) await instance.EnhanceBuff(enhance.MazeBuffID);

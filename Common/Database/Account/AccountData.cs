@@ -12,8 +12,16 @@ public class AccountData : BaseDatabaseDataHelper
 
     [SugarColumn(IsNullable = true)] public string? DispatchToken { get; set; }
 
-    [SugarColumn(IsNullable = true)]
+    [SugarColumn(IsNullable = true)] 
     public string? Permissions { get; set; } // type: permission1,permission2,permission3...
+    
+    [SugarColumn(DefaultValue = "false")] public bool IsBan { get; set; }
+
+    [SugarColumn(IsNullable = true)] public string? IP { get; set; }
+
+    [SugarColumn(IsNullable = true)] public int? Count { get; set; }
+
+    [SugarColumn(IsNullable = true)] public string? BanMsg { get; set; }
 
     public static AccountData? GetAccountByUserName(string username)
     {
@@ -42,4 +50,25 @@ public class AccountData : BaseDatabaseDataHelper
         ComboToken = Crypto.CreateSessionKey(Uid.ToString());
         return ComboToken;
     }
+
+    public void SetIsBan(bool isBan)
+    {
+        IsBan = isBan;
+    }
+
+    public void SetIP(string? ip)
+    {
+        IP = ip;
+    }
+
+    public void SetCount(int? count)
+    {
+        Count = count ?? 0;
+    }
+
+    public void SetBanMessage(string? msg)
+    {
+        BanMsg = msg;
+    }
+    
 }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using EggLink.DanhengServer.Database.Account;
 using EggLink.DanhengServer.Database.Quests;
+using EggLink.DanhengServer.Database.UserManagement;
 using EggLink.DanhengServer.Internationalization;
 using EggLink.DanhengServer.Util;
 using SqlSugar;
@@ -77,7 +78,7 @@ public class DatabaseHelper
 
         var types = assembly.GetTypes().Where(t => t.IsSubclassOf(baseType));
 
-        var list = sqlSugarScope.Queryable<AccountData>()
+                var list = sqlSugarScope.Queryable<AccountData>()
             .Select(x => x)
             .ToList();
 
@@ -110,6 +111,11 @@ public class DatabaseHelper
         {
         }
 
+        // Initialize special tables
+        InitializeSpecialTable<BlackList>();
+        InitializeSpecialTable<UserActivity>();
+
+
         LastSaveTick = DateTime.UtcNow.Ticks;
 
         SaveThread = new Thread(() =>
@@ -138,6 +144,19 @@ public class DatabaseHelper
             }
 
             value.Add(inst); // add to the map
+        }
+    }
+
+    public static void InitializeSpecialTable<T>() where T : class, new()
+    {
+        try
+        {
+            sqlSugarScope?.CodeFirst.InitTables<T>();
+            logger.Info($"Table {typeof(T).Name} initialized successfully.");
+        }
+        catch (Exception e)
+        {
+            logger.Error($"An error occurred while initializing the table {typeof(T).Name}", e);
         }
     }
 
@@ -267,13 +286,13 @@ public class DatabaseHelper
             .Add((instance as BaseDatabaseDataHelper)!); // add to the map
     }
 
-    public void CalcSaveDatabase() // per 5 min
+    public void CalcSaveDatabase() // per 30 s
     {
-        if (LastSaveTick + TimeSpan.TicksPerMinute * 5 > DateTime.UtcNow.Ticks) return;
+        if (LastSaveTick + TimeSpan.TicksPerSecond * 30 > DateTime.UtcNow.Ticks) return;
         SaveDatabase();
     }
 
-    public void SaveDatabase() // per 5 min
+    public void SaveDatabase() // per 30 s
     {
         try
         {

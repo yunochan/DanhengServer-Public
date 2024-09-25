@@ -14,7 +14,7 @@ public class TokenLoginHandler
         if (account == null || !account?.DispatchToken?.Equals(token) == true)
         {
             res.retcode = -201;
-            res.message = "Game account cache information error";
+            res.message = "DispatchToken验证失败";
         }
         else
         {

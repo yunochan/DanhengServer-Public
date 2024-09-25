@@ -12,11 +12,14 @@ namespace EggLink.DanhengServer.Database.Avatar;
 [SugarTable("Avatar")]
 public class AvatarData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public List<AvatarInfo> Avatars { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "TEXT")]
+    public List<AvatarInfo> Avatars { get; set; } = [];
 
-    [SugarColumn(IsJson = true)] public List<int> AssistAvatars { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(255)")]
+    public List<int> AssistAvatars { get; set; } = [];
 
-    [SugarColumn(IsJson = true)] public List<int> DisplayAvatars { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(255)")]
+    public List<int> DisplayAvatars { get; set; } = [];
 }
 
 public class AvatarInfo

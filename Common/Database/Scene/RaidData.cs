@@ -8,9 +8,10 @@ namespace EggLink.DanhengServer.Database.Scene;
 [SugarTable("RaidData")]
 public class RaidData : BaseDatabaseDataHelper
 {
-    [SugarColumn(IsJson = true)] public Dictionary<int, Dictionary<int, RaidRecord>> RaidRecordDatas { get; set; } = [];
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(16000)")]
+    public Dictionary<int, Dictionary<int, RaidRecord>> RaidRecordDatas { get; set; } = [];
 
-    [SugarColumn(IsJson = true)]
+    [SugarColumn(IsJson = true, ColumnDataType = "VARCHAR(4000)")]
     [Obsolete("Using RaidRecordDatas")]
     public Dictionary<int, RaidRecord> RaidRecordData { get; set; } = [];
 
