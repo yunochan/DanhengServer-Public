@@ -1,7 +1,7 @@
 ﻿using EggLink.DanhengServer.GameServer.Server.Packet.Send.Mail;
+using EggLink.DanhengServer.GameServer.Proto
 using EggLink.DanhengServer.Database.Mail;
 using EggLink.DanhengServer.Kcp;
-using EggLink.DanhengServer.Proto;
 
 namespace EggLink.DanhengServer.GameServer.Server.Packet.Recv.Mail;
 
