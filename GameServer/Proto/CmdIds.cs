@@ -1,4 +1,4 @@
-﻿namespace EggLink.DanhengServer.Server.Packet
+﻿namespace EggLink.DanhengServer.Proto
 {
     public class CmdIds
     {
