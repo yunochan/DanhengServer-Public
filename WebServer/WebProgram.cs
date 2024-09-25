@@ -33,6 +33,16 @@ public class WebProgram
         return b.Build();
     }
 }
+    public static class HttpContextProvider
+    {
+        private static AsyncLocal<HttpContext> _httpContext = new AsyncLocal<HttpContext>();
+
+        public static HttpContext HttpContext
+        {
+            get => _httpContext.Value ?? throw new InvalidOperationException("HttpContext is not set.");
+            set => _httpContext.Value = value;
+        }
+    }
 
 public class Startup
 {
@@ -50,6 +60,8 @@ public class Startup
         });
 
         services.AddControllers();
+        services.AddHttpContextAccessor();
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -58,6 +70,7 @@ public class Startup
 
         app.Use(async (context, next) =>
         {
+            HttpContextProvider.HttpContext = context;
             using var buffer = new MemoryStream();
             var request = context.Request;
             var response = context.Response;
