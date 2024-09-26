@@ -5,5 +5,5 @@ public class CmdId
     public const int None = 0;
 
     // Packet
-    public const int TakeMailAttachmentCsReq = 839;
+    public const int ClientDownloadDataScNotify = 15;
 }

@@ -7,7 +7,8 @@ namespace EggLink.DanhengServer.Command.Command.Cmd;
     name: "help", 
     description: "Game.Command.Help.Desc", 
     usage: "Game.Command.Help.Usage", 
-    alias: ["h"]
+    alias: ["h"],
+    permission: "player.help"
 )]
 public class CommandHelp : ICommand
 {
