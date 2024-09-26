@@ -3,8 +3,7 @@ using Google.Protobuf;
 using System;
 using System.IO;
 
-namespace EggLink.DanhengServer.Server.Packet
-{
+namespace EggLink.DanhengServer.GameServer.Protoc;
     public class BasePacket
     {
         private const uint HEADER_CONST = 2641676052u;
@@ -48,4 +47,3 @@ namespace EggLink.DanhengServer.Server.Packet
             return memoryStream.ToArray(); // 返回构建的字节数组
         }
     }
-}
