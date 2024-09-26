@@ -1,11 +1,12 @@
 using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.Kcp;
 using EggLink.DanhengServer.GameServer.Protoc;
+using Google.Protobuf;
 
 namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Windy;
 public class PacketClientDownloadDataScNotify :BasePacket 
 {
-    public PacketClientDownloadDataScNotify( byte[] data , PlayerInstance player) : base(CmdId.ClientObjDownloadDataScNotify)
+    public PacketClientDownloadDataScNotify( byte[] data , PlayerInstance player) : base(CmdId.ClientDownloadDataScNotify)
     {
         ClientDownloadData downloadData = new ClientDownloadData
 		{
