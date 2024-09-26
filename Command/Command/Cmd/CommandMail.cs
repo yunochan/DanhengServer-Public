@@ -2,7 +2,12 @@
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("mail", "Game.Command.Mail.Desc", "Game.Command.Mail.Usage", permission: "egglink.manage")]
+[CommandInfo(
+    name: "mail", 
+    description: "Game.Command.Mail.Desc", 
+    usage: "Game.Command.Mail.Usage", 
+    permission: "server.mail"
+)]
 public class CommandMail : ICommand
 {
     [CommandDefault]

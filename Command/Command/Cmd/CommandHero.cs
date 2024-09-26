@@ -5,7 +5,12 @@ using EggLink.DanhengServer.Proto;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("hero", "Game.Command.Hero.Desc", "Game.Command.Hero.Usage")]
+[CommandInfo(
+    name: "hero", 
+    description: "Game.Command.Hero.Desc", 
+    usage: "Game.Command.Hero.Usage", 
+    permission: "player.hero"
+)]
 public class CommandHero : ICommand
 {
     [CommandMethod("0 gender")]

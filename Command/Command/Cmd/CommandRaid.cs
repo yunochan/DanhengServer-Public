@@ -2,7 +2,12 @@
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("raid", "Game.Command.Raid.Desc", "Game.Command.Raid.Usage", permission: "")]
+[CommandInfo(
+    name: "raid", 
+    description: "Game.Command.Raid.Desc", 
+    usage: "Game.Command.Raid.Usage", 
+    permission: "player.raid"
+)]
 public class CommandRaid : ICommand
 {
     [CommandMethod("0 leave")]

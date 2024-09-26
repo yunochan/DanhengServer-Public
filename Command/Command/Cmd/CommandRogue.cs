@@ -4,7 +4,13 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("rogue", "Game.Command.Rogue.Desc", "Game.Command.Rogue.Usage", ["r"])]
+[CommandInfo(
+    name: "rogue", 
+    description: "Game.Command.Rogue.Desc", 
+    usage: "Game.Command.Rogue.Usage", 
+    alias: ["r"],
+    permission: "player.rogue"
+)]
 public class CommandRogue : ICommand
 {
     [CommandMethod("0 money")]

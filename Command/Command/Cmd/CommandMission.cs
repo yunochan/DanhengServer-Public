@@ -4,7 +4,13 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("mission", "Game.Command.Mission.Desc", "Game.Command.Mission.Usage", ["m"])]
+[CommandInfo(
+    name: "mission", 
+    description: "Game.Command.Mission.Desc", 
+    usage: "Game.Command.Mission.Usage", 
+    alias: ["m"],
+    permission: "player.mission"
+)]
 public class CommandMission : ICommand
 {
     [CommandMethod("0 pass")]

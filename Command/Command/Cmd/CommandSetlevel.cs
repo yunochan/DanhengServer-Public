@@ -4,7 +4,13 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("setlevel", "Game.Command.Setlevel.Desc", "Game.Command.Setlevel.Usage", ["level"])]
+[CommandInfo(
+    name: "setlevel", 
+    description: "Game.Command.Setlevel.Desc", 
+    usage: "Game.Command.Setlevel.Usage", 
+    alias: ["level"],
+    permission: "player.setlevel"
+)]
 public class CommandSetlevel : ICommand
 {
     [CommandDefault]

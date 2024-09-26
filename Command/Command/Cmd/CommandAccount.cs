@@ -3,7 +3,12 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("account", "Game.Command.Account.Desc", "Game.Command.Account.Usage", permission: "egglink.manage")]
+[CommandInfo(
+    name: "account", 
+    description: "Game.Command.Account.Desc", 
+    usage: "Game.Command.Account.Usage", 
+    permission: "server.account"
+)]
 public class CommandAccount : ICommand
 {
     [CommandMethod("create")]

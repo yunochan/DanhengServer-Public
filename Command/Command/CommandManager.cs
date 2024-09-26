@@ -204,7 +204,7 @@ public class CommandManager
                 // judge permission
                 if (arg.Target?.Player?.Uid != sender.GetSender() && !sender.HasPermission("command.others"))
                 {
-                    sender.SendMsg(I18NManager.Translate("Game.Command.Notice.NoPermission"));
+                    sender.SendMsg("你没有权限对其他玩家使用该指令");
                     return;
                 }
 
@@ -214,6 +214,7 @@ public class CommandManager
 
                 if (!sender.HasPermission(info.Permission))
                 {
+                    sender.SendMsg($"{info.Permission}");
                     sender.SendMsg(I18NManager.Translate("Game.Command.Notice.NoPermission"));
                     return;
                 }

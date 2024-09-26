@@ -4,8 +4,12 @@ using EggLink.DanhengServer.Internationalization;
 using EggLink.DanhengServer.Util;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
-
-[CommandInfo("unstuck", "Game.Command.Unstuck.Desc", "Game.Command.Unstuck.Usage")]
+[CommandInfo(
+    name: "unstuck", 
+    description: "Game.Command.Unstuck.Desc", 
+    usage: "Game.Command.Unstuck.Usage", 
+    permission: "player.unstuck"
+)]
 public class CommandUnstuck : ICommand
 {
     [CommandDefault]

@@ -6,7 +6,6 @@ namespace EggLink.DanhengServer.Database.Account;
 [SugarTable("Account")]
 public class AccountData : BaseDatabaseDataHelper
 {
-    public static Logger logger = new("AccountData");
     public string? Username { get; set; }
 
     [SugarColumn(IsNullable = true)] public string? ComboToken { get; set; }
@@ -29,15 +28,7 @@ public class AccountData : BaseDatabaseDataHelper
         AccountData? result = null;
         DatabaseHelper.GetAllInstance<AccountData>()?.ForEach(account =>
         {
-            if (account.Username == username) 
-            {
-                logger.Info($"{username} 在Account表成功匹配");
-                result = account;
-            }
-            else
-            {
-                logger.Info($"传入的 {username} 与 Account表中的 {account.Username} 不匹配");
-            }
+            if (account.Username == username) result = account;
         });
         return result;
     }

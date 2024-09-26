@@ -4,7 +4,13 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("scene", "Game.Command.Scene.Desc", "Game.Command.Scene.Usage")]
+[CommandInfo(
+    name: "scene", 
+    description: "Game.Command.Scene.Desc", 
+    usage: "Game.Command.Scene.Usage", 
+    alias: ["sc"],
+    permission: "player.scene"
+)]
 public class CommandScene : ICommand
 {
     [CommandMethod("0 group")]

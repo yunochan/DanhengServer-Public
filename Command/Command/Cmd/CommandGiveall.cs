@@ -7,7 +7,13 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("giveall", "Game.Command.GiveAll.Desc", "Game.Command.GiveAll.Usage", ["ga"])]
+[CommandInfo(
+    name: "giveall", 
+    description: "Game.Command.GiveAll.Desc", 
+    usage: "Game.Command.GiveAll.Usage", 
+    alias: ["ga"], 
+    permission: "player.giveall"
+)]
 public class CommandGiveall : ICommand
 {
     [CommandMethod("0 avatars")]

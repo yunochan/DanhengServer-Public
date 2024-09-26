@@ -3,7 +3,12 @@ using EggLink.DanhengServer.Util;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("help", "Game.Command.Help.Desc", "Game.Command.Help.Usage", ["h"])]
+[CommandInfo(
+    name: "help", 
+    description: "Game.Command.Help.Desc", 
+    usage: "Game.Command.Help.Usage", 
+    alias: ["h"]
+)]
 public class CommandHelp : ICommand
 {
     [CommandDefault]

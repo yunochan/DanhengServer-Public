@@ -3,7 +3,12 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("kick", "Game.Command.Kick.Desc", "Game.Command.Kick.Usage", permission: "egglink.manage")]
+[CommandInfo(
+    name: "kick", 
+    description: "Game.Command.Kick.Desc", 
+    usage: "Game.Command.Kick.Usage", 
+    permission: "server.kick"
+)]
 public class CommandKick : ICommand
 {
     [CommandDefault]

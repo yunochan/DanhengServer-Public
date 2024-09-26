@@ -4,7 +4,12 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("reload", "Game.Command.Reload.Desc", "Game.Command.Reload.Usage", permission: "egglink.manage")]
+[CommandInfo(
+    name: "reload", 
+    description: "Game.Command.Reload.Desc", 
+    usage: "Game.Command.Reload.Usage", 
+    permission: "server.reload"
+)]
 public class CommandReload : ICommand
 {
     [CommandMethod("0 banner")]

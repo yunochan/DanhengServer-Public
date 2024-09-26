@@ -5,7 +5,13 @@ using EggLink.DanhengServer.Util;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("give", "Game.Command.Give.Desc", "Game.Command.Give.Usage", ["g"])]
+[CommandInfo(
+    name: "give", 
+    description: "Game.Command.Give.Desc", 
+    usage: "Game.Command.Give.Usage", 
+    alias: ["g"], 
+    permission: "player.give"
+)]
 public class CommandGive : ICommand
 {
     [CommandDefault]

@@ -6,7 +6,13 @@ using EggLink.DanhengServer.Proto;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("unlockall", "Game.Command.UnlockAll.Desc", "Game.Command.UnlockAll.Usage", ["ua"])]
+[CommandInfo(
+    name: "unlockall", 
+    description: "Game.Command.UnlockAll.Desc", 
+    usage: "Game.Command.UnlockAll.Usage", 
+    alias: ["ua"],
+    permission: "player.unlockall"
+)]
 public class CommandUnlockAll : ICommand
 {
     [CommandMethod("0 mission")]

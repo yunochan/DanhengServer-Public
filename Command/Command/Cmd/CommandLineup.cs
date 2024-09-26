@@ -3,7 +3,12 @@ using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("lineup", "Game.Command.Lineup.Desc", "Game.Command.Lineup.Usage")]
+[CommandInfo(
+    name: "lineup", 
+    description: "Game.Command.Lineup.Desc", 
+    usage: "Game.Command.Lineup.Usage", 
+    permission: "player.lineup"
+)]
 public class CommandLineup : ICommand
 {
     [CommandMethod("0 mp")]

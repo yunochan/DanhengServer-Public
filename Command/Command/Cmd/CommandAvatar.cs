@@ -7,7 +7,13 @@ using EggLink.DanhengServer.Proto;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
 
-[CommandInfo("avatar", "Game.Command.Avatar.Desc", "Game.Command.Avatar.Usage", ["av", "ava"])]
+[CommandInfo(
+    name: "avatar", 
+    description: "Game.Command.Avatar.Desc", 
+    usage: "Game.Command.Avatar.Usage", 
+    alias: ["av", "ava"], 
+    permission: "player.avatar"
+)]
 public class CommandAvatar : ICommand
 {
     [CommandMethod("all")]
