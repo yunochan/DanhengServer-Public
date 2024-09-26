@@ -1,4 +1,5 @@
 ﻿using EggLink.DanhengServer.GameServer.Server.Packet.Send.Tutorial;
+namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Windy;
 using EggLink.DanhengServer.Kcp;
 using EggLink.DanhengServer.Util;
 
