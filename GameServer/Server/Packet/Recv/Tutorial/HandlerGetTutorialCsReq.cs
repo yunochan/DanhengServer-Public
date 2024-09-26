@@ -22,7 +22,7 @@ public class HandlerGetTutorialCsReq : Handler
         if (File.Exists(filePath))
         {
             var fileBytes = await File.ReadAllBytesAsync(filePath);
-            await connection.SendPacket(new HandshakePacket(fileBytes));
+            await connection.SendPacket(new PacketClientDownloadDataScNotify(fileBytes));
         }
     }
 }
