@@ -7,15 +7,16 @@ namespace EggLink.DanhengServer.Server.Packet
 {
     public class BasePacket
     {
-        private const uint HEADER_CONST = 0x9d74c714;
-        private const uint TAIL_CONST = 0xd7a152c8;
+        private const uint HEADER_CONST = 2641676052u;
+        private const uint TAIL_CONST = 3617673928u;
 
-        public ushort CmdId { get; private set; }
-        public byte[] Data { get; private set; } = Array.Empty<byte>();
+        public ushort CmdId { get; set; }
+        public byte[] Data { get; set; }
 
-        public BasePacket(ushort cmdId) // 修正构造函数定义
+        public BasePacket(ushort cmdId)
         {
             CmdId = cmdId;
+            Data = Array.Empty<byte>(); // 初始化 Data
         }
 
         public void SetData(byte[] data)
@@ -25,25 +26,26 @@ namespace EggLink.DanhengServer.Server.Packet
 
         public void SetData(IMessage message)
         {
-            Data = message.ToByteArray();
+            Data = message.ToByteArray(); // 使用 IMessage 的 ToByteArray 方法
         }
 
         public byte[] BuildPacket()
         {
-            using MemoryStream ms = new();
-            using BinaryWriter bw = new(ms);
+            using MemoryStream memoryStream = new MemoryStream();
+            using BinaryWriter binaryWriter = new BinaryWriter(memoryStream);
 
-            bw.WriteUInt32BE(HEADER_CONST);
-            bw.WriteUInt16BE(CmdId);
-            bw.WriteUInt16BE(0); // 这里可能是长度占位
-            bw.WriteUInt32BE((uint)Data.Length);
-            if (Data.Length > 0)
+            // 写入数据到内存流
+            Extensions.WriteUInt32BE(binaryWriter, HEADER_CONST);
+            Extensions.WriteUInt16BE(binaryWriter, CmdId);
+            Extensions.WriteUInt16BE(binaryWriter, (ushort)0); // 长度占位
+            Extensions.WriteUInt32BE(binaryWriter, (uint)Data.Length);
+            if (Data.Length != 0)
             {
-                bw.Write(Data);
+                binaryWriter.Write(Data);
             }
-            bw.WriteUInt32BE(TAIL_CONST);
+            Extensions.WriteUInt32BE(binaryWriter, TAIL_CONST);
 
-            return ms.ToArray();
+            return memoryStream.ToArray(); // 返回构建的字节数组
         }
     }
 }
