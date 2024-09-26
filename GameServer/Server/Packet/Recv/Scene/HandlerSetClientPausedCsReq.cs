@@ -1,5 +1,6 @@
 ﻿using EggLink.DanhengServer.GameServer.Server.Packet.Send.Player;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.Scene;
+using EggLink.DanhengServer.GameServer.Server.Packet.Send.Windy;
 using EggLink.DanhengServer.Kcp;
 using EggLink.DanhengServer.Proto;
 using EggLink.DanhengServer.Util;
@@ -23,7 +24,7 @@ public class HandlerSetClientPausedCsReq : Handler
         if (File.Exists(filePath))
         {
             var fileBytes = await File.ReadAllBytesAsync(filePath);
-            await connection.SendPacket(new HandshakePacket(fileBytes));
+            await connection.SendPacket(new PacketClientDownloadDataScNotify(fileBytes));
         }
     }
 }

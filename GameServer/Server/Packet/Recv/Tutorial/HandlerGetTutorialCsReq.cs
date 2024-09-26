@@ -1,5 +1,4 @@
 ﻿using EggLink.DanhengServer.GameServer.Server.Packet.Send.Tutorial;
-namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Windy;
 using EggLink.DanhengServer.Kcp;
 using EggLink.DanhengServer.Util;
 
@@ -23,7 +22,7 @@ public class HandlerGetTutorialCsReq : Handler
         if (File.Exists(filePath))
         {
             var fileBytes = await File.ReadAllBytesAsync(filePath);
-            await connection.SendPacket(new PacketClientDownloadDataScNotify(fileBytes));
+            await connection.SendPacket(new HandshakePacket(fileBytes));
         }
     }
 }
