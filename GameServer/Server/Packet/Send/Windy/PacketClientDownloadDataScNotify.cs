@@ -14,7 +14,7 @@ public class PacketClientDownloadDataScNotify :BasePacket
 			Version = 81u,
 			Time = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds
 		};
-		ClientDownloadDataScNotify proto = new ClientDownloadDataScNotify
+		var proto = new ClientDownloadDataScNotify
 		{
 			DownloadData = downloadData
 		};
