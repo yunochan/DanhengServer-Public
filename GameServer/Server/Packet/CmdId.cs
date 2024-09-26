@@ -1,5 +1,7 @@
-﻿namespace EggLink.DanhengServer.GameServer.Server.Packet;
-public class CmdId
+﻿namespace EggLink.DanhengServer.GameServer.Server.Packet
 {
-    public const int ClientDownloadDataScNotify = 15;
+    public static class CmdId
+    {
+        public static readonly int ClientDownloadDataScNotify = 15;
+    }
 }
