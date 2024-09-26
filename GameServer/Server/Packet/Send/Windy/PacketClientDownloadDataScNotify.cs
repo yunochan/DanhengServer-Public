@@ -5,7 +5,7 @@ using Google.Protobuf;
 namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Windy;
 public class PacketClientDownloadDataScNotify :BasePacket 
 {
-    public PacketClientDownloadDataScNotify( byte[] data , PlayerInstance player) : base(CmdId.ClientDownloadDataScNotify)
+    public PacketClientDownloadDataScNotify( byte[] data , PlayerInstance player) : base(OpCmdid.ClientDownloadDataScNotify)
     {
         ClientDownloadData downloadData = new ClientDownloadData
 		{
