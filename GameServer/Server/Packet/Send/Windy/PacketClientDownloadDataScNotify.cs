@@ -1,6 +1,6 @@
 using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.Kcp;
-using EggLink.DanhengServer.Protoc;
+using EggLink.DanhengServer.GameServer.Protoc;
 
 namespace EggLink.DanhengServer.GameServer.Server.Packet.Send.Windy;
 public class PacketClientDownloadDataScNotify :BasePacket 
