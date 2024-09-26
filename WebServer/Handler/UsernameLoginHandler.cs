@@ -60,6 +60,7 @@ public class UsernameLoginHandler
         }
         else if (accountData == null) // 账号不存在且不允许自动创建用户
         {
+            logger.Warn($"账号 {account} 自动注册失败，因为自动注册已关闭");
             return new JsonResult(new LoginResJson { message = "自动注册已关闭，请手动注册", retcode = -203 });
         }
 

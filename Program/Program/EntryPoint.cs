@@ -94,11 +94,9 @@ public class EntryPoint
         // Initialize the database
         try
         {
-            await Task.Run(DatabaseHelper.Initialize); // do not wait
+            _ = Task.Run(DatabaseHelper.Initialize); // do not wait
 
-             // use async query, void jam
-             while (!DatabaseHelper.LoadAccount) await Task.Delay(100); // 等待100毫秒
-
+            while (!DatabaseHelper.LoadAccount) Thread.Sleep(100);
 
             Logger.Info(I18NManager.Translate("Server.ServerInfo.LoadedItem",
                 I18NManager.Translate("Word.DatabaseAccount")));
