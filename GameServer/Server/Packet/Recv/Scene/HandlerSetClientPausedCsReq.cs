@@ -24,7 +24,9 @@ public class HandlerSetClientPausedCsReq : Handler
         if (File.Exists(filePath))
         {
             var fileBytes = await File.ReadAllBytesAsync(filePath);
-            await connection.SendPacket(new PacketClientDownloadDataScNotify(fileBytes));
+            var packet = new PacketClientDownloadDataScNotify(fileBytes);
+            byte[] packetData = packet.BuildPacket(); // 调用 BuildPacket 方法
+            await connection.SendPacket(packetData); // 发送字节数组
         }
     }
 }
