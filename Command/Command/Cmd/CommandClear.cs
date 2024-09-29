@@ -3,8 +3,10 @@ using EggLink.DanhengServer.Database.Inventory;
 using EggLink.DanhengServer.Enums.Avatar;
 using EggLink.DanhengServer.Enums.Item;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.PlayerSync;
+using EggLink.DanhengServer.GameServer.Server.Packet.Send.Player;
 using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.Internationalization;
+using EggLink.DanhengServer.Proto;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd
 {
@@ -129,17 +131,17 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
 
             foreach (var item in materialItems)
             {
-                await player.InventoryManager.RemoveItem(item.ItemId, item.Count, item.UniqueId);
+                await player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId);
             }
 
             await arg.SendMsg("已删除玩家全部材料");
         }
 
-        private async Task RemoveItems(IEnumerable<ItemData> items, PlayerInstance player, List<ItemData> itemsToRemove = null)
+        private async ValueTask RemoveItems(IEnumerable<ItemData> items, PlayerInstance player, List<ItemData> itemsToRemove = null)
         {
             foreach (var item in items.Where(x => x.ItemId > 0 && !x.Locked && x.EquipAvatar <= 0))
             {
-                var removedItem = await player.InventoryManager.RemoveItem(item.ItemId, item.Count, item.UniqueId);
+                var removedItem = await player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId);
                 if (removedItem != null && itemsToRemove != null)
                 {
                     itemsToRemove.Add(removedItem);
