@@ -16,6 +16,7 @@ namespace EggLink.DanhengServer.GameServer.Game.Inventory;
 
 public class InventoryManager(PlayerInstance player) : BasePlayerManager(player)
 {
+     public static Logger Logger { get; } = new("InventoryManager");
     public InventoryData Data = DatabaseHelper.Instance!.GetInstanceOrCreateNew<InventoryData>(player.Uid);
     
     public InventoryData GetInventoryData(int uid) {
@@ -336,10 +337,18 @@ public class InventoryManager(PlayerInstance player) : BasePlayerManager(player)
     {
         foreach (var item in items.Where(x => x.ItemId > 0 && !x.Locked && x.EquipAvatar <= 0))
         {
-            var removedItem = await Player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId, true);
-            if (removedItem != null && itemsToRemove != null)
+            Logger.Info($"Attempting to remove item: ID={item.ItemId}, Count={item.Count}, UniqueId={item.UniqueId}");
+            var removedItem = await Player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId);
+            if (removedItem != null)
             {
-                itemsToRemove.Add(removedItem);
+                Logger.Info($"Successfully removed item: ID={removedItem.ItemId}, Count={removedItem.Count}, UniqueId={removedItem.UniqueId}");
+                if (itemsToRemove != null)
+                {
+                    itemsToRemove.Add(removedItem);
+                }
+            }
+            else {
+                Logger.Info($"Failed to remove item: ID={item.ItemId}, Count={item.Count}, UniqueId={item.UniqueId}");
             }
         }
     }
