@@ -31,9 +31,9 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             var inventoryData = player.InventoryManager!.GetInventoryData(player.Uid);
             var itemsToRemove = new List<ItemData>();
 
-            await player.InventoryManager!.RemoveItem(inventoryData.EquipmentItems, itemsToRemove);
-            await player.InventoryManager!.RemoveItem(inventoryData.RelicItems, itemsToRemove);
-            await player.InventoryManager!.RemoveItem(inventoryData.MaterialItems);
+            await player.InventoryManager!.DeleteItem(inventoryData.EquipmentItems, itemsToRemove);
+            await player.InventoryManager!.DeleteItem(inventoryData.RelicItems, itemsToRemove);
+            await player.InventoryManager!.DeleteItem(inventoryData.MaterialItems);
 
             if (itemsToRemove.Count > 0)
             {
@@ -81,7 +81,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             var inventoryData = player.InventoryManager!.GetInventoryData(player.Uid);
             var itemsToRemove = new List<ItemData>();
 
-            await player.InventoryManager!.RemoveItem(inventoryData.EquipmentItems, itemsToRemove);
+            await player.InventoryManager!.DeleteItem(inventoryData.EquipmentItems, itemsToRemove);
 
             if (itemsToRemove.Count > 0)
             {
@@ -107,7 +107,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             var inventoryData = player.InventoryManager!.GetInventoryData(player.Uid);
             var itemsToRemove = new List<ItemData>();
 
-            await player.InventoryManager!.RemoveItem(inventoryData.RelicItems, player, itemsToRemove);
+            await player.InventoryManager!.DeleteItem(inventoryData.RelicItems, itemsToRemove);
 
             if (itemsToRemove.Count > 0)
             {

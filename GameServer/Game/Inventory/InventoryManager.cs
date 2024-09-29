@@ -332,11 +332,11 @@ public class InventoryManager(PlayerInstance player) : BasePlayerManager(player)
     }
 
     // 不删除已装备和已锁定的物品
-    private async ValueTask RemoveItem(List<ItemData> items, List<ItemData>? itemsToRemove = null)
+    private async ValueTask DeleteItem(List<ItemData> items, List<ItemData>? itemsToRemove = null)
     {
         foreach (var item in items.Where(x => x.ItemId > 0 && !x.Locked && x.EquipAvatar <= 0))
         {
-            var removedItem = await Player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId);
+            var removedItem = await Player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId, true);
             if (removedItem != null && itemsToRemove != null)
             {
                 itemsToRemove.Add(removedItem);
