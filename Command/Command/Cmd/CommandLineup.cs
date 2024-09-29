@@ -1,4 +1,6 @@
 ﻿using EggLink.DanhengServer.GameServer.Server.Packet.Send.Lineup;
+using EggLink.DanhengServer.Enums.Scene;
+using EggLink.DanhengServer.GameServer.Game.Scene.Entity;
 using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd;
@@ -52,16 +54,17 @@ public class CommandLineup : ICommand
        
         var lineupIndex = arg.GetInt(1);
         if(lineupIndex < 0 || lineupIndex > 9){
-            await arg.SendMsg("Error:阵容编号范围 0~9");
+            await arg.SendMsg("Error: 阵容编号范围 0~9");
             return;
         }
         if (await player.LineupManager!.SetCurLineup(lineupIndex))
         {
             await arg.SendMsg($"阵容修改成功，阵容编号 [0{lineupIndex + 1}]");
+            await player.EnterScene(player.Data.EntryId, 0, true);
         }
         else
         {
-            await arg.SendMsg($"阵容修改失败，阵容编号 [0{lineupIndex + 1}] 角色为空");
+            await arg.SendMsg($"Error: 阵容修改失败，阵容编号 [0{lineupIndex + 1}] 角色为空");
         }
         
     }

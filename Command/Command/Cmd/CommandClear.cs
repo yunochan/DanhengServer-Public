@@ -86,9 +86,12 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             if (itemsToRemove.Count > 0)
             {
                 await player.SendPacket(new PacketPlayerSyncScNotify(itemsToRemove));
+                await arg.SendMsg("已删除玩家未锁定和未穿戴的光锥");
             }
-
-            await arg.SendMsg("已删除玩家未锁定和未穿戴的光锥");
+            else
+            {
+                await arg.SendMsg("没有未锁定和未穿戴的光锥可删除");
+            }
         }
 
         [CommandMethod("0 relics")]
@@ -109,9 +112,12 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             if (itemsToRemove.Count > 0)
             {
                 await player.SendPacket(new PacketPlayerSyncScNotify(itemsToRemove));
+                await arg.SendMsg("已删除玩家未锁定和未穿戴的遗器");
             }
-
-            await arg.SendMsg("已删除玩家未锁定和未穿戴的遗器");
+            else
+            {
+                await arg.SendMsg("没有未锁定和未穿戴的光锥可删除");
+            }
         }
 
         [CommandMethod("0 materials")]
@@ -137,7 +143,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             await arg.SendMsg("已删除玩家全部材料");
         }
 
-        private async ValueTask RemoveItems(IEnumerable<ItemData> items, PlayerInstance player, List<ItemData> itemsToRemove = null)
+        private async ValueTask RemoveItems(IEnumerable<ItemData> items, PlayerInstance player, List<ItemData>? itemsToRemove = null)
         {
             foreach (var item in items.Where(x => x.ItemId > 0 && !x.Locked && x.EquipAvatar <= 0))
             {

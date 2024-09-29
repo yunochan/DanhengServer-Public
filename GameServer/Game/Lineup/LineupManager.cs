@@ -365,23 +365,35 @@ public class LineupManager : BasePlayerManager
             await Player.SendPacket(
                 new PacketSyncLineupNotify(GetCurLineup()!, reason));
     }
-    public async ValueTask SetDefaultLineup()
-    {
-        var lineupIndex = LineupData.GetCurLineupIndex();
-        if (!LineupData.Lineups.TryGetValue(lineupIndex, out var lineup)) return;
-
-        lineup.BaseAvatars = new List<LineupAvatarInfo>
-        {
-            new LineupAvatarInfo { BaseAvatarId = 8001, SpecialAvatarId = 0 }
-        };
-
-        lineup.LeaderAvatarId = 8001;
-        LineupData.Lineups[lineupIndex] = lineup;
-
-        Player.SceneInstance?.SyncLineup();
-        await Player.SendPacket(new PacketSyncLineupNotify(lineup));
-    }
-
+	
+	public async ValueTask SetDefaultLineup()
+	{
+		var lineupIndex = LineupData.GetCurLineupIndex();
+		if (!LineupData.Lineups.TryGetValue(lineupIndex, out var lineup)) return;
+	
+		// 设置当前阵容
+		lineup.BaseAvatars = new List<LineupAvatarInfo>
+		{
+			new LineupAvatarInfo { BaseAvatarId = 8001, SpecialAvatarId = 0 }
+		};
+	
+		// 清空其他阵容并将LeaderAvatarId设为0
+		for (int i = 0; i <= 9; i++)
+		{
+			if (LineupData.Lineups.TryGetValue(i, out var otherLineup) && i != lineupIndex)
+			{
+				otherLineup.BaseAvatars = new List<LineupAvatarInfo>();
+				otherLineup.LeaderAvatarId = 0;
+			}
+		}
+	
+		lineup.LeaderAvatarId = 8001;
+		LineupData.Lineups[lineupIndex] = lineup;
+	
+		Player.SceneInstance?.SyncLineup();
+		await Player.SendPacket(new PacketSyncLineupNotify(lineup));
+	}
+    
 
     #endregion
 }

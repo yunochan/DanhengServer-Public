@@ -100,6 +100,7 @@ public class CommandTextEN
     public HeroTextEN Hero { get; } = new();
     public AvatarTextEN Avatar { get; } = new();
     public GiveTextEN Give { get; } = new();
+    public ClearAllTextEN ClearAll { get; } = new();
     public GiveAllTextEN GiveAll { get; } = new();
     public LineupTextEN Lineup { get; } = new();
     public HelpTextEN Help { get; } = new();
