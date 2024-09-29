@@ -40,7 +40,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
                 await player.SendPacket(new PacketPlayerSyncScNotify(itemsToRemove));
             }
 
-            await arg.SendMsg("已清空玩家的全部背包物品，包括武器、圣遗物和材料");
+            await arg.SendMsg("已清空玩家背包物品");
         }
 
         [CommandMethod("0 avatars")]
