@@ -3,6 +3,7 @@ using EggLink.DanhengServer.Database.Inventory;
 using EggLink.DanhengServer.Enums.Avatar;
 using EggLink.DanhengServer.Enums.Item;
 using EggLink.DanhengServer.GameServer.Server.Packet.Send.PlayerSync;
+using EggLink.DanhengServer.GameServer.Game.Player;
 using EggLink.DanhengServer.Internationalization;
 
 namespace EggLink.DanhengServer.Command.Command.Cmd
@@ -66,7 +67,6 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
         }
 
         [CommandMethod("0 lightcones")]
-        [CommandMethod("0 lc")]
         public async ValueTask ClearAllLightcone(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -90,7 +90,6 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
         }
 
         [CommandMethod("0 relics")]
-        [CommandMethod("0 r")]
         public async ValueTask ClearAllRelic(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -114,7 +113,6 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
         }
 
         [CommandMethod("0 materials")]
-        [CommandMethod("0 m")]
         public async ValueTask ClearAllMaterial(CommandArg arg)
         {
             var player = arg.Target?.Player;
@@ -137,7 +135,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             await arg.SendMsg("已删除玩家全部材料");
         }
 
-        private async Task RemoveItems(IEnumerable<ItemData> items, Player player, List<ItemData> itemsToRemove = null)
+        private async Task RemoveItems(IEnumerable<ItemData> items, PlayerInstance player, List<ItemData> itemsToRemove = null)
         {
             foreach (var item in items.Where(x => x.ItemId > 0 && !x.Locked && x.EquipAvatar <= 0))
             {
