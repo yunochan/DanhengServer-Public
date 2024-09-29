@@ -246,6 +246,20 @@ public class GiveTextEN
 }
 
 /// <summary>
+///     path: Game.Command.Clear
+/// </summary>
+public class ClearAllTextEN
+{
+    public string Desc =>
+        "Clear the player all specified types of items\n all means total items, avatar means characters, equipment means light cones, relic means relic(artifact)";
+
+    public string Usage =>
+        "Usage: /clear all \n\nUsage: /clear avatars \n\nUsage: /clear lightcones\n\nUsage: /clear relics";
+
+    public string ClearAllItems => "Removed all {0}, each {1} items";
+}
+
+/// <summary>
 ///     path: Game.Command.GiveAll
 /// </summary>
 public class GiveAllTextEN
@@ -265,7 +279,7 @@ public class GiveAllTextEN
 public class LineupTextEN
 {
     public string Desc => "Manage player's lineup\nTechnique Point can gain 2 each time";
-    public string Usage => "Usage: /lineup mp [amount]\n\nUsage: /lineup heal";
+    public string Usage => "Usage: /lineup mp [amount]\n\nUsage: /lineup heal \n\nUsage: /lineup change [index]";
     public string PlayerGainedMp => "Player gained {0} Technique Points";
     public string HealedAllAvatars => "Successfully healed all characters in the current lineup";
 }

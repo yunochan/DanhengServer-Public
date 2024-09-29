@@ -122,7 +122,7 @@ public class CommandGiveall : ICommand
         }
 
         arg.CharacterArgs.TryGetValue("x", out var amountStr);
-        amountStr ??= "9999";
+        amountStr ??= "1";
         if (!int.TryParse(amountStr, out var amount))
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.InvalidArguments"));

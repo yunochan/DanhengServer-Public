@@ -17,6 +17,11 @@ namespace EggLink.DanhengServer.GameServer.Game.Inventory;
 public class InventoryManager(PlayerInstance player) : BasePlayerManager(player)
 {
     public InventoryData Data = DatabaseHelper.Instance!.GetInstanceOrCreateNew<InventoryData>(player.Uid);
+    
+    public InventoryData GetInventoryData(int uid) {
+        InventoryData data = DatabaseHelper.Instance!.GetInstanceOrCreateNew<InventoryData>(uid);
+        return data;
+    }
 
     public async ValueTask AddItem(ItemData itemData, bool notify = true)
     {

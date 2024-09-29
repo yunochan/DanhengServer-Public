@@ -365,6 +365,23 @@ public class LineupManager : BasePlayerManager
             await Player.SendPacket(
                 new PacketSyncLineupNotify(GetCurLineup()!, reason));
     }
+    public async ValueTask SetDefaultLineup()
+    {
+        var lineupIndex = LineupData.GetCurLineupIndex();
+        if (!LineupData.Lineups.TryGetValue(lineupIndex, out var lineup)) return;
+
+        lineup.BaseAvatars = new List<LineupAvatarInfo>
+        {
+            new LineupAvatarInfo { BaseAvatarId = 8001, SpecialAvatarId = 0 }
+        };
+
+        lineup.LeaderAvatarId = 8001;
+        LineupData.Lineups[lineupIndex] = lineup;
+
+        Player.SceneInstance?.SyncLineup();
+        await Player.SendPacket(new PacketSyncLineupNotify(lineup));
+    }
+
 
     #endregion
 }

@@ -39,4 +39,30 @@ public class CommandLineup : ICommand
         await player.SendPacket(new PacketSyncLineupNotify(player.LineupManager.GetCurLineup()!));
         await arg.SendMsg(I18NManager.Translate("Game.Command.Lineup.HealedAllAvatars"));
     }
+
+    [CommandMethod("0 change")]
+    public async ValueTask ChangeLineup(CommandArg arg)
+    {
+         var player = arg.Target.Player!;
+        if (player == null)
+        {
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.PlayerNotFound"));
+            return;
+        }
+       
+        var lineupIndex = arg.GetInt(1);
+        if(lineupIndex < 0 || lineupIndex > 9){
+            await arg.SendMsg("Error:阵容编号范围 0~9");
+            return;
+        }
+        if (await player.LineupManager!.SetCurLineup(lineupIndex))
+        {
+            await arg.SendMsg($"阵容修改成功，阵容编号 [0{lineupIndex + 1}]");
+        }
+        else
+        {
+            await arg.SendMsg($"阵容修改失败，阵容编号 [0{lineupIndex + 1}] 角色为空");
+        }
+        
+    }
 }
