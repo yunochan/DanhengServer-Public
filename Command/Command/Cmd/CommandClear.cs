@@ -12,8 +12,8 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
 {
     [CommandInfo(
         name: "clear",
-        description: "Game.Command.Clear.Desc",
-        usage: "Game.Command.Clear.Usage",
+        description: "Game.Command.ClearAll.Desc",
+        usage: "Game.Command.ClearAll.Usage",
         permission: "player.clear"
     )]
     public class CommandClearall : ICommand
@@ -31,9 +31,9 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             var inventoryData = player.InventoryManager!.GetInventoryData(player.Uid);
             var itemsToRemove = new List<ItemData>();
 
-            await RemoveItems(inventoryData.EquipmentItems, player, itemsToRemove);
-            await RemoveItems(inventoryData.RelicItems, player, itemsToRemove);
-            await RemoveItems(inventoryData.MaterialItems, player);
+            await player.InventoryManager!.RemoveItem(inventoryData.EquipmentItems, itemsToRemove);
+            await player.InventoryManager!.RemoveItem(inventoryData.RelicItems, itemsToRemove);
+            await player.InventoryManager!.RemoveItem(inventoryData.MaterialItems);
 
             if (itemsToRemove.Count > 0)
             {
@@ -62,7 +62,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             }
 
             await player.LineupManager!.SetDefaultLineup();
-            await arg.SendMsg("已删除玩家全部角色(不包括主角)");
+            await arg.SendMsg("已删除玩家全部角色");
 
             await arg.Target!.Player!.SendPacket(new PacketPlayerKickOutScNotify());
             arg.Target!.Stop();
@@ -81,7 +81,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             var inventoryData = player.InventoryManager!.GetInventoryData(player.Uid);
             var itemsToRemove = new List<ItemData>();
 
-            await RemoveItems(inventoryData.EquipmentItems, player, itemsToRemove);
+            await player.InventoryManager!.RemoveItem(inventoryData.EquipmentItems, itemsToRemove);
 
             if (itemsToRemove.Count > 0)
             {
@@ -107,7 +107,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             var inventoryData = player.InventoryManager!.GetInventoryData(player.Uid);
             var itemsToRemove = new List<ItemData>();
 
-            await RemoveItems(inventoryData.RelicItems, player, itemsToRemove);
+            await player.InventoryManager!.RemoveItem(inventoryData.RelicItems, player, itemsToRemove);
 
             if (itemsToRemove.Count > 0)
             {
@@ -141,18 +141,6 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
             }
 
             await arg.SendMsg("已删除玩家全部材料");
-        }
-
-        private async ValueTask RemoveItems(IEnumerable<ItemData> items, PlayerInstance player, List<ItemData>? itemsToRemove = null)
-        {
-            foreach (var item in items.Where(x => x.ItemId > 0 && !x.Locked && x.EquipAvatar <= 0))
-            {
-                var removedItem = await player.InventoryManager!.RemoveItem(item.ItemId, item.Count, item.UniqueId);
-                if (removedItem != null && itemsToRemove != null)
-                {
-                    itemsToRemove.Add(removedItem);
-                }
-            }
         }
     }
 }

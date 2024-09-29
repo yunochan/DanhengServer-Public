@@ -45,13 +45,14 @@ public class CommandLineup : ICommand
     [CommandMethod("0 change")]
     public async ValueTask ChangeLineup(CommandArg arg)
     {
-         var player = arg.Target.Player!;
-        if (player == null)
+
+         if (arg.Target == null)
         {
             await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.PlayerNotFound"));
             return;
         }
-       
+        
+        var player = arg.Target.Player!;
         var lineupIndex = arg.GetInt(1);
         if(lineupIndex < 0 || lineupIndex > 9){
             await arg.SendMsg("Error: 阵容编号范围 0~9");
