@@ -426,9 +426,8 @@ public class LineupManager : BasePlayerManager
                 }
             }
         }
-        var currentLineup = LineupData.Lineups[LineupData.CurLineup];
         Player.SceneInstance?.SyncLineup();
-        await Player.SendPacket(new PacketSyncLineupNotify(currentLineup));
+        await Player.SendPacket(new PacketSyncLineupNotify(LineupData.Lineups[LineupData.CurLineup]));
     }
 
 
