@@ -220,9 +220,10 @@ public class PlayerInstance(PlayerData data)
 
         await LoadScene(Data.PlaneId, Data.FloorId, Data.EntryId, Data.Pos!, Data.Rot!, false);
         
-        if (SceneInstance == null || Data.Level > 13) 
+        if (SceneInstance == null || Data.Level > ConfigManager.Config.ServerOption.TransferLevel) 
         {
             await RaidManager!.LeaveRaid(false);
+            await LineupManager!.SetDefaultLineup();
             await EnterScene(2000101, 0, false);
         }
 

@@ -76,6 +76,7 @@ public class ServerOption
 {
     public bool EnableDialog { get; set; } = true;
     public bool EnableWindy { get; set; } = true;
+    public int TransferLevel  { get; set; } = 10;
     public int StartTrailblazerLevel { get; set; } = 1;
     public bool AutoUpgradeWorldLevel { get; set; } = true;
     public bool EnableMission { get; set; } = true; // experimental

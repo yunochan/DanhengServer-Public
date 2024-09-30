@@ -61,7 +61,7 @@ namespace EggLink.DanhengServer.Command.Command.Cmd
                 avatarData.Avatars.Remove(avatar);
             }
 
-            await player.LineupManager!.SetDefaultLineup();
+            await player.LineupManager!.EmptyLineup();
             await arg.SendMsg("已删除玩家全部角色");
 
             await arg.Target!.Player!.SendPacket(new PacketPlayerKickOutScNotify());

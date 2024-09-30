@@ -159,7 +159,7 @@ public class ServerInfoTextEN
     public string SaveDatabase => "Database saved in {0}s";
     
     public string WaitForAllDone =>
-        "You cannot enter the game yet. Please wait for all items to load before trying again";
+        "服务器正在重启中，请等待5分钟后尝试登录";
 
     public string UnhandledException => "An unhandled exception occurred: {0}";
 }
@@ -252,10 +252,10 @@ public class GiveTextEN
 public class ClearAllTextEN
 {
     public string Desc =>
-        "Clear the player all specified types of items\n all means total items, avatar means characters, equipment means light cones, relic means relic(artifact)";
+        "Clear the player all specified types of items\n all means total items, avatar means characters, equipment means light cones, relic means relic(artifact), materials";
 
     public string Usage =>
-        "Usage: /clear all \n\nUsage: /clear avatars \n\nUsage: /clear lightcones\n\nUsage: /clear relics";
+        "Usage: /clear all \n\nUsage: /clear avatars \n\nUsage: /clear lightcones\n\nUsage: /clear relics\n\nUsage: /clear materials";
 
     public string ClearAllItems => "Removed all {0}, each {1} items";
 }
