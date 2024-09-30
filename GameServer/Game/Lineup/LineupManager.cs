@@ -410,7 +410,7 @@ public class LineupManager : BasePlayerManager
             if (LineupData.Lineups.TryGetValue(key, out var lineup) && lineup.LineupType > 0) LineupData.Lineups.Remove(key);
         }
     
-        if (LineupData.Lineups.TryGetValue(lineupIndex, out var currentLineup) && currentLineup.BaseAvatars.Count > 0)
+        if (LineupData.Lineups.TryGetValue(lineupIndex, out var currentLineup) &&  currentLineup?.BaseAvatars?.Count > 0)
         {
             LineupData.CurLineup = lineupIndex;
         }
@@ -418,7 +418,7 @@ public class LineupManager : BasePlayerManager
         {
             for (int i = 0; i <= 8; i++)
             {
-                if (LineupData.Lineups.TryGetValue(i, out var nonEmptyLineup) && nonEmptyLineup.BaseAvatars.Count > 0)
+                if (LineupData.Lineups.TryGetValue(i, out var nonEmptyLineup) && nonEmptyLineup?.BaseAvatars?.Count > 0)
                 {
                     LineupData.CurLineup = i;
                     break;
