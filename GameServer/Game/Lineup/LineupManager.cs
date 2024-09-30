@@ -365,27 +365,23 @@ public class LineupManager : BasePlayerManager
             await Player.SendPacket(
                 new PacketSyncLineupNotify(GetCurLineup()!, reason));
     }
-
     public async ValueTask EmptyLineup()
     {
         var lineupIndex = LineupData.GetCurLineupIndex();
         if (!LineupData.Lineups.TryGetValue(lineupIndex, out var lineup)) return;
     
-        // Set current lineup
         lineup.BaseAvatars = new List<LineupAvatarInfo>
         {
             new LineupAvatarInfo { BaseAvatarId = 8001, SpecialAvatarId = 0 }
         };
     
-        // Clear other lineups and delete extra lineups
-        for (int i = 0; i < LineupData.Lineups.Count; i++)
+        foreach (var key in LineupData.Lineups.Keys.ToList())
         {
-            if (LineupData.Lineups.TryGetValue(i, out var otherLineup) && i != lineupIndex)
+            if (LineupData.Lineups.TryGetValue(key, out var otherLineup) && key != lineupIndex)
             {
-                if (i > 8) // Check for extra lineup
+                if (otherLineup.LineupType > 0)
                 {
-                    LineupData.Lineups.Remove(i);
-                    i--; // Adjust index after removal
+                    LineupData.Lineups.Remove(key);
                 }
                 else
                 {
@@ -402,14 +398,17 @@ public class LineupManager : BasePlayerManager
         Player.SceneInstance?.SyncLineup();
         await Player.SendPacket(new PacketSyncLineupNotify(lineup));
     }
-
+    
     public async ValueTask SetDefaultLineup()
     {
         var lineupIndex = LineupData.GetCurLineupIndex();
         if (lineupIndex < 0 || lineupIndex > 8) lineupIndex = 0;
         LineupData.CurExtraLineup = -1;
     
-        for (int i = LineupData.Lineups.Count - 1; i >= 9; i--) LineupData.Lineups.Remove(i);
+        foreach (var key in LineupData.Lineups.Keys.ToList())
+        {
+            if (LineupData.Lineups.TryGetValue(key, out var lineup) && lineup.LineupType > 0) LineupData.Lineups.Remove(key);
+        }
     
         if (LineupData.Lineups.TryGetValue(lineupIndex, out var currentLineup) && currentLineup.BaseAvatars.Count > 0)
         {
