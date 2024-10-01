@@ -69,4 +69,20 @@ public class CommandLineup : ICommand
         }
         
     }
+
+    [CommandMethod("0 default")]
+    public async ValueTask EmptyLineup(CommandArg arg)
+    {
+
+         if (arg.Target == null)
+        {
+            await arg.SendMsg(I18NManager.Translate("Game.Command.Notice.PlayerNotFound"));
+            return;
+        }
+        
+        var player = arg.Target.Player!;
+        await player.LineupManager!.EmptyLineup();
+        await arg.SendMsg("已清空玩家阵容");
+        await player.EnterScene(player.Data.EntryId, 0, true);
+    }
 }

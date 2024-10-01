@@ -127,7 +127,7 @@ public class CommandTextEN
 /// </summary>
 public class WebTextEN
 {
-    public string Maintain => "The server is undergoing maintenance, please try again later.";
+    public string Maintain => "服务器正在重启中，请等待5分钟后尝试登录";
 }
 
 /// <summary>
@@ -159,7 +159,7 @@ public class ServerInfoTextEN
     public string SaveDatabase => "Database saved in {0}s";
     
     public string WaitForAllDone =>
-        "服务器正在重启中，请等待5分钟后尝试登录";
+        "You cannot enter the game yet. Please wait for all items to load before trying again";
 
     public string UnhandledException => "An unhandled exception occurred: {0}";
 }
@@ -280,7 +280,7 @@ public class GiveAllTextEN
 public class LineupTextEN
 {
     public string Desc => "Manage player's lineup\nTechnique Point can gain 2 each time";
-    public string Usage => "Usage: /lineup mp [amount]\n\nUsage: /lineup heal \n\nUsage: /lineup change [index]";
+    public string Usage => "Usage: /lineup mp [amount]\n\nUsage: /lineup heal \n\nUsage: /lineup change [index]\n\nUsage: /lineup default";
     public string PlayerGainedMp => "Player gained {0} Technique Points";
     public string HealedAllAvatars => "Successfully healed all characters in the current lineup";
 }

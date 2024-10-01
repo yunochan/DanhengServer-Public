@@ -223,7 +223,6 @@ public class PlayerInstance(PlayerData data)
         if (SceneInstance == null || Data.Level > ConfigManager.Config.ServerOption.TransferLevel) 
         {
             await RaidManager!.LeaveRaid(false);
-            await LineupManager!.SetDefaultLineup();
             await EnterScene(2000101, 0, false);
         }
 
