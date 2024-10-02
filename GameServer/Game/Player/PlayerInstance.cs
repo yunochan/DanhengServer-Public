@@ -223,7 +223,7 @@ public class PlayerInstance(PlayerData data)
         if (SceneInstance == null || Data.Level > ConfigManager.Config.ServerOption.TransferLevel) 
         {
             await RaidManager!.LeaveRaid(false);
-            await EnterScene(2000101, 0, false);
+            await EnterScene(1000001, 0, false);
         }
 
         if (ConfigManager.Config.ServerOption.EnableMission) await MissionManager!.AcceptMainMissionByCondition();
