@@ -196,13 +196,12 @@ public class GachaManager(PlayerInstance player) : BasePlayerManager(player)
                 dirt += 20;
             }
 
-            ItemData? i;
+            ItemData? i = null;
             // 排除测试角色
             if (item != 6023){
                 if (GameData.ItemConfigData[item].ItemMainType == ItemMainTypeEnum.AvatarCard &&
                     Player.AvatarManager!.GetAvatar(item) == null)
                 {
-                    i = null;
                     await Player.AvatarManager!.AddAvatar(item, isGacha: true);
                 }
                 else
