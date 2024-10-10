@@ -198,7 +198,7 @@ public class GachaManager(PlayerInstance player) : BasePlayerManager(player)
 
             ItemData? i = null;
             // 排除测试角色
-            if (item != 6023){
+            if (!new[] { 1003, 6022, 6023}.Contains(item)){
                 if (GameData.ItemConfigData[item].ItemMainType == ItemMainTypeEnum.AvatarCard &&
                     Player.AvatarManager!.GetAvatar(item) == null)
                 {
